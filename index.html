@@ -3,247 +3,269 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Alberto Brambila | CFD Simulation Engineer | PhD </title>
-  <meta name="description" content="Alberto Brambila - CFD Simulation Engineer focused on Thermal Management and Multiphase simulations." />
+  <meta name="description" content="Alberto Brambila — CFD Simulation Engineer. Thermal management, multiphase CFD, validated results, and decision-ready post-processing." />
+  <title>Alberto Brambila | CFD Portfolio</title>
   <link rel="stylesheet" href="assets/style.css" />
 </head>
 
 <body>
+  <!-- Top bar -->
   <header class="topbar">
     <div class="container topbar__inner">
-      <a class="brand" href="index.html">
-        <span class="brand__mark" aria-hidden="true"></span>
-        <span class="brand__text">ALBERTO BRAMBILA</span>
+      <a class="brand" href="index.html" aria-label="Home">
+        <span class="brand__dot" aria-hidden="true"></span>
+        <span class="brand__name">ALBERTO BRAMBILA</span>
       </a>
 
-      <nav class="nav">
-        <a href="#portfolio">Portfolio</a>
-        <a href="#skills">Skills</a>
-        <a href="blog.html">Blog</a>
-        <a href="#contact" class="btn btn--small">Contact</a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="nav__link" href="#work">Portfolio</a>
+        <a class="nav__link" href="#skills">Skills</a>
+        <a class="nav__link" href="blog.html">Blog</a>
+        <a class="nav__link nav__cta" href="#contact">Contact</a>
       </nav>
     </div>
   </header>
 
+  <!-- Hero -->
   <main>
     <section class="hero">
       <div class="container hero__grid">
-        <!-- Left column -->
-        <div class="hero__copy">
-          <h1>CFD Simulation Engineer</h1>
-          <p class="lead">
-            PhD • Thermal and multiphase CFD focused on validated results, automation, and engineering decision-making.
+        <div class="hero__left">
+          <h1 class="hero__title">CFD Simulation Engineer</h1>
+
+          <p class="hero__subtitle">
+            PhD • Automotive thermal management and multiphase CFD, focused on validated results,
+            automation, and decision-ready engineering outputs.
           </p>
 
           <div class="hero__cta">
-            <a class="btn" href="#portfolio">View Projects</a>
+            <a class="btn btn--primary" href="#work">View Projects</a>
+            <a class="btn btn--ghost" href="assets/files/Alberto_Brambila_CV.pdf" target="_blank" rel="noopener">Download CV</a>
             <a class="btn btn--ghost" href="blog.html">Read Blog</a>
           </div>
-
-          <!-- Optional spacer to balance height (safe even if you later remove the right panel) -->
-          <div class="hero-spacer"></div>
 
           <div class="meta">
             <div class="meta__item">
               <span class="meta__label">Tools</span>
-              <span class="meta__value">Fluent • OpenFOAM • STAR-CCM+ • ANSA • Python</span>
+              <span class="meta__value">ANSYS Fluent • OpenFOAM • STAR-CCM+ • ParaView • Python</span>
+            </div>
+          </div>
+
+          <div class="about">
+            <h2 class="section__title">About</h2>
+            <p class="muted">
+              I build simulation workflows that turn physics into engineering decisions: clean setup, traceable assumptions,
+              repeatable post-processing, and plots that answer “what changes, why, and by how much”.
+              My work focuses on thermal and multiphase behavior, flow performance, and design comparisons.
+            </p>
+
+            <div class="pillrow" aria-label="Highlights">
+              <span class="pill">Validation mindset</span>
+              <span class="pill">Automation & reporting</span>
+              <span class="pill">Decision-ready plots</span>
+              <span class="pill">HPC workflows</span>
             </div>
           </div>
         </div>
 
-        <!-- Right column (high-level highlights) -->
-        <div class="hero__panel" aria-label="Highlights">
+        <!-- Right side removed intentionally for a cleaner, non-repetitive hero -->
+      </div>
+    </section>
+
+    <!-- Selected Work -->
+    <section id="work" class="section">
+      <div class="container">
+        <div class="section__head">
+          <h2 class="section__title">Selected Engineering Work</h2>
+          <p class="section__subtitle">
+            Synthetic, non-confidential case studies that demonstrate the physics, workflow quality, and engineering outputs.
+          </p>
+        </div>
+
+        <div class="cards">
+          <!-- DOG / Multiphase -->
+          <article class="card">
+            <div class="card__top">
+              <span class="chip">MULTIPHASE</span>
+              <span class="chip chip--muted">VOF</span>
+              <span class="chip chip--muted">Wetted area</span>
+            </div>
+
+            <img class="card__img"
+                 src="assets/images/projects/dog/hero.png"
+                 alt="Multiphase CFD preview image (VOF/contours)" />
+
+            <h3 class="card__title">IVAR DOG Project</h3>
+            <p class="card__text">
+              Multiphase case study showing jet breakup, film formation, and KPIs (wetted area / heat transfer-ready surfaces)
+              with clean, repeatable post-processing.
+            </p>
+
+            <div class="card__tags">
+              <span class="tag">Setup summary</span>
+              <span class="tag">KPIs</span>
+              <span class="tag">Figures</span>
+            </div>
+
+            <div class="card__links">
+              <a class="link" href="projects/dog.html">Project details</a>
+              <a class="link" href="projects/dog.html#figures">Figures</a>
+            </div>
+          </article>
+
+          <!-- F1 / Aero -->
+          <article class="card">
+            <div class="card__top">
+              <span class="chip">AERODYNAMICS</span>
+              <span class="chip chip--muted">Streamlines</span>
+              <span class="chip chip--muted">Forces</span>
+            </div>
+
+            <img class="card__img"
+                 src="assets/images/projects/f1/hero.png"
+                 alt="Aerodynamics CFD preview image (streamlines/contours)" />
+
+            <h3 class="card__title">F1 Concept Aero (Study)</h3>
+            <p class="card__text">
+              External aerodynamics workflow: boundary conditions, mesh strategy, convergence checks, and force/drag-ready plots
+              presented as an engineering brief.
+            </p>
+
+            <div class="card__tags">
+              <span class="tag">Mesh strategy</span>
+              <span class="tag">Forces</span>
+              <span class="tag">Visualization</span>
+            </div>
+
+            <div class="card__links">
+              <a class="link" href="projects/f1.html">Project details</a>
+              <a class="link" href="projects/f1.html#figures">Figures</a>
+            </div>
+          </article>
+
+          <!-- Pump -->
+          <article class="card">
+            <div class="card__top">
+              <span class="chip">TURBOMACHINERY</span>
+              <span class="chip chip--muted">Δp / Kv</span>
+              <span class="chip chip--muted">Variants</span>
+            </div>
+
+            <img class="card__img"
+                 src="assets/images/projects/pump/hero.png"
+                 alt="Pump CFD preview image (pressure/velocity/curves)" />
+
+            <h3 class="card__title">Pump Inlet Optimization (Study)</h3>
+            <p class="card__text">
+              Variant comparison focused on pressure drop, flow distribution, and efficiency indicators. Clear plots and a concise
+              summary that supports decisions.
+            </p>
+
+            <div class="card__tags">
+              <span class="tag">Δp curves</span>
+              <span class="tag">Distribution</span>
+              <span class="tag">Variant comparison</span>
+            </div>
+
+            <div class="card__links">
+              <a class="link" href="projects/pump.html">Project details</a>
+              <a class="link" href="projects/pump.html#figures">Figures</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills" class="section section--subtle">
+      <div class="container">
+        <div class="section__head">
+          <h2 class="section__title">Skills Snapshot</h2>
+          <p class="section__subtitle">
+            A quick overview recruiters and engineering leads can scan in seconds.
+          </p>
+        </div>
+
+        <div class="grid4">
           <div class="panel">
-            <div class="panel__item">
-              <div class="panel__icon">CFD</div>
-              <div class="panel__body">
-                <div class="panel__title">Thermal &amp; Multiphase</div>
-                <div class="panel__text">HTC, heat flux, wetted area, pressure drop</div>
-              </div>
-            </div>
-
-            <div class="panel__item">
-              <div class="panel__icon">HPC</div>
-              <div class="panel__body">
-                <div class="panel__title">Automation</div>
-                <div class="panel__text">Python post-processing &amp; repeatable reporting</div>
-              </div>
-            </div>
-
-            <div class="panel__item">
-              <div class="panel__icon">ENG</div>
-              <div class="panel__body">
-                <div class="panel__title">Engineering Outcomes</div>
-                <div class="panel__text">Design comparison, validation, decision-ready plots</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-<section id="portfolio" class="section">
-      <div class="container">
-        <div class="section__head">
-          <h2>Selected Engineering Work</h2>
-          <p class="muted">Projects aligned to your keywords: Dog • F1 • Pump (you can rename later).</p>
-        </div>
-
-        <div class="grid">
-          <article class="card">
-            <div class="card__badge">Aerodynamics</div>
-            <img class="card__img"
-              src="assets/images/dog/dog_streamlines.png"
-              alt="Streamlines and pressure contour around IVAR">
-            <h3>IVAR DOG Project</h3>
-            <p>
-              Short description: objective, simulation setup, and the key result in one sentence.
-            </p>
-            <ul class="tags">
-              <li>Aerodynamics</li><li>Post-processing</li><li>OpenFOAM</li>
-            </ul>
-            <div class="card__links">
-              <a href="#" class="link">Project details</a>
-              <a href="#" class="link">Figures</a>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card__badge">Aerodynamics</div>
-            <img class="card__img"
-              src="assets/images/f1/FerrarivsMclaren.png"
-              alt="Ferrary vs McLaren F1 cars">
-            <h3>F1 Project</h3>
-            <p>
-              Short description: what you optimized, what metric improved, and why it matters.
-            </p>
-            <ul class="tags">
-              <li>Thermal</li><li>HTC/Heat flux</li><li>Design comparison</li>
-            </ul>
-            <div class="card__links">
-              <a href="#" class="link">Project details</a>
-              <a href="#" class="link">Plots</a>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card__badge">Turbomachinery</div>
-            <h3>Pump Project (placeholder)</h3>
-            <p>
-              Short description: inlet/geometry variants, pressure drop/Kv, and any correlation to measurements.
-            </p>
-            <ul class="tags">
-              <li>Pressure drop</li><li>Flow distribution</li><li>Efficiency</li>
-            </ul>
-            <div class="card__links">
-              <a href="#" class="link">Project details</a>
-              <a href="#" class="link">Summary</a>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card__badge">Tooling</div>
-            <h3>Reusable Python Post-Processing</h3>
-            <p>
-              Standardized workflow for extracting KPIs, generating plots, and producing decision-ready reports.
-            </p>
-            <ul class="tags">
-              <li>Python</li><li>Automation</li><li>Reproducibility</li>
-            </ul>
-            <div class="card__links">
-              <a href="blog.html" class="link">Related blog</a>
-              <a href="#" class="link">Code</a>
-            </div>
-          </article>
-        </div>
-
-        <div class="callout">
-          <div>
-            <strong>Next step:</strong> I can convert each project into a clean 1-page “case study” layout.
-          </div>
-          <a class="btn btn--ghost" href="blog.html">See Blog →</a>
-        </div>
-      </div>
-    </section>
-
-    <section id="skills" class="section section--alt">
-      <div class="container">
-        <div class="section__head">
-          <h2>Skills & Tooling</h2>
-          <p class="muted">Focused on simulation quality, engineering KPIs, and interpretability.</p>
-        </div>
-
-        <div class="grid grid--2">
-          <div class="card card--flat">
-            <h3>Simulation</h3>
-            <ul class="bullets">
-              <li>CFD (steady/transient), multiphase, turbulence modeling</li>
-              <li>HTC / heat flux / wetted area / pressure drop</li>
-              <li>Mesh strategy, y+, convergence and sanity checks</li>
+            <h3 class="panel__title">Physics</h3>
+            <ul class="list">
+              <li>Multiphase flow (VOF / film behavior)</li>
+              <li>Heat transfer KPIs (HTC, heat flux, wetted area)</li>
+              <li>Turbulence modeling & sensitivity checks</li>
+              <li>Pressure drop & flow distribution</li>
             </ul>
           </div>
 
-          <div class="card card--flat">
-            <h3>Automation</h3>
-            <ul class="bullets">
-              <li>Python post-processing pipelines</li>
-              <li>Batch workflows & reproducible reporting</li>
-              <li>Plot generation and KPI dashboards</li>
+          <div class="panel">
+            <h3 class="panel__title">Engineering Outputs</h3>
+            <ul class="list">
+              <li>Variant comparison & tradeoffs</li>
+              <li>Decision-ready plots and summaries</li>
+              <li>Validation framing (what to compare & why)</li>
+              <li>Clear assumptions and reproducibility</li>
             </ul>
           </div>
 
-          <div class="card card--flat">
-            <h3>Tools</h3>
-            <ul class="bullets">
-              <li>ANSYS Fluent • OpenFOAM • STAR-CCM+</li>
-              <li>ParaView • Linux • Git</li>
-              <li>Excel automation for engineering reporting</li>
+          <div class="panel">
+            <h3 class="panel__title">Tools</h3>
+            <ul class="list">
+              <li>ANSYS Fluent / CFX</li>
+              <li>OpenFOAM</li>
+              <li>STAR-CCM+</li>
+              <li>ParaView, ANSA (as needed)</li>
             </ul>
           </div>
 
-          <div class="card card--flat">
-            <h3>Communication</h3>
-            <ul class="bullets">
-              <li>Measurement vs simulation correlation</li>
-              <li>Design comparison storytelling</li>
-              <li>Clear stakeholder updates</li>
+          <div class="panel">
+            <h3 class="panel__title">Automation</h3>
+            <ul class="list">
+              <li>Python post-processing</li>
+              <li>Repeatable reporting workflows</li>
+              <li>Plot standards and KPI extraction</li>
+              <li>HPC awareness (runtime & stability)</li>
             </ul>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- Contact -->
     <section id="contact" class="section">
       <div class="container">
-        <div class="section__head">
-          <h2>Contact</h2>
-          <p class="muted">Update the links below with yours.</p>
+        <div class="cta">
+          <div class="cta__text">
+            <h2 class="cta__title">Want to collaborate?</h2>
+            <p class="cta__subtitle">
+              I can share a tailored, non-confidential walkthrough of workflows, plots, and case-study framing.
+            </p>
+          </div>
+          <div class="cta__actions">
+            <!-- Replace email below with yours if you want -->
+            <a class="btn btn--primary" href="mailto:albertobraso7@gmail.com">Email me</a>
+            <a class="btn btn--ghost" href="assets/files/Alberto_Brambila_CV.pdf" target="_blank" rel="noopener">Open CV</a>
+          </div>
         </div>
-
-        <div class="contact">
-          <a class="contact__item" href="mailto:alberto.email@example.com">
-            <span class="contact__label">Email</span>
-            <span class="contact__value">albertobraso7@gmail.com</span>
-          </a>
-          <a class="contact__item" href="https://www.linkedin.com/in/alberto-braso7/" target="_blank" rel="noreferrer">
-            <span class="contact__label">LinkedIn</span>
-            <span class="contact__value">linkedin.com/in/alberto-braso7</span>
-          </a>
-          <a class="contact__item" href="https://github.com/albertobraso7" target="_blank" rel="noreferrer">
-            <span class="contact__label">GitHub</span>
-            <span class="contact__value">github.com/albertobraso7</span>
-          </a>
-        </div>
-
-        <footer class="footer">
-          <span>© <span id="y"></span> Alberto Brambila • Built with GitHub Pages</span>
-        </footer>
       </div>
     </section>
   </main>
 
-  <script>
-    document.getElementById("y").textContent = new Date().getFullYear();
-  </script>
+  <!-- Footer (your links are here – keep them here) -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p class="muted">© <span id="year"></span> Alberto Brambila — CFD Portfolio.</p>
+
+      <div class="footer__links">
+        <!-- Replace with your real links -->
+        <a class="link" href="https://github.com/albertobraso7" target="_blank" rel="noopener">GitHub</a>
+        <a class="link" href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="link" href="blog.html">Blog</a>
+      </div>
+    </div>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </footer>
 </body>
 </html>

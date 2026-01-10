@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pump Inlet Optimization | Alberto Brambila</title>
+  <link rel="stylesheet" href="../assets/style.css" />
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <a class="brand" href="../index.html">
+        <span class="brand__dot" aria-hidden="true"></span>
+        <span class="brand__name">ALBERTO BRAMBILA</span>
+      </a>
+
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="nav__link" href="../index.html#work">Portfolio</a>
+        <a class="nav__link" href="../index.html#skills">Skills</a>
+        <a class="nav__link" href="../blog.html">Blog</a>
+        <a class="nav__link nav__cta" href="../index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="project-hero">
+      <div class="container">
+        <div class="breadcrumb">
+          <a class="link" href="../index.html#work">Portfolio</a> <span class="muted">/</span> Pump Inlet Optimization
+        </div>
+
+        <h1 class="project-title">Pump Inlet Optimization (Variant Study)</h1>
+        <p class="project-subtitle">
+          Demonstration of a clean variant-comparison story: pressure drop/Kv, flow distribution, and efficiency indicators,
+          summarized to support design choices.
+        </p>
+
+        <div class="kpi">
+          <span class="pill">Δp / Kv curves</span>
+          <span class="pill">Variant comparison</span>
+          <span class="pill">Flow distribution</span>
+          <span class="pill">Engineering summary</span>
+        </div>
+
+        <div class="disclaimer">
+          <strong>Disclaimer:</strong> Synthetic, non-confidential demonstration. No proprietary designs or measurements included.
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="figures">
+      <div class="container">
+        <div class="section__head">
+          <h2 class="section__title">Figures</h2>
+          <p class="section__subtitle">Show at least one internal flow visualization and one performance curve used for decisions.</p>
+        </div>
+
+        <div class="figure-grid">
+          <figure class="figure">
+            <img src="../assets/images/projects/pump/fig1.png" alt="Velocity/pressure contours in pump inlet region" />
+            <figcaption class="caption">
+              <strong>Figure 1.</strong> Velocity or pressure contours in the inlet region highlighting separation and losses.
+            </figcaption>
+          </figure>
+
+          <figure class="figure">
+            <img src="../assets/images/projects/pump/fig2.png" alt="Pressure drop curve across variants" />
+            <figcaption class="caption">
+              <strong>Figure 2.</strong> Example Δp (or Kv) curve across variants and operating points with clear labeling.
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="panel" style="margin-top:16px;">
+          <h3 class="panel__title">Decision framing (example)</h3>
+          <ul class="list">
+            <li>Compare variants at the same flow rate(s) and temperature(s)</li>
+            <li>Use the same post-processing definitions for Δp/Kv</li>
+            <li>Show one plot that directly answers “which variant is better and why”</li>
+            <li>State limitations and next checks (mesh sensitivity, BC sensitivity, etc.)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p class="muted">© <span id="year"></span> Alberto Brambila — Project page.</p>
+      <div class="footer__links">
+        <a class="link" href="../index.html">Home</a>
+        <a class="link" href="../index.html#work">Portfolio</a>
+        <a class="link" href="../blog.html">Blog</a>
+      </div>
+    </div>
+    <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+  </footer>
+</body>
+</html>

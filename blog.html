@@ -3,77 +3,89 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Blog — CFD notes, post-processing, and simulation workflows." />
   <title>Blog | Alberto Brambila</title>
-  <meta name="description" content="Engineering notes and simulation case studies." />
   <link rel="stylesheet" href="assets/style.css" />
 </head>
 
 <body>
   <header class="topbar">
     <div class="container topbar__inner">
-      <a class="brand" href="index.html">
-        <span class="brand__mark" aria-hidden="true"></span>
-        <span class="brand__text">YOUR NAME</span>
+      <a class="brand" href="index.html" aria-label="Home">
+        <span class="brand__dot" aria-hidden="true"></span>
+        <span class="brand__name">ALBERTO BRAMBILA</span>
       </a>
 
-      <nav class="nav">
-        <a href="index.html#portfolio">Portfolio</a>
-        <a href="index.html#skills">Skills</a>
-        <a href="blog.html" class="is-active">Blog</a>
-        <a href="index.html#contact" class="btn btn--small">Contact</a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="nav__link" href="index.html#work">Portfolio</a>
+        <a class="nav__link" href="index.html#skills">Skills</a>
+        <a class="nav__link nav__link--active" href="blog.html">Blog</a>
+        <a class="nav__link nav__cta" href="index.html#contact">Contact</a>
       </nav>
     </div>
   </header>
 
-  <main class="section">
-    <div class="container">
-      <div class="section__head">
-        <h1 class="h2">Blog</h1>
-        <p class="muted">Short, technical posts—focused on what I learned and how to apply it.</p>
-      </div>
-
-      <div class="grid">
-        <article class="card">
-          <div class="card__badge">CFD</div>
-          <h3>How I Validate Pressure Drop vs. Measurements</h3>
-          <p>
-            A practical workflow for comparing CFD Δp results across flow rates, temperatures, and test uncertainty.
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="section__head">
+          <h1 class="section__title">Blog</h1>
+          <p class="section__subtitle">
+            Short, practical notes on CFD workflows, post-processing, and engineering plots.
           </p>
-          <div class="card__links">
-            <a class="link" href="#">Read (add link)</a>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="card__badge">Multiphase</div>
-          <h3>Wetted Area ≠ Heat Transfer: Common Pitfalls</h3>
-          <p>
-            Why more wetted surface can still deliver low heat flux—plus diagnostics to identify the root cause.
-          </p>
-          <div class="card__links">
-            <a class="link" href="#">Read (add link)</a>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="card__badge">HPC</div>
-          <h3>My Repeatable Post-Processing Checklist</h3>
-          <p>
-            A template for clean, reproducible reporting: naming conventions, scripts, plots, and automation.
-          </p>
-          <div class="card__links">
-            <a class="link" href="#">Read (add link)</a>
-          </div>
-        </article>
-      </div>
-
-      <div class="callout">
-        <div>
-          <strong>Want “real” posts quickly?</strong> I can turn your existing notes/slides into 3–5 blog posts.
         </div>
-        <a class="btn btn--ghost" href="index.html#contact">Contact →</a>
+
+        <div class="posts">
+          <article class="post">
+            <div class="post__meta">
+              <span class="chip chip--muted">Post-processing</span>
+              <span class="muted">• Coming soon</span>
+            </div>
+            <h2 class="post__title">A clean standard for CFD plots (what reviewers and leads look for)</h2>
+            <p class="post__excerpt">
+              How to structure figures, captions, and KPI plots so they can be used for decisions, not just pretty images.
+            </p>
+          </article>
+
+          <article class="post">
+            <div class="post__meta">
+              <span class="chip chip--muted">Multiphase</span>
+              <span class="muted">• Coming soon</span>
+            </div>
+            <h2 class="post__title">VOF case sanity checks: what to verify before trusting results</h2>
+            <p class="post__excerpt">
+              Time step, Courant number, mass conservation, mesh near the interface, and how to report confidence.
+            </p>
+          </article>
+
+          <article class="post">
+            <div class="post__meta">
+              <span class="chip chip--muted">Automation</span>
+              <span class="muted">• Coming soon</span>
+            </div>
+            <h2 class="post__title">Repeatable reporting with Python: from raw data to decision plots</h2>
+            <p class="post__excerpt">
+              A practical template to generate consistent plots and tables across variants and operating points.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p class="muted">© <span id="year"></span> Alberto Brambila — Blog.</p>
+      <div class="footer__links">
+        <a class="link" href="index.html">Home</a>
+        <a class="link" href="index.html#work">Portfolio</a>
+        <a class="link" href="index.html#contact">Contact</a>
       </div>
     </div>
-  </main>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </footer>
 </body>
 </html>

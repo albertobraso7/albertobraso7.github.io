@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IVAR DOG Project | Alberto Brambila</title>
+  <link rel="stylesheet" href="../assets/style.css" />
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <a class="brand" href="../index.html">
+        <span class="brand__dot" aria-hidden="true"></span>
+        <span class="brand__name">ALBERTO BRAMBILA</span>
+      </a>
+
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="nav__link" href="../index.html#work">Portfolio</a>
+        <a class="nav__link" href="../index.html#skills">Skills</a>
+        <a class="nav__link" href="../blog.html">Blog</a>
+        <a class="nav__link nav__cta" href="../index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="project-hero">
+      <div class="container">
+        <div class="breadcrumb">
+          <a class="link" href="../index.html#work">Portfolio</a> <span class="muted">/</span> IVAR DOG Project
+        </div>
+
+        <h1 class="project-title">IVAR DOG Project (Multiphase Study)</h1>
+        <p class="project-subtitle">
+          A non-confidential multiphase case study that demonstrates a clean workflow: setup notes, stability checks,
+          and repeatable post-processing for film formation and engineering KPIs.
+        </p>
+
+        <div class="kpi">
+          <span class="pill">VOF / interface tracking</span>
+          <span class="pill">Wetted area KPI</span>
+          <span class="pill">Post-processing template</span>
+          <span class="pill">Decision-ready figures</span>
+        </div>
+
+        <div class="disclaimer">
+          <strong>Disclaimer:</strong> This is a synthetic, non-confidential demonstration case.
+          No proprietary geometries, boundary conditions, or company data are included.
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="figures">
+      <div class="container">
+        <div class="section__head">
+          <h2 class="section__title">Figures</h2>
+          <p class="section__subtitle">
+            Replace the placeholder images with your ParaView/Fluent exports. Keep consistent camera angles and captions.
+          </p>
+        </div>
+
+        <div class="figure-grid">
+          <figure class="figure">
+            <img src="../assets/images/projects/dog/fig1.png" alt="VOF contours and interface structure" />
+            <figcaption class="caption">
+              <strong>Figure 1.</strong> Volume fraction (oil/air) contours showing breakup and interface behavior.
+            </figcaption>
+          </figure>
+
+          <figure class="figure">
+            <img src="../assets/images/projects/dog/fig2.png" alt="Wetted area KPI over time" />
+            <figcaption class="caption">
+              <strong>Figure 2.</strong> Example KPI plot (e.g., wetted area vs time) from repeatable Python post-processing.
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="panel" style="margin-top:16px;">
+          <h3 class="panel__title">What I would present to an engineering lead</h3>
+          <ul class="list">
+            <li>Setup summary (model choices, assumptions, operating point)</li>
+            <li>Stability checks (mass conservation, timestep/Courant targets)</li>
+            <li>KPIs that map to decisions (wetted area, pressure drop, heat-transfer-ready surfaces)</li>
+            <li>Short “so what” conclusion (what changes, why, and how big)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p class="muted">© <span id="year"></span> Alberto Brambila — Project page.</p>
+      <div class="footer__links">
+        <a class="link" href="../index.html">Home</a>
+        <a class="link" href="../index.html#work">Portfolio</a>
+        <a class="link" href="../blog.html">Blog</a>
+      </div>
+    </div>
+    <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+  </footer>
+</body>
+</html>
