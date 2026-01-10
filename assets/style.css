@@ -206,3 +206,7 @@ h1{font-size:42px; line-height:1.05; margin:14px 0 12px}
   border: 1px solid rgba(255,255,255,0.12);
   background: #0b1220;
 }
+
+.hero-spacer{
+  height: 48px;
+}
