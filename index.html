@@ -28,6 +28,7 @@
   <main>
     <section class="hero">
       <div class="container hero__grid">
+        <!-- Left column -->
         <div class="hero__copy">
           <h1>CFD Simulation Engineer</h1>
           <p class="lead">
@@ -38,7 +39,10 @@
             <a class="btn" href="#portfolio">View Projects</a>
             <a class="btn btn--ghost" href="blog.html">Read Blog</a>
           </div>
-          
+
+          <!-- Optional spacer to balance height (safe even if you later remove the right panel) -->
+          <div class="hero-spacer"></div>
+
           <div class="meta">
             <div class="meta__item">
               <span class="meta__label">Tools</span>
@@ -47,8 +51,38 @@
           </div>
         </div>
 
-        
-    <section id="portfolio" class="section">
+        <!-- Right column (high-level highlights) -->
+        <div class="hero__panel" aria-label="Highlights">
+          <div class="panel">
+            <div class="panel__item">
+              <div class="panel__icon">CFD</div>
+              <div class="panel__body">
+                <div class="panel__title">Thermal &amp; Multiphase</div>
+                <div class="panel__text">HTC, heat flux, wetted area, pressure drop</div>
+              </div>
+            </div>
+
+            <div class="panel__item">
+              <div class="panel__icon">HPC</div>
+              <div class="panel__body">
+                <div class="panel__title">Automation</div>
+                <div class="panel__text">Python post-processing &amp; repeatable reporting</div>
+              </div>
+            </div>
+
+            <div class="panel__item">
+              <div class="panel__icon">ENG</div>
+              <div class="panel__body">
+                <div class="panel__title">Engineering Outcomes</div>
+                <div class="panel__text">Design comparison, validation, decision-ready plots</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<section id="portfolio" class="section">
       <div class="container">
         <div class="section__head">
           <h2>Selected Engineering Work</h2>
