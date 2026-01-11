@@ -8,82 +8,97 @@
 </head>
 
 <body>
-
-  <!-- ================= HEADER ================= -->
   <header class="topbar">
-    <div class="topbar__inner">
-      <div class="brand">ALBERTO BRAMBILA</div>
-      <nav class="nav">
-        <a href="../index.html">Portfolio</a>
-        <a href="../skills.html">Skills</a>
-        <a href="../blog.html">Blog</a>
+    <div class="container topbar__inner">
+      <a class="brand" href="../index.html">
+        <span class="brand__dot" aria-hidden="true"></span>
+        <span class="brand__name">ALBERTO BRAMBILA</span>
+      </a>
+
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="nav__link" href="../index.html#work">Portfolio</a>
+        <a class="nav__link" href="../index.html#skills">Skills</a>
+        <a class="nav__link" href="../blog.html">Blog</a>
+        <a class="nav__link nav__cta" href="../index.html#contact">Contact</a>
       </nav>
     </div>
   </header>
 
-  <!-- ================= MAIN ================= -->
-  <main class="container">
-
-    <!-- ===== PROJECT HERO ===== -->
+  <main>
     <section class="project-hero">
-      <h1>F1 Aerodynamics Project</h1>
-      <p class="subtitle">
-        External aerodynamics analysis focused on flow structures, pressure
-        distribution, and design comparison.
-      </p>
+      <div class="container">
+        <div class="breadcrumb">
+          <a class="link" href="../index.html#work">Portfolio</a> <span class="muted">/</span> IVAR DOG Project
+        </div>
 
-      <img src="../assets/img/f1_main.jpg" alt="F1 aerodynamics visualization">
-    </section>
+        <h1 class="project-title">IVAR DOG Project (Multiphase Study)</h1>
+        <p class="project-subtitle">
+          A non-confidential multiphase case study that demonstrates a clean workflow: setup notes, stability checks,
+          and repeatable post-processing for film formation and engineering KPIs.
+        </p>
 
-    <!-- ===== OVERVIEW ===== -->
-    <section class="project-section">
-      <h2>Project Overview</h2>
-      <p>
-        This project explores the aerodynamic behavior of a Formula 1–style
-        vehicle using steady-state CFD simulations. The focus is on understanding
-        flow separation, wake structures, and pressure distribution around key
-        components.
-      </p>
-    </section>
+        <div class="kpi">
+          <span class="pill">VOF / interface tracking</span>
+          <span class="pill">Wetted area KPI</span>
+          <span class="pill">Post-processing template</span>
+          <span class="pill">Decision-ready figures</span>
+        </div>
 
-    <!-- ===== SIMULATION SETUP ===== -->
-    <section class="project-section">
-      <h2>Simulation Setup</h2>
-      <ul>
-        <li>Solver: OpenFOAM / ANSYS Fluent</li>
-        <li>Flow regime: Incompressible, steady</li>
-        <li>Turbulence model: k-ω SST</li>
-        <li>Post-processing: Python & ParaView</li>
-      </ul>
-    </section>
-
-    <!-- ===== KEY RESULTS ===== -->
-    <section class="project-section">
-      <h2>Key Results</h2>
-      <p>
-        The results highlight the impact of geometry changes on wake size and
-        pressure recovery. Regions of high pressure gradient correlate with
-        increased drag contribution.
-      </p>
-    </section>
-
-    <!-- ===== FIGURES ===== -->
-    <section class="project-section" id="figures">
-      <h2>Figures</h2>
-
-      <div class="figure-grid">
-        <img src="../assets/img/f1_streamlines.jpg" alt="F1 streamlines">
-        <img src="../assets/img/f1_pressure.jpg" alt="F1 pressure contours">
-        <img src="../assets/img/f1_wake.jpg" alt="F1 wake visualization">
+        <div class="disclaimer">
+          <strong>Disclaimer:</strong> This is a synthetic, non-confidential demonstration case.
+          No proprietary geometries, boundary conditions, or company data are included.
+        </div>
       </div>
     </section>
 
-    <!-- ===== BACK LINK ===== -->
-    <section class="project-section">
-      <a href="../index.html" class="btn btn-ghost">← Back to portfolio</a>
-    </section>
+    <section class="section" id="figures">
+      <div class="container">
+        <div class="section__head">
+          <h2 class="section__title">Figures</h2>
+          <p class="section__subtitle">
+            Replace the placeholder images with your ParaView/Fluent exports. Keep consistent camera angles and captions.
+          </p>
+        </div>
 
+        <div class="figure-grid">
+          <figure class="figure">
+            <img src="../assets/images/projects/dog/fig1.png" alt="VOF contours and interface structure" />
+            <figcaption class="caption">
+              <strong>Figure 1.</strong> Volume fraction (oil/air) contours showing breakup and interface behavior.
+            </figcaption>
+          </figure>
+
+          <figure class="figure">
+            <img src="../assets/images/projects/dog/fig2.png" alt="Wetted area KPI over time" />
+            <figcaption class="caption">
+              <strong>Figure 2.</strong> Example KPI plot (e.g., wetted area vs time) from repeatable Python post-processing.
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="panel" style="margin-top:16px;">
+          <h3 class="panel__title">What I would present to an engineering lead</h3>
+          <ul class="list">
+            <li>Setup summary (model choices, assumptions, operating point)</li>
+            <li>Stability checks (mass conservation, timestep/Courant targets)</li>
+            <li>KPIs that map to decisions (wetted area, pressure drop, heat-transfer-ready surfaces)</li>
+            <li>Short “so what” conclusion (what changes, why, and how big)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
   </main>
 
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p class="muted">© <span id="year"></span> Alberto Brambila — Project page.</p>
+      <div class="footer__links">
+        <a class="link" href="../index.html">Home</a>
+        <a class="link" href="../index.html#work">Portfolio</a>
+        <a class="link" href="../blog.html">Blog</a>
+      </div>
+    </div>
+    <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+  </footer>
 </body>
 </html>
