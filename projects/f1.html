@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>F1 Aerodynamics Project | Alberto Brambila</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- MAIN STYLES -->
+  <link rel="stylesheet" href="../styles.css" />
+
+  <!-- Optional: project-specific tweaks -->
+  <style>
+    .project-hero img {
+      width: 100%;
+      max-height: 420px;
+      object-fit: cover;
+      border-radius: 16px;
+    }
+
+    .project-section {
+      margin-top: 48px;
+    }
+
+    .project-section h2 {
+      margin-bottom: 12px;
+    }
+
+    .figure-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .figure-grid img {
+      width: 100%;
+      border-radius: 12px;
+      object-fit: cover;
+      max-height: 260px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ================= HEADER ================= -->
+  <header class="topbar">
+    <div class="topbar__inner">
+      <div class="brand">ALBERTO BRAMBILA</div>
+      <nav class="nav">
+        <a href="../index.html">Portfolio</a>
+        <a href="../skills.html">Skills</a>
+        <a href="../blog.html">Blog</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ================= MAIN ================= -->
+  <main class="container">
+
+    <!-- ===== PROJECT HERO ===== -->
+    <section class="project-hero">
+      <h1>F1 Aerodynamics Project</h1>
+      <p class="subtitle">
+        External aerodynamics analysis focused on flow structures, pressure
+        distribution, and design comparison.
+      </p>
+
+      <img src="../assets/img/f1_main.jpg" alt="F1 aerodynamics visualization">
+    </section>
+
+    <!-- ===== OVERVIEW ===== -->
+    <section class="project-section">
+      <h2>Project Overview</h2>
+      <p>
+        This project explores the aerodynamic behavior of a Formula 1–style
+        vehicle using steady-state CFD simulations. The focus is on understanding
+        flow separation, wake structures, and pressure distribution around key
+        components.
+      </p>
+    </section>
+
+    <!-- ===== SIMULATION SETUP ===== -->
+    <section class="project-section">
+      <h2>Simulation Setup</h2>
+      <ul>
+        <li>Solver: OpenFOAM / ANSYS Fluent</li>
+        <li>Flow regime: Incompressible, steady</li>
+        <li>Turbulence model: k-ω SST</li>
+        <li>Post-processing: Python & ParaView</li>
+      </ul>
+    </section>
+
+    <!-- ===== KEY RESULTS ===== -->
+    <section class="project-section">
+      <h2>Key Results</h2>
+      <p>
+        The results highlight the impact of geometry changes on wake size and
+        pressure recovery. Regions of high pressure gradient correlate with
+        increased drag contribution.
+      </p>
+    </section>
+
+    <!-- ===== FIGURES ===== -->
+    <section class="project-section" id="figures">
+      <h2>Figures</h2>
+
+      <div class="figure-grid">
+        <img src="../assets/img/f1_streamlines.jpg" alt="F1 streamlines">
+        <img src="../assets/img/f1_pressure.jpg" alt="F1 pressure contours">
+        <img src="../assets/img/f1_wake.jpg" alt="F1 wake visualization">
+      </div>
+    </section>
+
+    <!-- ===== BACK LINK ===== -->
+    <section class="project-section">
+      <a href="../index.html" class="btn btn-ghost">← Back to portfolio</a>
+    </section>
+
+  </main>
+
+</body>
+</html>
