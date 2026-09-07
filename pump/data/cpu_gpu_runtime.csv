@@ -1,0 +1,3 @@
+backend,calculation_runtime_seconds,calculation_runtime_minutes
+CPU_14_core,6240,104.0
+Native_GPU,2727,45.45

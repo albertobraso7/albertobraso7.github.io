@@ -1,272 +1,35 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Alberto Brambila — CFD Simulation Engineer. Thermal management, multiphase CFD, validated results, and decision-ready post-processing." />
-  <title>Alberto Brambila | CFD Portfolio</title>
-  <link rel="stylesheet" href="assets/style.css" />
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Alberto Brambila | CFD & Thermofluids Engineer</title>
+  <meta name="description" content="Alberto Brambila, PhD. CFD, heat transfer and multiphase engineering. Selected experience in thermal systems, rotating flows, validation and simulation automation.">
+  <meta name="theme-color" content="#101314">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="recruiter-layout.css">
+  <link rel="stylesheet" href="pump-media.css">
 </head>
-
 <body>
-  <!-- Top bar -->
-  <header class="topbar">
-    <div class="container topbar__inner">
-      <a class="brand" href="index.html" aria-label="Home">
-        <span class="brand__dot" aria-hidden="true"></span>
-        <span class="brand__name">ALBERTO BRAMBILA</span>
-      </a>
-
-      <nav class="nav" aria-label="Primary navigation">
-        <a class="nav__link" href="#work">Portfolio</a>
-        <a class="nav__link" href="#skills">Skills</a>
-        <a class="nav__link" href="blog.html">Blog</a>
-        <a class="nav__link nav__cta" href="#contact">Contact</a>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Hero -->
-  <main>
-    <section class="hero">
-      <div class="container hero__grid">
-        <div class="hero__left">
-          <h1 class="hero__title">CFD Simulation Engineer</h1>
-
-          <p class="hero__subtitle">
-            PhD • Automotive thermal management and multiphase CFD, focused on validated results,
-            automation, and decision-ready engineering outputs.
-          </p>
-
-          <div class="hero__cta">
-            <a class="btn btn--primary" href="#work">View Projects</a>
-            <a class="btn btn--ghost" href="assets/files/Alberto_Brambila_CV.pdf" target="_blank" rel="noopener">Download CV</a>
-            <a class="btn btn--ghost" href="blog.html">Read Blog</a>
-          </div>
-
-          <div class="meta">
-            <div class="meta__item">
-              <span class="meta__label">Tools</span>
-              <span class="meta__value">ANSYS Fluent • OpenFOAM • STAR-CCM+ • ANSA • Python</span>
-            </div>
-          </div>
-
-          <div class="about">
-            <h2 class="section__title">About</h2>
-            <p class="muted">
-              I build simulation workflows that turn physics into engineering decisions: clean setup, traceable assumptions,
-              repeatable post-processing, and plots that answer “what changes, why, and by how much”.
-              My work focuses on thermal and multiphase behavior, flow performance, and design comparisons.
-            </p>
-
-            <div class="pillrow" aria-label="Highlights">
-              <span class="pill">Validation mindset</span>
-              <span class="pill">Automation & reporting</span>
-              <span class="pill">Decision-ready plots</span>
-              <span class="pill">HPC workflows</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right side removed intentionally for a cleaner, non-repetitive hero -->
-      </div>
-    </section>
-
-    <!-- Selected Work -->
-    <section id="work" class="section">
-      <div class="container">
-        <div class="section__head">
-          <h2 class="section__title">Selected Engineering Work</h2>
-          <p class="section__subtitle">
-            Synthetic, non-confidential case studies that demonstrate the physics, workflow quality, and engineering outputs.
-          </p>
-        </div>
-
-        <div class="cards">
-          <!-- DOG / Multiphase -->
-          <article class="card">
-            <div class="card__top">
-              <span class="chip">Aerodynamics</span>
-              <span class="chip chip--muted">VOF</span>
-              <span class="chip chip--muted">Wetted area</span>
-            </div>
-
-            <img class="card__img"
-                 src="assets/images/projects/dog/hero.png"
-                 
-
-            <h3 class="card__title">IVAR DOG Project</h3>
-            <p class="card__text">
-              Multiphase case study showing jet breakup, film formation, and KPIs (wetted area / heat transfer-ready surfaces)
-              with clean, repeatable post-processing.
-            </p>
-
-            <div class="card__tags">
-              <span class="tag">Setup summary</span>
-              <span class="tag">KPIs</span>
-              <span class="tag">Figures</span>
-            </div>
-
-            <div class="card__links">
-              <a class="link" href="projects/dog.html">Project details</a>
-              <a class="link" href="projects/dog.html#figures">Figures</a>
-            </div>
-          </article>
-
-          <!-- F1 / Aero -->
-          <article class="card">
-            <div class="card__top">
-              <span class="chip">AERODYNAMICS</span>
-              <span class="chip chip--muted">Streamlines</span>
-              <span class="chip chip--muted">Forces</span>
-            </div>
-
-            <img class="card__img"
-                 src="assets/images/projects/f1/hero.png"
-                 
-
-            <h3 class="card__title">F1 Concept Aero (Study)</h3>
-            <p class="card__text">
-              External aerodynamics workflow: boundary conditions, mesh strategy, convergence checks, and force/drag-ready plots
-              presented as an engineering brief.
-            </p>
-
-            <div class="card__tags">
-              <span class="tag">Mesh strategy</span>
-              <span class="tag">Forces</span>
-              <span class="tag">Visualization</span>
-            </div>
-
-            <div class="card__links">
-              <a class="link" href="projects/f1.html">Project details</a>
-              <a class="link" href="projects/f1.html#figures">Figures</a>
-            </div>
-          </article>
-
-          <!-- Pump -->
-          <article class="card">
-            <div class="card__top">
-              <span class="chip">TURBOMACHINERY</span>
-              <span class="chip chip--muted">Δp / Kv</span>
-              <span class="chip chip--muted">Variants</span>
-            </div>
-
-            <img class="card__img"
-                 src="assets/images/projects/pump/hero.png"
-                 
-
-            <h3 class="card__title">Pump Inlet Optimization (Study)</h3>
-            <p class="card__text">
-              Variant comparison focused on pressure drop, flow distribution, and efficiency indicators. Clear plots and a concise
-              summary that supports decisions.
-            </p>
-
-            <div class="card__tags">
-              <span class="tag">Δp curves</span>
-              <span class="tag">Distribution</span>
-              <span class="tag">Variant comparison</span>
-            </div>
-
-            <div class="card__links">
-              <a class="link" href="projects/pump.html">Project details</a>
-              <a class="link" href="projects/pump.html#figures">Figures</a>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- Skills -->
-    <section id="skills" class="section section--subtle">
-      <div class="container">
-        <div class="section__head">
-          <h2 class="section__title">Skills Snapshot</h2>
-          <p class="section__subtitle">
-            
-          </p>
-        </div>
-
-        <div class="grid4">
-          <div class="panel">
-            <h3 class="panel__title">Physics</h3>
-            <ul class="list">
-              <li>Multiphase flow (VOF / film behavior)</li>
-              <li>Heat transfer KPIs (HTC, heat flux, wetted area)</li>
-              <li>Turbulence modeling & sensitivity checks</li>
-              <li>Pressure drop & flow distribution</li>
-            </ul>
-          </div>
-
-          <div class="panel">
-            <h3 class="panel__title">Engineering Outputs</h3>
-            <ul class="list">
-              <li>Variant comparison & tradeoffs</li>
-              <li>Decision-ready plots and summaries</li>
-              <li>Validation framing (what to compare & why)</li>
-              <li>Clear assumptions and reproducibility</li>
-            </ul>
-          </div>
-
-          <div class="panel">
-            <h3 class="panel__title">Tools</h3>
-            <ul class="list">
-              <li>ANSYS Fluent / CFX</li>
-              <li>OpenFOAM</li>
-              <li>STAR-CCM+</li>
-              <li>ANSA</li>
-              <li>Fire</li>
-            </ul>
-          </div>
-
-          <div class="panel">
-            <h3 class="panel__title">Automation</h3>
-            <ul class="list">
-              <li>Python post-processing</li>
-              <li>Repeatable reporting workflows</li>
-              <li>Plot standards and KPI extraction</li>
-              <li>HPC awareness (runtime & stability)</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact" class="section">
-      <div class="container">
-        <div class="cta">
-          <div class="cta__text">
-            <h2 class="cta__title">Want to collaborate?</h2>
-            <p class="cta__subtitle">
-              I can share a tailored, non-confidential walkthrough of workflows, plots, and case-study framing.
-            </p>
-          </div>
-          <div class="cta__actions">
-            <!-- Replace email below with yours if you want -->
-            <a class="btn btn--primary" href="mailto:albertobraso7@gmail.com">Email me</a>
-            <a class="btn btn--ghost" href="assets/files/Alberto_Brambila_CV.pdf" target="_blank" rel="noopener">Open CV</a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer (your links are here – keep them here) -->
-  <footer class="footer">
-    <div class="container footer__inner">
-      <p class="muted">© <span id="year"></span> Alberto Brambila — CFD Portfolio.</p>
-
-      <div class="footer__links">
-        <!-- Replace with your real links -->
-        <a class="link" href="https://github.com/albertobraso7" target="_blank" rel="noopener">GitHub</a>
-        <a class="link" href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
-        <a class="link" href="blog.html">Blog</a>
-      </div>
-    </div>
-
-    <script>
-      document.getElementById("year").textContent = new Date().getFullYear();
-    </script>
-  </footer>
-</body>
-</html>
+<a class="skip" href="#main">Skip to content</a>
+<header class="header wrap"><a class="identity" href="#home" aria-label="Alberto Brambila, home">AB<span class="identity-rule"></span><span>ALBERTO<br>BRAMBILA</span></a><nav aria-label="Main navigation"><a href="#work">Selected work</a><a href="#approach">Approach</a><a href="#about">About</a><a class="nav-contact" href="#contact">Contact <span aria-hidden="true">↗</span></a></nav></header>
+<main id="main">
+<section class="hero wrap" id="home">
+ <div class="hero-main"><div class="hero-copy"><p class="eyebrow">ALBERTO BRAMBILA, PHD · CFD ENGINEER</p><h1>CFD &amp;<br><span>thermal engineering.</span></h1><p class="hero-intro">Fluid flow, heat transfer and multiphase simulation, with Python tools for repeatable CFD workflows.</p><p class="hero-credentials">Bosch · Mexico · Open to international relocation</p><div class="hero-actions"><a class="button" href="#work">View projects <span aria-hidden="true">↓</span></a><a class="text-link" href="assets/files/Alberto_Brambila_CV.pdf" target="_blank" rel="noopener noreferrer">Download CV ↗</a><a class="text-link" href="https://www.linkedin.com/in/alberto-braso7/" target="_blank" rel="noopener noreferrer">Connect on LinkedIn ↗</a></div></div>
+ <aside class="hero-case pump-feature" aria-label="Featured pump case study"><p class="eyebrow">FEATURED CASE / AUTOMATED PUMP CFD</p><div class="pump-feature-image"><div class="media-player"><video class="pump-video" data-autoplay muted loop playsinline controls preload="metadata" poster="pump/assets/smm_flow_field_frame.jpg" width="1920" height="1080" aria-label="Pump startup: the first impeller revolution, shown in slow motion"><source src="pump/assets/pump_portfolio_hero_1rev.mp4" type="video/mp4"><a href="pump/assets/pump_portfolio_hero_1rev.mp4">Download the pump animation</a></video></div></div><h2>Centrifugal pump<br>performance &amp; pulsation.</h2><p><strong>2.29× GPU speedup.</strong> Automated flow sweeps, hydraulic performance curves and transient pressure analysis at the volute tongue.</p><p class="pump-feature-methods">PyFluent automation · MRF · Sliding mesh · PSD</p><a class="pump-feature-link" href="pump/">View the pump study <span aria-hidden="true">↗</span></a></aside></div>
+ <div class="evidence-strip" aria-label="Selected evidence from professional projects"><a href="#vehicle-airflow"><strong>~100M<span> cells</span></strong><p>Full-vehicle CFD workflow</p><small>Pressure compared with Pitot measurements</small></a><a href="#condensation"><strong>~4%<span> deviation</span></strong><p>Condensation benchmark</p><small>Reported maximum under benchmark conditions</small></a><a href="#degassing"><strong>Prototype<span> tested</span></strong><p>Integrated gas-separation concept</p><small>CFD-supported design taken to physical testing</small></a></div>
+</section>
+<section class="work wrap" id="work" aria-labelledby="work-title">
+  <div class="section-heading"><div><p class="eyebrow">01 / SELECTED EXPERIENCE</p><h2 id="work-title">Engineering projects.</h2></div><p>Independent studies and anonymised industrial projects.</p></div>
+  <a class="pump-work-entry" href="pump/"><div><p class="eyebrow">DETAILED CASE STUDY · PUMP CFD</p><h3>Centrifugal pump: steady and transient CFD</h3><p>H–Q and efficiency curves, CPU/GPU comparison, and pressure-pulsation analysis at the volute tongue.</p></div><span aria-hidden="true">↗</span></a>
+  <div id="projects" class="projects"></div>
+</section>
+<section class="approach" id="approach" aria-labelledby="approach-title"><div class="wrap">
+  <div class="section-heading"><div><p class="eyebrow">02 / ENGINEERING APPROACH</p><h2 id="approach-title">Engineering approach.</h2></div><p>Each study connects a design question with suitable models, checked results and engineering recommendations.</p></div>
+  <div class="method-grid"><article><span class="step">01</span><h3>Define the study</h3><p>Define the operating conditions, required outputs and design question.</p></article><article><span class="step">02</span><h3>Set up the model</h3><p>Select the mesh, boundary conditions and physical models for the flow and thermal behaviour.</p></article><article><span class="step">03</span><h3>Check the results</h3><p>Check convergence, conservation and sensitivity. Compare with measurements or published benchmarks when available.</p></article><article><span class="step">04</span><h3>Report the findings</h3><p>Explain the flow behaviour, compare designs and report the model’s limitations.</p></article></div>
+</div></section>
+<section class="about wrap" id="about" aria-labelledby="about-title"><div><p class="eyebrow">03 / ABOUT</p><h2 id="about-title">About me.</h2></div><div class="about-copy"><p class="large">I’m Alberto Brambila, a PhD engineer working in CFD and thermofluids at Bosch in Mexico.</p><p>Project experience covers vehicle airflow, electric-machine cooling, pumps, valves, gas–liquid separation and hydrogen systems, including geometry preparation, meshing, solver setup, HPC runs and analysis.</p><p>Open to international opportunities in hands-on CFD, heat transfer and multiphase engineering across industries.</p><div class="tools"><p class="eyebrow">ENGINEERING TOOLS</p><p>ANSYS Fluent · OpenFOAM · AVL FIRE M<br>Python · PyFluent · Simcenter Amesim<br>ANSA · ParaView · EnSight · Linux / HPC</p></div></div></section>
+<section class="contact wrap" id="contact"><p class="eyebrow">04 / CONTACT</p><h2>Interested in<br><span>my work?</span></h2><div class="contact-links"><a class="button" href="https://www.linkedin.com/in/alberto-braso7/" target="_blank" rel="noopener noreferrer">Connect on LinkedIn <span aria-hidden="true">↗</span></a><a href="https://github.com/albertobraso7" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a></div></section>
+</main><footer class="wrap"><span>Alberto Brambila Solórzano, PhD</span><span>CFD · Heat transfer · Multiphase</span><a href="blog.html">Blog</a><a href="#home">Back to top ↑</a></footer>
+<script src="projects.js"></script>
+<script src="pump-media.js"></script>
+</body></html>

@@ -1,0 +1,12 @@
+/* Native video controls remain available, including when autoplay is blocked. */
+.media-player{position:relative;min-width:0;background:#000;aspect-ratio:16/9;}
+.media-player .pump-video{display:block;width:100%;height:100%;aspect-ratio:16/9;object-fit:contain;background:#000;}
+.hero-case.pump-feature .pump-feature-image{display:block;padding:0;border:0;margin:0 0 21px;background:#000;}
+.flow-hero .media-player{width:100%;}
+.transient-animation{max-width:1020px;margin:35px auto 42px;border:1px solid #35474b;background:#101719;}
+.transient-animation figcaption{display:flex;flex-wrap:wrap;gap:8px 26px;justify-content:space-between;padding:17px 20px;color:#b9c6c8;font-size:.875rem;line-height:1.65;}
+.transient-animation figcaption strong{color:#a5efcc;font-weight:400;}
+.transient-animation figcaption span{max-width:570px;}
+@media(max-width:640px){.transient-animation{margin:28px 0 32px;}.transient-animation figcaption{padding:14px 16px;}}
+@media print{.media-player{display:none;}.flow-hero:before,.pump-feature-image:before,.transient-animation:before{content:"";display:block;width:100%;aspect-ratio:16/9;background:#000 url("pump/assets/smm_flow_field_frame.jpg") center/contain no-repeat;print-color-adjust:exact;}}
+
