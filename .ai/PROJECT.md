@@ -91,7 +91,8 @@ reduced motion and responsive layouts. Ordinary Git diff omits untracked files.
 
 Keep `.nojekyll` and relative paths. The existing README documents publishing
 the root of main with no build step. Anonymous GitHub API confirms Pages exists,
-but exact remote branch/folder settings and live deployment SHA were not verified.
+and the existing Pages workflow successfully deployed main at 6ed12ce on
+2026-09-08 (run 34305966087). Exact branch/folder configuration was not read.
 There is no Sites configuration or migration. See CURRENT.md for publication status.
 
 Shared memory is development context, not a secrecy boundary. Do not include

@@ -78,3 +78,14 @@ The user explicitly requested publication after reviewing the completed site.
 See [CURRENT.md](tasks/CURRENT.md) for the Git and live deployment outcome.
 The checks above concern the reviewed product revision and remain valid; this
 publication task adds durable documentation without changing that product.
+
+## Publication verification — 2026-09-08
+
+Product commit 6ed12ce43d9690c743e00651bfe00703dd177a51 was pushed normally to
+main. [Pages run 34305966087](https://github.com/albertobraso7/albertobraso7.github.io/actions/runs/34305966087) completed successfully, including build and deploy.
+The public homepage and three new case pages returned HTTP 200 and matched the
+reviewed HTML after line-ending normalization. New research CSS/JS, residential
+streamline hero and elastic-pipe MP4 returned HTTP 200 with expected MIME types.
+Initial timeouts/stale 404s cleared on retries after deployment. The reusable
+ADD_PROJECT.md guide is linked from both agent entry points and README; document
+links resolve and committed Markdown contains no absolute machine paths.
