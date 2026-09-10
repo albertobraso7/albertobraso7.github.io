@@ -14,24 +14,32 @@ the public website. All source worktrees are **READ ONLY** for portfolio tasks.
 
 | Workspace root | Repository locator | Classification |
 | --- | --- | --- |
-| `alberto-portfolio` | `.` (child `albertobraso7.github.io` of workspace root) | PORTFOLIO TARGET |
-| `casas` | `../../casas` | SOURCE PROJECT |
-| `maestria` | `../../maestria` | SOURCE PROJECT |
-| `doctorado` | `../../doctorado/aneurysm-multiphysics-cfd` | SOURCE PROJECT |
-| `pyfluent_pump` | `../../pyfluent/pump_workflow/pyfluent_pump` | SOURCE PROJECT |
+| `Portfolio website` | `.` (actual Git/workspace root) | PORTFOLIO TARGET |
+| `casas` | `../../alberto-portfolio-cases/casas` | SOURCE PROJECT |
+| `maestria` | `../../alberto-portfolio-cases/maestria` | SOURCE PROJECT |
+| `doctorado` | `../../alberto-portfolio-cases/doctorado/aneurysm-multiphysics-cfd` | SOURCE PROJECT |
+| `pyfluent_pump` | `../../alberto-portfolio-cases/pyfluent_pump` | SOURCE PROJECT |
 
 The `doctorado` workspace root is a separate, non-Git research archive. Its
 nested `aneurysm-multiphysics-cfd` checkout is the curated publication repository;
 do not treat research-root duplicates or clinical masters as the public source.
 The `alberto-portfolio` parent folder itself is not a Git repository.
 
-Discovery checked all five declared workspace roots, structural directories,
+Historical discovery checked the five then-declared workspace roots, structural directories,
 immediate raw-project containers, Git markers and submodule declarations. Five
 repositories and no submodules were found. Huge solver/result trees were not
 recursively scanned; repeat discovery only for a changed workspace or evidence
 of an additional repository, not at every task start.
 
-## Latest content refresh — 2026-09-08
+## Workspace relocation — 2026-09-10
+
+The locators above reflect the current folder layout and were checked during
+the agent-instruction migration. The website and public doctoral checkout are
+now explicit workspace folders. Standards and the private archive remain
+separate. Debubbler is still in preparation and is not a portfolio source yet.
+Old Git snapshots below are historical evidence, not current freshness checks.
+
+## Historical content refresh — 2026-09-08
 
 Reactor, doctoral and residential sources were fetched successfully again with
 unchanged HEAD/upstream SHAs from the table below. Reactor and doctoral worktrees

@@ -99,3 +99,11 @@ Shared memory is development context, not a secrecy boundary. Do not include
 private data, absolute machine paths or credentials. Review the actual publishing
 artifact before future publication; `.nojekyll` means Jekyll exclusions cannot
 be assumed. The local preview excludes dot-directories and internal entry points.
+
+## Agent instruction integration
+
+[AGENTS.md](../AGENTS.md) contains the versioned shared portfolio standard and
+local entry point. CLAUDE.md imports it; Copilot in VS Code can use AGENTS.md
+directly. PROJECT owns technical knowledge; CURRENT owns only this project's
+task. Historical machine/tool observations must be checked against the active
+environment. General lifecycle rules now live in AGENTS, not duplicated here.

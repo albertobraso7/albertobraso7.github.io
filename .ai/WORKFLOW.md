@@ -1,24 +1,13 @@
-# Shared Codex and Claude Workflow
+# Local project workflow
 
-## Source of truth and ownership
+Use the [shared working procedure](../AGENTS.md#shared-working-procedure) for
+start, implementation, handoff and finish. Only project-specific rules belong
+here. Existing session authorization applies; an audit-only request forbids
+memory edits as well as product changes.
 
-Use actual repository files, current Git evidence, applicable tests/build and
-the shared `.ai/` memory. When notes disagree with evidence, investigate the
-specific discrepancy and correct portfolio memory; do not alter source repos.
-Both agents follow this workflow. Only one writes the working tree at a time.
-Use task/feature branches when needed, never new branches merely to change agent.
+## Scope and verification
 
-| Need | Read or update |
-| --- | --- |
-| Site purpose, architecture, commands | [PROJECT.md](PROJECT.md) |
-| Source locations, sync snapshot, provenance/rights pointers | [SOURCES.md](SOURCES.md) |
-| Initial project selection map | [PROJECT_INVENTORY.md](PROJECT_INVENTORY.md) |
-| Add an engineering case study | [ADD_PROJECT.md](ADD_PROJECT.md) |
-| Lasting decisions and rationale | [DECISIONS.md](DECISIONS.md) |
-| Active objective, progress, evidence, next action | [CURRENT.md](tasks/CURRENT.md) |
-| Begin/resume | [START_TASK.md](workflows/START_TASK.md) |
-| Pause or transfer | [HANDOFF.md](workflows/HANDOFF.md) |
-| Verify and finish | [FINISH_TASK.md](workflows/FINISH_TASK.md) |
+This repository is the GitHub Pages website. Engineering source repositories are read-only for website tasks unless the user explicitly requests source edits. Preserve the existing HTML/CSS/JavaScript site, approved identity, URLs and asset provenance.
 
 ## Git inspection and synchronization classification
 
@@ -66,48 +55,8 @@ command-scoped `git -c safe.directory=<verified-repo-path> ...` avoids global
 configuration changes. Never use a wildcard trust exception or change ownership.
 If access remains unavailable, finish independent work and record the limitation.
 
-## Context efficiency
 
-1. Read CURRENT and the relevant shared files first; reuse existing findings.
-2. For engineering content, use SOURCES, then the selected project's
-   `docs/portfolio_case.md`; if absent, README; then targeted supporting docs.
-3. Read a raw CFD result only to answer a specific unresolved question. Prefer
-   an existing provenance/asset manifest to rediscovering files.
-4. Use `rg`, `git ls-files`, `git ls-tree` and bounded reads. Do not recursively
-   scan huge case/data/result folders or reopen binary media without a reason.
-5. Store durable site knowledge in PROJECT, source findings in SOURCES, material
-   decisions in DECISIONS and temporary state in CURRENT. Consolidate outdated
-   entries instead of appending a chronological transcript or copying READMEs.
-6. Run checks appropriate to changed files; do not run solvers or install
-   dependencies for a documentation-only task. Repeat checks only after relevant
-   edits, failures or new evidence. Report skipped checks honestly.
-
-## Scope and publication boundary
-
-Complete routine reversible work within the user's request autonomously.
-Only the portfolio is writable unless source modification is explicitly requested.
-Preserve pre-existing changes and staging. No commits or pushes without an
-explicit request. A handoff does not authorize committing, syncing or publishing.
-
-Before copying material into public website files, review the selected text and
-assets for confidential company information, client identities,
-patient-identifiable information, private residential details, proprietary CAD,
-credentials/API tokens, local machine paths, restricted datasets and uncertain
-third-party copyright. Flag uncertain items in the source register instead of
-publishing them. Do not store the sensitive values themselves in shared memory.
-No Fluent/GPU jobs, raw case downloads or source publish/sync helpers for website work.
-
-`.ai/` and the entry points are development documentation. They may themselves
-become visible in a public Git repository; never treat their dot-prefix as
-access control. Keep workspace locators out of public website content and check
-actual deployment-file selection before a future publication.
-
-## Task lifecycle
-
-Use `IN_PROGRESS`, `HANDOFF`, `BLOCKED` or `COMPLETE` truthfully, with `Last Agent`.
-Use `IDLE` only when there is no active task or completion snapshot to retain.
-Resume unfinished work rather than overwriting it. A new objective may replace
-the last completed task body, retaining its useful headings and moving durable
-facts to their proper files. Do not turn CURRENT into a growing task archive.
-Leave a self-contained next step, branch/HEAD, file list, checks and known issues
-before yielding. Separate completion of the current task from future readiness.
+Follow ADD_PROJECT.md for source reuse and media/UI verification. SOURCES.md,
+PROJECT_INVENTORY.md and ASSET_PROVENANCE.json retain the evidence map. Do not
+run source publish/sync helpers or solvers for site maintenance. Check the actual
+deployment selection; dot-prefixed files are not access control.

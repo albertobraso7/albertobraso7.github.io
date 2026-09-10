@@ -2,71 +2,64 @@
 
 Status: COMPLETE
 Last Agent: Codex
-Date: 2026-09-08
+Date: 2026-09-10
 
 ## Objective and Result
 
-The user approved the finished portfolio and explicitly requested uploading the
-changes and saving instructions for a future chat. The reviewed product and
-portable guide were committed and pushed to main. GitHub Pages successfully
-built and deployed product commit 6ed12ce43d9690c743e00651bfe00703dd177a51.
+Implemented the approved portfolio instruction architecture. The repository
+uses standard version 1.0.0 in a generated AGENTS.md block, a local Claude
+import and the existing project-specific .ai context.
+Debubbler remains in preparation and was excluded from file changes.
 
-Live site: https://albertobraso7.github.io/
-Deployment evidence: https://github.com/albertobraso7/albertobraso7.github.io/actions/runs/34305966087
-All three jobs (build, report-build-status, deploy) completed successfully.
+## Acceptance Criteria
 
-## Durable Guide
-
-Read [ADD_PROJECT.md](../ADD_PROJECT.md) for the next project. It covers source
-verification, engineering storytelling, evidence-linked transferable skills,
-actual scientific media, existing HTML/CSS hooks, accessibility, verification,
-provenance and publication. It is linked from AGENTS.md, CLAUDE.md, README.md and
-WORKFLOW.md so another chat can discover it without conversation history.
-
-## Product Preserved
-
-- Reactor: dimensionless heat-transfer reasoning, apparatus, validation,
-  positioning, material observations and NanoArtography, with 11 figures.
-- Doctoral: FSI, rheology, turbulence assessment, particles and validation,
-  with four animations and six figures.
-- Residential: user-selected static streamline hero and seven supporting figures.
-- Homepage pump/FSI animations, original industrial cards, pump evidence and CV.
-- Full-resolution figure inspection and explicit transferable-skill maps.
-
-No product behavior changed during publication. Only the guide, entry-point
-links, provenance authorization text and durable documentation were added/updated.
+- Shared policy is editable only in portfolio-standards/PORTFOLIO.md; generated
+  blocks match its version/hash across all five public repositories.
+- Technical knowledge, numerical constraints and task states stay project-local.
+- Workspace points to the actual website and public doctoral Git roots.
+- Future cases can initialize minimal context through the explicit-target helper.
+- No engineering artifacts or repository folders changed; no history was rewritten.
 
 ## Verification
 
-The previous product QA remains recorded in VERIFICATION.md: 20 responsive
-page/viewport combinations, text enlargement, keyboard and reduced-motion/media
-checks, 304 local references and 38 verified artifact hashes.
+- Synchronizer regression checks passed in independent temporary Git repositories:
+  read-only Check/Preview, no-overwrite initialization, idempotency, tamper
+  detection, all-target preflight, wrong/duplicate roots, revision drift/update,
+  local-text preservation and staged-file protection.
+- All five real targets pass Mode Check. 160 Markdown links/anchors in the
+  migrated instruction set passed; all workspace/source locators exist.
+- Five Git whitespace checks and PUMP publication-marker/artifact checks passed.
+- Fresh ephemeral Codex session in PUMP recognized version 1.0.0 and local scope.
+- Fresh Claude Code session in the public doctoral checkout recognized the
+  import and excluded parent archive CURRENT from automatically loaded context.
+- Both client probes were read-only and confirmed no commit/push authorization.
+- No solver, notebook, numerical dataset, reference binary or media was changed.
 
-Publication checks: the homepage and all three new live case pages returned HTTP 200 and their
-HTML matched the approved working files after line-ending normalization. New
-research CSS/JS, the residential hero and elastic-pipe MP4 also returned HTTP 200
-with expected MIME types. Transient initial HTTP failures cleared on retry
-after the deployment completed.
+## Files Modified
 
-Guide/document links resolve; no absolute machine paths occur in shared Markdown.
-Whitespace passes against the actual upstream parent. Existing licensed font
-files and preserved playback files were not modified to erase historical whitespace.
+AGENTS.md, CLAUDE.md and the shared .ai context/procedures. Also README,
+ADD_PROJECT and SOURCES for the shared standard and relocated source paths.
 
-## Git and Scope
+## Git and Publication
 
-The former local HEAD 1be06e5 was an ancestor of verified upstream c4e84d7. The
-complete reviewed index was committed with c4e84d7 as its parent, and main was
-advanced with an expected-old-value check. This preserved both existing history
-and every reviewed file without merging over the working tree or force pushing.
-The normal push of 6ed12ce succeeded. A documentation-only completion receipt
-follows that product commit; inspect git log/status for its exact SHA.
+Pre-migration HEAD: f2032d92d9871f6b887842911f23b9e5ba1e0f73
+The author subsequently requested local commits of the reviewed migration.
+This record accompanies that commit; use Git history for its resulting SHA.
+The standards repository is independent and has no remote. No push or remote
+creation is authorized by this commit-only request.
 
-Source worktrees were not edited, committed or pushed. No new solver run,
-framework, hosting migration or pipeline change. Authorization applies to this
-reviewed upload; future unrelated publication still requires a user request.
+## Known Limits / Next Use
 
-## Remaining Work / Exact Next Action
+Reload the updated workspace and start fresh sessions so clients do not retain
+old context. Copilot settings and static integration are configured; its live
+Chat Diagnostics UI was not accessible in this session and remains a client
+acceptance check. Live probes covered PUMP (Codex) and public doctorate (Claude);
+other targets passed the same static block/import/link checks.
 
-No product work remains. For the next engineering project, start with
-ADD_PROJECT.md, inspect current Git state and consult the relevant source entry.
-Do not act on older source-register snapshots as current branch status.
+For new cases, follow portfolio-standards/README.md. Do not initialize Debubbler
+until the author requests portfolio onboarding and its evidence is ready.
+
+## Remaining Work
+
+None for the local implementation. Publication and the Copilot UI check are
+explicit follow-ups; do not restart this completed migration.

@@ -29,6 +29,6 @@ The existing CV, blog, project pages and their assets remain at their original p
 
 Open `index.html` for basic inspection, or serve this directory using a local static HTTP server for media testing. New case pages use relative URLs and do not require JavaScript. Full-resolution figures remain accessible from their captions. Doctoral videos and pump/FSI card previews play while visible, pause offscreen and respect reduced motion and manual pause. Keep their posters, native controls and source credits.
 
-Start agent work with [AGENTS.md](AGENTS.md) or [CLAUDE.md](CLAUDE.md), then [.ai/tasks/CURRENT.md](.ai/tasks/CURRENT.md). Source status, project summaries, decisions, media provenance and the verification record live in `.ai/`. Engineering source repositories are read-only. Commit, push and deployment require a separate explicit request.
+Start agent work with [AGENTS.md](AGENTS.md), which contains the versioned shared portfolio standard and local instructions. [CLAUDE.md](CLAUDE.md) imports the same entry point. Continue with [.ai/tasks/CURRENT.md](.ai/tasks/CURRENT.md). Source status, project summaries, decisions, media provenance and the verification record live in `.ai/`. Engineering source repositories are read-only. Commit, push and deployment require a separate explicit request.
 
 For the next case study, follow the [engineering project playbook](.ai/ADD_PROJECT.md): narrative, source evidence, transferable skills, media, implementation and verification.

@@ -178,3 +178,18 @@ previous materialized baseline is reconciled by making the reviewed tree a
 normal descendant of verified upstream c4e84d7, without force pushing. Record
 actual deployment evidence in CURRENT.md; authorization for this upload does
 not automatically authorize future unrelated publications.
+
+## 2026-09-10 — Shared portfolio standard and thin agent adapters
+
+**Decision:** The author approved one editable PORTFOLIO.md in the separate
+portfolio-standards repository, a generated hash-labelled block in AGENTS.md
+and a CLAUDE.md import. Technical context and tasks remain local.
+
+**Reason:** Independent clones need complete instructions without maintaining
+duplicate texts or relying on personal memory and sibling paths.
+
+**Consequences:** This supersedes older generic handoff/finish state rules and
+requirements to maintain two matching entry-point texts. Retain COMPLETE until
+the next task; use HANDOFF for transfer. Numerical, confidentiality, asset,
+licensing and publication decisions remain in force. The helper takes explicit
+targets and never stages, commits or pushes.

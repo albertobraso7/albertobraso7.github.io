@@ -4,23 +4,17 @@ This is the reusable playbook for Alberto's existing English-language portfolio.
 Read this without needing the original conversation. The user approved the richer
 reactor, doctoral and residential cases on 2026-09-08. Preserve that standard.
 
-## The editorial standard
+## Shared standard and website depth
 
-Tell the engineering story: question → physical reasoning → modeling decisions →
-checks → results → design interpretation → transferable capability. A recruiter
-should understand the contribution quickly; a technical reviewer should be able
-to inspect the evidence further down the same page.
+Read the [shared portfolio standard](../AGENTS.md#shared-engineering-portfolio-standard)
+for writing, visuals, evidence, confidentiality and working procedure. Its editable
+source is PORTFOLIO.md in the standards repository; do not maintain a second copy
+here. The rest of this playbook owns website-specific narrative and implementation.
 
-The user rejected the first version because thesis projects had too few figures,
-weak images and detached large numbers. Do not reduce substantial research to
-three generic cards or a metric strip. The website should add useful explanation,
-visual sequencing, animation and figure inspection beyond the source README.
-Depth follows the evidence available; there is no mandatory figure count.
-
-Each quantitative claim needs units, conditions, comparison basis and a source.
-Distinguish personal contribution from collaborators' work, simulation from
-measurement, calculated inputs from solver results, and demonstrated skills from
-possible future applications. Do not invent performance, savings or validation.
+The approved research pages explain the engineering decision through source
+figures, checks and transferable skills. Do not reduce substantial thesis work
+to generic cards or detached metrics. The website should add visual sequencing,
+useful depth and progressive inspection beyond the source README.
 
 ## Start with verified evidence
 
