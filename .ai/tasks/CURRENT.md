@@ -1,19 +1,16 @@
-# Throttle-body onboarding and editorial refinement
+# Private sources, visual portfolio and career system
 
-Status: COMPLETE
+Status: IN_PROGRESS
 Last Agent: Codex
 Date: 2026-09-11
 
-Plain Debubbler headings; one homepage feature without duplicate grid card;
-FSI before reactor; CFD ANIMATION badges removed; short generic-example
-disclosure added. Throttle-body case uses only selected 4k2 hero, with pressure
-normalization directly below. Source commit 5cc5ec9884443c74b5a8d1165b5fd355b081bf87 is published.
-
-Checks: 12 responsive route/viewport combinations; 200% text on all 3 changed
-routes; no overflow/broken images/runtime exceptions; 82 local HTML references;
-hero hash match; image dialog Escape/focus and no-JS fallback. No solver run.
-Technical docs distinguish generic evidence, professional context, area units,
-pressure datum and prior checks from a converged campaign.
-
-Published product ef673584ef21d0e0d4e818f490d0ca3d387e58f1; Pages run 34594949440 succeeded. Home, Debubbler and throttle routes returned HTTP 200. Live checks confirm project order, no repeated Debubbler card/badges, plain headings, disclosure and pressure caption. Deployed hero hash matches the source image. Standards recovery commit 8532c69338810548fdb68917990bdd9a32e98c09 is pushed. All three branches matched their GitHub remotes. No remaining product actions.
-Unrelated Fluent runtime files remain untracked and untouched.
+Website redesign and two-page CV reviewed; public source links and Debubbler
+pulse condition removed. Original retired images preserved privately. Six
+engineering sources verified PRIVATE. Career evidence/Overleaf/skill complete
+locally; backup verification and website publication remain.
+Analytics uses G-R8SZG8VFHS, exact production origin, basic opt-in consent.
+Local/production-fixture checks pass; real GA receipt requires account review.
+Analytics files and privacy page are deliberately unstaged review work. They
+are backed up privately and must not be included in the redesign deployment
+until the requested presentation/publication approval. Preserve unrelated
+Fluent runtime outputs in this checkout. No solver execution.

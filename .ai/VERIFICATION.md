@@ -121,3 +121,16 @@ image matches the source SHA-256. Source review covered 21 allowlisted files,
 33 Markdown links and syntax of both unchanged Python drivers. The original
 journal retains one harmless trailing space; all other selected whitespace
 checks pass. No solver execution or convergence validation is claimed.
+
+## 2026-09-11 visual portfolio and CV
+
+Chromium local checks: all seven main routes at 320/390/768/1440 px, one h1, no
+horizontal overflow or missing section anchors. Checked 200% leaf-text enlargement
+at desktop, no-JavaScript case access, capability filtering, figure dialog Escape
+and focus restoration, and reduced-motion video pause. Desktop/mobile hero
+screenshots inspected. New net-air-routing chart is calculated from 21,349 source
+samples and reaches 78.22206454%; it contains no synthetic alternatives.
+CV compiled with Tectonic 0.17.0, exactly two A4 pages; both rendered and inspected.
+Both bodies finish within about 11 pt of the usable lower edge, no margin overflow.
+Public engineering links removed. No Fluent run or new physical validation.
+Analytics test evidence is maintained separately with its review package.

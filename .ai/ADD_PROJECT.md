@@ -49,7 +49,7 @@ useful depth and progressive inspection beyond the source README.
 - Interpretation: connect the results back to the question and recommendation.
 - Transferable skills: each skill links to evidence earlier on the page. Use the
   pattern demonstrated action → evidence → possible application elsewhere.
-- Further depth: source repository, pinned technical references, credits and a
+- Further depth: in-page technical explanation, public publications, credits and a
   concise technical-scope disclosure. Keep qualifications near relevant claims.
 
 Good existing examples: reactor/index.html for dimensionless reasoning and
@@ -141,7 +141,7 @@ for a functional folder layout with a strict public allowlist. Inspect native
 CAD archive metadata as well as visible geometry. Keep originals privately when
 sanitizing paths. Record exact transformations and hashes. Keep synthetic series
 explicitly separate from CFD and measured results. Use professional project logs
-only as context; curate public claims without copying private source documents.
+as evidence of actual achievements; curate claims without publishing the source log.
 
 ## Editorial feedback to preserve — 2026-09-11
 
@@ -151,3 +151,17 @@ Keep the featured project in one prominent place; use the grid for other cases.
 Current order: pump, FSI, throttle body, reactor, residential. FSI comes before
 reactor. Introduce generic industrial examples briefly without misrepresenting
 academic/consulting source geometry. Respect per-case image allowlists.
+
+## Current source and career policy — 2026-09-11
+
+Engineering repositories are private source records. Build a complete public
+story from approved figures, physical reasoning, contribution, findings and
+limitations. Do not add links to private scripts, settings or CAD. The NDA-free
+log records actual achievements; the private career evidence index maps those
+to applications and the public demonstrations. Generic examples illustrate
+skills used professionally without claiming the same geometry/results.
+Use meaningful diagrams when they explain a process; avoid synthetic result
+comparisons and decorative metric cards. Keep industrial and research context
+explicit. Add stable section/card IDs for measurement; do not include visitor
+text or confidential identifiers. Update public CV only from the reviewed
+private source and render both pages before replacing its stable PDF URL.

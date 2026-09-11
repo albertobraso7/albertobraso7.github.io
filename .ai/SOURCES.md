@@ -287,3 +287,17 @@ components, pressure/angle matrices and quantitative validation are not disclose
 User directly confirms WOT/partial-opening, naturally aspirated and turbo studies.
 The published image and results are generic, with no exact angle or pressure pair
 claimed. Document pressure datum and equivalent-area limitations as in source.
+
+## Current access and evidence authority — 2026-09-11
+
+Authenticated GitHub visibility check: pump, Debubbler, throttle, doctoral, CVD
+and residential sources are PRIVATE. This supersedes historical Public and
+UNVERIFIED labels above. Public website files are a curated subset, not code
+mirrors. No source worktrees were edited or solvers executed for this revision.
+The author NDA-free project log supports actual work/achievements; the private
+career evidence index preserves 30 projects and source distinctions.
+Homepage workflow comparison: four-case duration approximately 180 → 60 minutes,
+most pressure-drop differences below 10% vs Fluent. Calibration: RMSE <=6.13%
+across -30 to 120 C vs the stated CFD reference. No quantified AI saving claimed.
+Debubbler transport chart was recalculated from the supplied private phase-flux
+report; SHA, integration and plotted sampling are in ASSET_PROVENANCE.json.

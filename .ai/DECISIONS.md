@@ -233,3 +233,14 @@ geometry/results disclosure belongs early; normalized pressure formula belongs
 immediately beneath the image. Professional WOT/partial-opening work for naturally
 aspirated/turbo applications is context, not evidence that the generic image
 reproduces that campaign or that its scripts performed an automatic angle sweep.
+
+## 2026-09-11 — Private engineering sources, public engineering evidence
+
+The author explicitly requested private scripts/settings/workflows and an
+independent public portfolio. This supersedes the shared keep-existing-visibility
+default and historical public links. Existing generic visuals, selected data
+and research attribution remain; no customer geometry or confidential operating
+map is introduced. Private career-materials is the canonical CV evidence/skill
+backup. CVs must use two well-filled, visually verified pages and traceable
+achievements. Analytics remains a review deliverable until publication approval;
+the supplied ID configures production only and never permits local sends.

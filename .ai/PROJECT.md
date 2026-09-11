@@ -21,7 +21,7 @@ build step, backend, installation or CI change.
 
 | Area | Files / behavior |
 | --- | --- |
-| Homepage | `index.html`: Debubbler video hero and brief profile; five visual case cards (pump/FSI animated; reactor/residential static); six retained industrial cards; approach/about/contact |
+| Homepage | `index.html`: Debubbler video hero and brief profile; five visual case cards (pump/FSI animated; reactor/residential static); six retained industrial cards; automation/integrated profile/approach/contact |
 | Main identity | `styles.css`, `recruiter-layout.css`: original charcoal/mint design, unchanged from verified remote |
 | Industrial experience | `projects.js`: original six cards and native details/hash links, unchanged |
 | Research narrative layer | `research-depth.css` / `research-depth.js`: substantial visual chapters, evidence-linked skills, full-resolution dialog and responsive figure layouts |
@@ -32,7 +32,7 @@ build step, backend, installation or CI change.
 | Residential | `ventilation/index.html`, `ventilation/assets/`: paired airflow layouts and separate solar analysis |
 | Existing media behavior | `pump-media.js`, `pump-media.css`: preserved pump autoplay/offscreen/manual-pause logic |
 | Legacy URLs | `projects/dog.html`, `projects/f1.html`: truthful visual archives; `projects/pump.html`: link to complete case |
-| Blog / CV | `blog.html`: original planned topics in common shell; `assets/files/Alberto_Brambila_CV.pdf` unchanged |
+| Blog / CV | `blog.html`: original planned topics in common shell; `assets/files/Alberto_Brambila_CV.pdf`: reviewed two-page CV |
 
 ## Content and visual system
 
@@ -127,3 +127,20 @@ Industrial examples carry a brief generic/simplified-geometry disclosure;
 do not mislabel academic or consulting source material as generic.
 Throttle body has a static 4k2 hero and pressure normalization immediately below.
 Only that source PNG is permitted. See its source register and provenance.
+
+## Private sources and career presentation — 2026-09-11
+
+All six engineering repositories are PRIVATE by author request; the public site
+is self-contained. Do not link visitors to implementation files. Source scripts,
+settings, workflows and original professional records remain private.
+The hero integrates the profile, with a smaller name and early mobile animation;
+there is no separate About section. Capability filters and conceptual method
+diagrams complement original result figures. The NDA-free author log is the
+record of actual achievements, not merely context. Distinguish its professional
+outcomes from generic independent demonstrations and academic/consulting work.
+The public CV is the reviewed two-page general version, with visible portfolio
+links. Its LaTeX, evidence index and application skill are backed up privately.
+Debubbler shows one CFD-derived transport curve. The pulse-condition figure and
+synthetic comparison charts were retired from the site and preserved privately.
+Analytics is a separate local review package pending explicit publication review;
+G-R8SZG8VFHS is configured for the exact production origin, with consent.

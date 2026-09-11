@@ -8,7 +8,7 @@
 <link rel="preload" href="assets/fonts/latinmodern-math.otf" as="font" type="font/otf" crossorigin>
 <link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="pump.css"><link rel="stylesheet" href="equations.css"><link rel="stylesheet" href="../pump-media.css"><link rel="stylesheet" href="../case-studies.css">
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
-</head>
+<link rel="stylesheet" href="../portfolio-visual.css"></head>
 <body class="pump-page">
 <a class="skip" href="#main">Skip to case study</a>
 <header class="header wrap"><a class="identity" href="../" aria-label="Alberto Brambila, portfolio home">AB<span class="identity-rule"></span><span>ALBERTO<br>BRAMBILA</span></a><nav aria-label="Main navigation"><a href="../#work">All projects</a><a class="nav-contact" href="../#contact">Contact ↗</a></nav></header>
@@ -24,22 +24,14 @@
 </section>
 <nav class="case-nav" aria-label="Case study sections"><div class="wrap"><a href="#automation">01 Automation</a><a href="#steady">02 Performance</a><a href="#compute">03 CPU / GPU</a><a href="#transient">04 Time resolution</a><a href="#signal">05 Pressure signal</a><a href="#spectrum">06 Pressure spectrum</a></div></nav>
 
-<section class="chapter wrap" id="automation">
+<section class="method-panel wrap" id="engineering-workflow" aria-label="An operating sweep with checks at each stage"><p class="eyebrow">ENGINEERING METHOD</p><h2>An operating sweep with checks at each stage</h2><ol class="method-route"><li><span class="route-index">01</span><h3>Configure</h3><p>Geometry, materials and operating points in one repeatable workflow.</p></li><li><span class="route-index">02</span><h3>Run and verify</h3><p>Compare CPU/GPU results and monitor acceptance criteria.</p></li><li><span class="route-index">03</span><h3>Interpret</h3><p>Performance curves and transient spectra answer different questions.</p></li></ol><p class="method-caption">Automation supports repeatability. The solver result still needs conservation, convergence and physically appropriate sampling.</p></section><section class="chapter wrap" id="automation">
 <div class="chapter-heading"><p class="eyebrow">01 / PYFLUENT AUTOMATION</p><h2>Automated setup and<br>operating-point sweeps.</h2><p class="chapter-intro">Separate scripts handle model setup, operating-point runs and post-processing. The flow sweep and CPU/GPU comparison use the same saved MRF setup.</p></div>
 <div class="automation-grid">
-<article><span class="stage">PREPARE</span><h3>Model setup</h3><p>The setup scripts define the MRF mesh, rotating region, boundary conditions and reports for pressure, flow and torque. The resulting case is reused for each run.</p><a class="source-link" href="https://github.com/albertobraso7/pyfluent_pump/blob/3795e4850ac5b0bcd94412710f18d45353706f74/docs/mrf_workflow.md">Model preparation ↗</a></article>
-<article><span class="stage">EXECUTE</span><h3>Batch execution</h3><p>The sweep reads flow rates from a CSV and launches a separate run for each enabled point. Each run loads the setup, applies the flow rate, initializes, solves, saves and closes Fluent.</p><a class="source-link" href="https://github.com/albertobraso7/pyfluent_pump/blob/3795e4850ac5b0bcd94412710f18d45353706f74/scripts/mrf/04_pump_mrf_HQ_sweep_GPU_EN_v6.py">Sweep implementation ↗</a></article>
-<article><span class="stage">CHECK</span><h3>Result checks</h3><p>The scripts check report completeness and evaluate the final 200 iterations. Head, torque and efficiency are calculated, and nonstationary points are excluded from the curve fits.</p><a class="source-link" href="https://github.com/albertobraso7/pyfluent_pump/blob/3795e4850ac5b0bcd94412710f18d45353706f74/scripts/mrf/06_pump_mrf_postprocess_HQ_curve_EN_v6.py">Acceptance &amp; post-processing ↗</a></article>
+<article><span class="stage">PREPARE</span><h3>Model setup</h3><p>The setup scripts define the MRF mesh, rotating region, boundary conditions and reports for pressure, flow and torque. The resulting case is reused for each run.</p></article>
+<article><span class="stage">EXECUTE</span><h3>Batch execution</h3><p>The sweep reads flow rates from a CSV and launches a separate run for each enabled point. Each run loads the setup, applies the flow rate, initializes, solves, saves and closes Fluent.</p></article>
+<article><span class="stage">CHECK</span><h3>Result checks</h3><p>The scripts check report completeness and evaluate the final 200 iterations. Head, torque and efficiency are calculated, and nonstationary points are excluded from the curve fits.</p></article>
 </div>
-<div class="code-evidence"><div><span class="stage">INSIDE THE PYFLUENT RUNNER</span><h3>Solver configuration</h3><p>The runner reads the backend, precision, processor count and operating conditions from a configuration dictionary. The functions below handle the main steps of a Fluent run.</p><a class="source-link" href="https://github.com/albertobraso7/pyfluent_pump/blob/3795e4850ac5b0bcd94412710f18d45353706f74/scripts/mrf/03_pump_mrf_run_GPU_EN_v6_1_1.py">Read the complete GPU runner ↗</a></div><div><p class="code-label">Selected calls from the runner · logging and guards omitted</p><pre><code><span># launch_solver() calls pyfluent.launch_fluent(**options)</span>
-solver = launch_solver()
-read_complete_setup_case(solver)
-update_flow_rate_named_expression(solver)
-validate_report_definitions(solver)
-perform_hybrid_initialization(solver)
-reset_histories(solver)
-run_iterations(solver)
-write_solved_case_data(solver)</code></pre></div></div>
+<div class="code-evidence"><div><span class="stage">REPEATABLE EXECUTION</span><h3>Solver configuration</h3><p>The runner reads the backend, precision, processor count and operating conditions from a configuration dictionary. The sequence keeps each operating point reproducible and its reports comparable.</p></div><div><p class="code-label">Workflow summary</p><ol class="compact-route"><li>Load the configured physical model</li><li>Set the operating point and verify reports</li><li>Initialize, execute and retain the result for comparison</li></ol></div></div>
 <div class="engineering-note"><span>RUN CHECKS</span><p>The GPU runner checks pressure-report averaging, resets histories and waits for asynchronous report output. Previous valid results are kept until the new Fluent session launches successfully.</p></div>
 <p class="small-note">The transient runner uses the final saved mesh and sampling plan. The recovered SMM meshing script is not a verified CAD-to-mesh workflow.</p>
 </section>
@@ -113,9 +105,9 @@ write_solved_case_data(solver)</code></pre></div></div>
 </section>
 
 <section class="case-close wrap" id="evidence">
-<div><p class="eyebrow">CODE AND DATA</p><h2>Review the project</h2><p>The repository contains the Python workflow, sampling plan, figures and processed results. The performance tables and phase-coherence results are also available below as CSV files.</p><a class="button" href="../#contact">Discuss this project ↗</a></div>
-<div class="evidence-links"><h3>Source files and results</h3><a href="https://github.com/albertobraso7/pyfluent_pump/blob/3795e4850ac5b0bcd94412710f18d45353706f74/docs/steady_results.md">Steady results &amp; CPU/GPU method ↗</a><a href="https://github.com/albertobraso7/pyfluent_pump/blob/3795e4850ac5b0bcd94412710f18d45353706f74/config/final_smm_time_step_plan.json">Transient time-step plan ↗</a><a href="https://github.com/albertobraso7/pyfluent_pump/blob/3795e4850ac5b0bcd94412710f18d45353706f74/scripts/postprocessing/postprocess_pump_portfolio_smm.py">Pressure &amp; spectral processing ↗</a><a href="https://github.com/albertobraso7/pyfluent_pump/blob/3795e4850ac5b0bcd94412710f18d45353706f74/docs/spectral_analysis.md">Spectral window &amp; phase analysis ↗</a><a href="data/smm_performance_summary.csv" download>Transient performance data ↓</a><a href="data/spectral_phase_coherence.csv" download>Phase-coherence data ↓</a><p class="small-note">Figures and processed results: <code>pyfluent_pump</code>, source snapshot <code>3795e4850ac5</code>. Repository links require access. The repository contains curated results; the large solver files and raw report histories are not included in this case page. No new CFD solve or experimental validation was performed to prepare it.</p></div>
+<div><p class="eyebrow">CODE AND DATA</p><h2>Review the project</h2><p>The figures explain the performance and pressure analysis. Selected processed tables are available below; implementation files remain private.</p><a class="button" href="../#contact">Discuss this project ↗</a></div>
+<div class="evidence-links"><h3>Selected processed results</h3><a href="data/smm_performance_summary.csv" download>Transient performance data ↓</a><a href="data/spectral_phase_coherence.csv" download>Phase-coherence data ↓</a><p class="small-note">Figures and processed results: <code>pyfluent_pump</code>, source snapshot <code>3795e4850ac5</code>. The private source retains the implementation and supporting records. No new CFD solve or experimental validation was performed to prepare it.</p></div>
 </section>
-</main><footer class="wrap"><a href="../">← Alberto Brambila · Portfolio</a><span>CFD · Pump performance · Pressure pulsation</span><a href="#top">Back to top ↑</a></footer>
+<p class="source-policy wrap">Implementation files and detailed configurations are maintained privately. This page presents the engineering approach and selected evidence.</p></main><footer class="wrap"><a href="../">← Alberto Brambila · Portfolio</a><span>CFD · Pump performance · Pressure pulsation</span><a href="#top">Back to top ↑</a></footer>
 <script src="../pump-media.js"></script>
 </body></html>

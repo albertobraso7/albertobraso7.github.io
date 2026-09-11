@@ -472,39 +472,6 @@
       "authorization": "Author-selected generic demo; comparison variants explicitly synthetic."
     },
     {
-      "repository": "https://github.com/albertobraso7/debubbler-multiphase-cfd",
-      "commit": "0037f8fca665fc02eeda5d19e6e8d09710247fd7",
-      "source": "media/portfolio_degas_figures/portfolio_Condition_01_A_capture_efficiency.png",
-      "destination": "debubbler/assets/capture-efficiency.png",
-      "source_sha256": "20441699ed893a01accfa74baf07cfad39b81eaa4cdbc6373f8c021cb671ceae",
-      "output_sha256": "20441699ed893a01accfa74baf07cfad39b81eaa4cdbc6373f8c021cb671ceae",
-      "bytes": 186161,
-      "transform": "Byte-identical to curated source commit. Poster extraction documented in source asset manifest.",
-      "authorization": "Author-selected generic demo; comparison variants explicitly synthetic."
-    },
-    {
-      "repository": "https://github.com/albertobraso7/debubbler-multiphase-cfd",
-      "commit": "0037f8fca665fc02eeda5d19e6e8d09710247fd7",
-      "source": "media/portfolio_degas_figures/portfolio_Condition_01_B_cumulative_capture.png",
-      "destination": "debubbler/assets/cumulative-capture.png",
-      "source_sha256": "1ea353964c83cb32d5df4d2889d20f0d18e9f99639fc8b66565bff4d59fa558b",
-      "output_sha256": "1ea353964c83cb32d5df4d2889d20f0d18e9f99639fc8b66565bff4d59fa558b",
-      "bytes": 330134,
-      "transform": "Byte-identical to curated source commit. Poster extraction documented in source asset manifest.",
-      "authorization": "Author-selected generic demo; comparison variants explicitly synthetic."
-    },
-    {
-      "repository": "https://github.com/albertobraso7/debubbler-multiphase-cfd",
-      "commit": "0037f8fca665fc02eeda5d19e6e8d09710247fd7",
-      "source": "media/portfolio_degas_figures/portfolio_Condition_01_C_inlet_air_pulses.png",
-      "destination": "debubbler/assets/inlet-air-pulses.png",
-      "source_sha256": "ee6823d3a67e389f4ee6b80e4417fb6cfb540727750d3742ee4a65367cf780cb",
-      "output_sha256": "ee6823d3a67e389f4ee6b80e4417fb6cfb540727750d3742ee4a65367cf780cb",
-      "bytes": 115078,
-      "transform": "Byte-identical to curated source commit. Poster extraction documented in source asset manifest.",
-      "authorization": "Author-selected generic demo; comparison variants explicitly synthetic."
-    },
-    {
       "repository": "https://github.com/albertobraso7/throttle-body-compressible-cfd",
       "commit": "5cc5ec9884443c74b5a8d1165b5fd355b081bf87",
       "source": "media/compressible_throttle_flow_mach_pressure_4k2.png",
@@ -518,9 +485,9 @@
     }
   ],
   "summary": {
-    "sourceDerivedOutputs": 36,
-    "calculatedArtifacts": 2,
-    "totalBytes": 18771097
+    "sourceDerivedOutputs": 39,
+    "calculatedArtifacts": 3,
+    "totalBytes": 28749950
   },
   "revision": "2026-09-08: user explicitly requested expanded research visuals, diagram, Nanoartography, physical outcomes, animation and new residential hero.",
   "derived_artifacts": [
@@ -537,6 +504,13 @@
       "output_sha256": "a63ef9d583b9ca13288d5305a737a75b988988813134bb5dde22f5e49b5739b4",
       "bytes": 11514,
       "description": "Newly calculated constitutive curves, not CFD result fields. 161 log-spaced shear rates 0.1–1000 s^-1. Equations and source parameters are documented in the page; standard Carreau, power-law and Casson apparent-viscosity forms. No solver execution."
+    },
+    {
+      "destination": "debubbler/assets/net-air-routing.svg",
+      "output_sha256": "9a9a5698b5ed4c99396671ed4083f7e9fdfd39aa4b58200d45a99a5b7fc351a5",
+      "bytes": 12230,
+      "source": "Author-provided simulation_report.out, private source; SHA-256 38e881fab7116a90d566fa0e183690edfa70d8c04daf3cbd8f46befd74e9bd36",
+      "description": "Signed inlet and reversed reservoir phase-flux trapezoidal integration at all 21349 samples, 0–15 s. Plot every 30th ratio point plus final; no interpolation smoothing. Endpoint 78.22206454081913%. No CFD rerun or synthetic alternatives."
     }
   ],
   "external_evidence": [
@@ -550,5 +524,43 @@
     "date": "2026-09-10",
     "source_commit": "0037f8fca665fc02eeda5d19e6e8d09710247fd7",
     "scope": "Generic transient VOF demonstration; no industrial validation claim. Animation timing inferred; source method documents limitations."
-  }
+  },
+  "retired_assets": [
+    {
+      "repository": "https://github.com/albertobraso7/debubbler-multiphase-cfd",
+      "commit": "0037f8fca665fc02eeda5d19e6e8d09710247fd7",
+      "source": "media/portfolio_degas_figures/portfolio_Condition_01_A_capture_efficiency.png",
+      "destination": "debubbler/assets/capture-efficiency.png",
+      "source_sha256": "20441699ed893a01accfa74baf07cfad39b81eaa4cdbc6373f8c021cb671ceae",
+      "output_sha256": "20441699ed893a01accfa74baf07cfad39b81eaa4cdbc6373f8c021cb671ceae",
+      "bytes": 186161,
+      "transform": "Byte-identical to curated source commit. Poster extraction documented in source asset manifest.",
+      "authorization": "Author-selected generic demo; comparison variants explicitly synthetic.",
+      "status": "Retired from current website on 2026-09-11; originals preserved privately"
+    },
+    {
+      "repository": "https://github.com/albertobraso7/debubbler-multiphase-cfd",
+      "commit": "0037f8fca665fc02eeda5d19e6e8d09710247fd7",
+      "source": "media/portfolio_degas_figures/portfolio_Condition_01_B_cumulative_capture.png",
+      "destination": "debubbler/assets/cumulative-capture.png",
+      "source_sha256": "1ea353964c83cb32d5df4d2889d20f0d18e9f99639fc8b66565bff4d59fa558b",
+      "output_sha256": "1ea353964c83cb32d5df4d2889d20f0d18e9f99639fc8b66565bff4d59fa558b",
+      "bytes": 330134,
+      "transform": "Byte-identical to curated source commit. Poster extraction documented in source asset manifest.",
+      "authorization": "Author-selected generic demo; comparison variants explicitly synthetic.",
+      "status": "Retired from current website on 2026-09-11; originals preserved privately"
+    },
+    {
+      "repository": "https://github.com/albertobraso7/debubbler-multiphase-cfd",
+      "commit": "0037f8fca665fc02eeda5d19e6e8d09710247fd7",
+      "source": "media/portfolio_degas_figures/portfolio_Condition_01_C_inlet_air_pulses.png",
+      "destination": "debubbler/assets/inlet-air-pulses.png",
+      "source_sha256": "ee6823d3a67e389f4ee6b80e4417fb6cfb540727750d3742ee4a65367cf780cb",
+      "output_sha256": "ee6823d3a67e389f4ee6b80e4417fb6cfb540727750d3742ee4a65367cf780cb",
+      "bytes": 115078,
+      "transform": "Byte-identical to curated source commit. Poster extraction documented in source asset manifest.",
+      "authorization": "Author-selected generic demo; comparison variants explicitly synthetic.",
+      "status": "Retired from current website on 2026-09-11; originals preserved privately"
+    }
+  ]
 }
