@@ -503,6 +503,18 @@
       "bytes": 115078,
       "transform": "Byte-identical to curated source commit. Poster extraction documented in source asset manifest.",
       "authorization": "Author-selected generic demo; comparison variants explicitly synthetic."
+    },
+    {
+      "repository": "https://github.com/albertobraso7/throttle-body-compressible-cfd",
+      "commit": "5cc5ec9884443c74b5a8d1165b5fd355b081bf87",
+      "source": "media/compressible_throttle_flow_mach_pressure_4k2.png",
+      "destination": "throttle-body/assets/compressible-flow.png",
+      "source_sha256": "6306a66c00f826de565a01f6a1b14b69a7b68e7a1d776d954376eabc8134de79",
+      "output_sha256": "6306a66c00f826de565a01f6a1b14b69a7b68e7a1d776d954376eabc8134de79",
+      "bytes": 1838953,
+      "transform": "Byte-identical author-selected image. No cropping or field modification.",
+      "authorization": "Explicitly selected generic 4k2 hero; all other source PNGs and component CAD excluded.",
+      "scope": "Generic geometry and results, not a specific component. Exact image angle/pressure pair not inferred from driver."
     }
   ],
   "summary": {

@@ -104,3 +104,20 @@ The source net-flux integration independently reproduces 78.22206454081913%.
 No new solver run, industrial validation or native Discovery opening was tested.
 Temporary browser screenshots are local QA artifacts, not website content.
 Publication checks are recorded in CURRENT.md after deployment.
+
+## Throttle body and editorial revision — 2026-09-11
+
+Twelve page/viewport combinations passed: homepage, Debubbler and throttle body
+at 320/390/768/1440 px, with one H1, no overflow, no broken images or runtime
+exceptions. All three also passed 200% root text at 320 px. Desktop/mobile
+screenshots were visually reviewed. The homepage has no duplicated Debubbler
+card, FSI precedes reactor, and the animation badges are absent.
+
+The throttle hero retains all pixels and both colorbars. Figure dialog opening,
+Escape closure and restored focus passed. Without JavaScript, its four chapters,
+hero and direct full-resolution link remain. The pressure definition appears
+immediately below the figure. All 82 local HTML references resolve; the selected
+image matches the source SHA-256. Source review covered 21 allowlisted files,
+33 Markdown links and syntax of both unchanged Python drivers. The original
+journal retains one harmless trailing space; all other selected whitespace
+checks pass. No solver execution or convergence validation is claimed.

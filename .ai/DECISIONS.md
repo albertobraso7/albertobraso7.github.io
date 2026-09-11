@@ -218,3 +218,18 @@ The 30-project breadth is author-reported professional context, not 30 public
 case studies. Never conflate industrial outcomes with the generic transient VOF
 demo. Only the blue comparison series is CFD; synthetic variants must retain
 clear adjacent disclosure. The 78.2% figure is an internal net-routing metric.
+
+## Direct wording and non-repetitive selection — 2026-09-11
+
+The author rejected slogan-like headlines and the repeated Debubbler feature/card.
+Keep a concise professional intro and animated Debubbler feature, then different
+projects in the grid. FSI precedes reactor. Remove CFD ANIMATION overlay badges.
+Use titles such as Air separation in a cooling loop and Throttle-body flow
+characterization; describe actual work rather than rhetorical promises.
+
+The author explicitly selected the throttle 4k2 PNG as hero while excluding all
+other component PNGs. No component CAD or industrial maps are published. Generic
+geometry/results disclosure belongs early; normalized pressure formula belongs
+immediately beneath the image. Professional WOT/partial-opening work for naturally
+aspirated/turbo applications is context, not evidence that the generic image
+reproduces that campaign or that its scripts performed an automatic angle sweep.

@@ -274,3 +274,16 @@ Only the blue demo series is CFD-derived; comparison variants are synthetic.
 The separate private author-provided professional log lists 30 projects and
 supports the concise profile breadth. Do not publish the log or treat its
 industrial outcomes as validation of this generic demonstration.
+
+## Throttle body — 2026-09-11
+
+Repository: https://github.com/albertobraso7/throttle-body-compressible-cfd
+Curated source commit: 5cc5ec9884443c74b5a8d1165b5fd355b081bf87. Read README.md and docs/portfolio_case.md,
+then docs/01_mesh.md, docs/02_setup_and_solve.md, docs/03_lessons_learned.md.
+Only the explicitly selected compressible_throttle_flow_mach_pressure_4k2.png
+is reused. Source scripts remain unchanged; .set/WFT have machine path removal.
+The private professional log supplies broad campaign context; industrial curves,
+components, pressure/angle matrices and quantitative validation are not disclosed.
+User directly confirms WOT/partial-opening, naturally aspirated and turbo studies.
+The published image and results are generic, with no exact angle or pressure pair
+claimed. Document pressure datum and equivalent-area limitations as in source.

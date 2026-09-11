@@ -4,3 +4,6 @@
 @media(max-width:740px){.hero{padding-top:20px}.hero-main{grid-template-columns:1fr;gap:24px}.hero h1{font-size:38px;line-height:1.05;margin:0 0 14px}.hero h1 br{display:none}.hero h1 span::before{content:' '}.hero .eyebrow{margin-bottom:12px}.hero-intro{font-size:16px;line-height:1.55;margin-bottom:12px}.hero-tools{margin-bottom:8px}.hero-credentials{font-size:12px}.hero-actions{margin-top:15px;gap:15px}.hero-case.debubbler-feature{padding:16px}.hero-case.debubbler-feature h2{font-size:25px}.capability-strip{gap:15px;grid-template-columns:1fr;margin-top:24px;padding:22px 0}.capability-strip a{gap:3px}}
 
 body{overflow-wrap:anywhere}
+
+.portfolio-disclosure{max-width:850px;margin:20px 0 0;color:var(--muted);font-size:13px;line-height:1.6}
+#study-throttle .study-image{background:#000}#study-throttle .study-image img{object-fit:contain}

@@ -41,7 +41,7 @@ surface `#181d1f`, light text `#f0f2ed`, muted `#b0b9b9`, mint `#a5efcc`
 and warm `#e8b882`. Reuse restrained borders, editorial sections and real CFD
 visuals. New cases demonstrate capabilities instead of repeating whole READMEs.
 
-Priority: Debubbler, pump, reactor, doctoral FSI, residential consulting, followed by preserved
+Feature: Debubbler. Grid order: pump, doctoral FSI, throttle body, reactor, residential consulting, followed by preserved
 industrial experience. Academic and consulting contexts are explicit. The six
 existing industrial claims are retained; this task did not independently audit
 their confidential supporting work.
@@ -117,3 +117,13 @@ The short profile beneath the name draws breadth from the author's private
 The public demo is generic/simplified and is separate from industrial models.
 New files: debubbler/index.html, debubbler/debubbler.css, five selected assets
 and debubbler-feature.css. Reuse existing media and figure-dialog JavaScript.
+
+## Current presentation — 2026-09-11
+
+Debubbler remains the animated feature but has no duplicate grid card.
+The five grid cases are pump, FSI, throttle body, reactor and residential.
+Use direct technical titles; no rhetorical slogans or CFD ANIMATION badges.
+Industrial examples carry a brief generic/simplified-geometry disclosure;
+do not mislabel academic or consulting source material as generic.
+Throttle body has a static 4k2 hero and pressure normalization immediately below.
+Only that source PNG is permitted. See its source register and provenance.

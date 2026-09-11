@@ -7,10 +7,10 @@ Sources/commits: [SOURCES.md](SOURCES.md). Asset review and transformations:
 
 | Priority / case | Core story | Evidence and presentation | Transferable capabilities |
 | --- | --- | --- | --- |
-| 1 · [Debubbler](../debubbler/index.html) | Route entrained air toward a reservoir | Selected 27 s animation, three original figures, defined net-flux metric and clear synthetic-variant disclosures | Multiphase modeling, CAD-to-mesh automation, setup preservation, quantitative interpretation |
-| 2 · [Pump](../pump/index.html) | Automated hydraulic mapping and transient pressure analysis | Existing complete case retained; homepage card now plays the real startup clip | PyFluent automation, rotating flows, performance comparison, spectral analysis |
-| 3 · [CVD reactor](../reactor/index.html) | Use dimensionless heat-transfer reasoning to explain circulation and choose precursor position | Eleven figures: streamlines, apparatus, case schematic, Ri sweep, thermal/velocity fields, validation, position comparison, physical growth and award micrograph | Re/Gr/Ri/Nu analysis; model simplification; porous media; numerical/experimental validation; simulation-to-experiment interpretation |
-| 4 · [Doctoral multiphysics](../aneurysm/index.html) | Assess what changes when viscosity, turbulence assumptions, wall compliance or transported particles are modeled | Four animations; domain, constitutive, TAWSS, wave-speed and mesh/time evidence; homepage FSI animation | FSI, non-Newtonian rheology, turbulence-model assessment, particles, validation, geometry/post-processing |
+| 1 · [Pump](../pump/index.html) | Automated hydraulic mapping and transient pressure analysis | Existing complete case retained; homepage card now plays the real startup clip | PyFluent automation, rotating flows, performance comparison, spectral analysis |
+| 2 · [Doctoral multiphysics](../aneurysm/index.html) | Assess what changes when viscosity, turbulence assumptions, wall compliance or transported particles are modeled | Four animations; domain, constitutive, TAWSS, wave-speed and mesh/time evidence; homepage FSI animation | FSI, non-Newtonian rheology, turbulence-model assessment, particles, validation, geometry/post-processing |
+| 3 · [Throttle body](../throttle-body/index.html) | Characterize compressible airflow across valve openings and pressure conditions | Generic Mach/normalized-pressure hero, documented mesh/setup drivers and limits; industrial maps excluded | Compressible CFD, virtual testing, pressure conventions, automation |
+| 4 · [CVD reactor](../reactor/index.html) | Use dimensionless heat-transfer reasoning to explain circulation and choose precursor position | Eleven figures: streamlines, apparatus, case schematic, Ri sweep, thermal/velocity fields, validation, position comparison, physical growth and award micrograph | Re/Gr/Ri/Nu analysis; model simplification; porous media; numerical/experimental validation; simulation-to-experiment interpretation |
 | 5 · [Residential CFD](../ventilation/index.html) | Explain airflow paths and solar exposure as consequences of architectural geometry | User-selected 3D streamline hero plus seven supporting views; scenario matrix; base/modified airflow, sections, paired-house flow and solar comparison | CAD/domain preparation, scenario design, external/internal flows, solar load, cross-tool checks, communication |
 
 ## Contribution and context
@@ -47,3 +47,5 @@ Residential flow remains a room-level trade-off; solar image scales are not
 a common-scale difference map or annual energy/comfort prediction. No unsupported
 global improvement statistic was added. Each page maps demonstrated tasks to
 potential applications without claiming those applications were completed work.
+
+Debubbler is the homepage feature only; it is not repeated in the grid.

@@ -142,3 +142,12 @@ CAD archive metadata as well as visible geometry. Keep originals privately when
 sanitizing paths. Record exact transformations and hashes. Keep synthetic series
 explicitly separate from CFD and measured results. Use professional project logs
 only as context; curate public claims without copying private source documents.
+
+## Editorial feedback to preserve — 2026-09-11
+
+Use plain technical titles and natural sentences. Avoid slogans such as Give air
+a path..., decorative CFD ANIMATION labels and repetitive featured/grid cards.
+Keep the featured project in one prominent place; use the grid for other cases.
+Current order: pump, FSI, throttle body, reactor, residential. FSI comes before
+reactor. Introduce generic industrial examples briefly without misrepresenting
+academic/consulting source geometry. Respect per-case image allowlists.
