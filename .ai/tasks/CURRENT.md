@@ -1,8 +1,8 @@
 # Debubbler portfolio integration
 
-Status: READY_FOR_PUBLICATION
+Status: COMPLETE
 Last Agent: Codex
-Date: 2026-09-10
+Date: 2026-09-11
 
 Implemented Debubbler as homepage lead, compact professional profile, five
 selected cases and a substantial video-first case study with transferable skills.
@@ -16,5 +16,5 @@ no-JS case retains four chapters, direct figure links and native video controls.
 65 local HTML media/link references resolve; five source asset hashes match.
 No Fluent execution. No cross-browser or native Discovery opening claim.
 
-Next: reviewed exact-file commit, normal push, Pages deployment and live routes.
+Published product: 48e1d3b407a9eb786998542a85455e39ee72b235. Pages run 34561402127 completed successfully. Homepage, Debubbler, pump and selected images returned HTTP 200; the MP4 returned HTTP 206 with a valid byte range. Public content checks confirm the new hero and metric. All four repository branches matched their remotes on 2026-09-11. Standards/recovery commit: de2d95b2fbbce31a5f38207e9a901c861f158fe4. Private context backup: e39c2075469b671537f86c5633eec38fd30ac548. No remaining product actions.
 Unrelated Fluent outputs in this checkout must remain untracked and untouched.
