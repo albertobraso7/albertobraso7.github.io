@@ -448,6 +448,61 @@
       "bytes": 258325,
       "transform": "Byte-identical reviewed source poster.",
       "credit": "Alberto Brambila Solórzano and collaborators; source research visualization."
+    },
+    {
+      "repository": "https://github.com/albertobraso7/debubbler-multiphase-cfd",
+      "commit": "0037f8fca665fc02eeda5d19e6e8d09710247fd7",
+      "source": "media/curated/animation-2_late_stage_27s_15fps.mp4",
+      "destination": "debubbler/assets/debubbler-late-stage.mp4",
+      "source_sha256": "b0f657d7dc4f779b81d1db717e2b2aedd4d51d7e4cddf9da29da3c6d97963f88",
+      "output_sha256": "b0f657d7dc4f779b81d1db717e2b2aedd4d51d7e4cddf9da29da3c6d97963f88",
+      "bytes": 8075079,
+      "transform": "Byte-identical to curated source commit. Poster extraction documented in source asset manifest.",
+      "authorization": "Author-selected generic demo; comparison variants explicitly synthetic."
+    },
+    {
+      "repository": "https://github.com/albertobraso7/debubbler-multiphase-cfd",
+      "commit": "0037f8fca665fc02eeda5d19e6e8d09710247fd7",
+      "source": "media/curated/debubbler-poster.jpg",
+      "destination": "debubbler/assets/debubbler-poster.jpg",
+      "source_sha256": "ad69932d4f37c9923deae0f84854a71e22dc721233fda9c74b7317e7fe61280c",
+      "output_sha256": "ad69932d4f37c9923deae0f84854a71e22dc721233fda9c74b7317e7fe61280c",
+      "bytes": 52591,
+      "transform": "Byte-identical to curated source commit. Poster extraction documented in source asset manifest.",
+      "authorization": "Author-selected generic demo; comparison variants explicitly synthetic."
+    },
+    {
+      "repository": "https://github.com/albertobraso7/debubbler-multiphase-cfd",
+      "commit": "0037f8fca665fc02eeda5d19e6e8d09710247fd7",
+      "source": "media/portfolio_degas_figures/portfolio_Condition_01_A_capture_efficiency.png",
+      "destination": "debubbler/assets/capture-efficiency.png",
+      "source_sha256": "20441699ed893a01accfa74baf07cfad39b81eaa4cdbc6373f8c021cb671ceae",
+      "output_sha256": "20441699ed893a01accfa74baf07cfad39b81eaa4cdbc6373f8c021cb671ceae",
+      "bytes": 186161,
+      "transform": "Byte-identical to curated source commit. Poster extraction documented in source asset manifest.",
+      "authorization": "Author-selected generic demo; comparison variants explicitly synthetic."
+    },
+    {
+      "repository": "https://github.com/albertobraso7/debubbler-multiphase-cfd",
+      "commit": "0037f8fca665fc02eeda5d19e6e8d09710247fd7",
+      "source": "media/portfolio_degas_figures/portfolio_Condition_01_B_cumulative_capture.png",
+      "destination": "debubbler/assets/cumulative-capture.png",
+      "source_sha256": "1ea353964c83cb32d5df4d2889d20f0d18e9f99639fc8b66565bff4d59fa558b",
+      "output_sha256": "1ea353964c83cb32d5df4d2889d20f0d18e9f99639fc8b66565bff4d59fa558b",
+      "bytes": 330134,
+      "transform": "Byte-identical to curated source commit. Poster extraction documented in source asset manifest.",
+      "authorization": "Author-selected generic demo; comparison variants explicitly synthetic."
+    },
+    {
+      "repository": "https://github.com/albertobraso7/debubbler-multiphase-cfd",
+      "commit": "0037f8fca665fc02eeda5d19e6e8d09710247fd7",
+      "source": "media/portfolio_degas_figures/portfolio_Condition_01_C_inlet_air_pulses.png",
+      "destination": "debubbler/assets/inlet-air-pulses.png",
+      "source_sha256": "ee6823d3a67e389f4ee6b80e4417fb6cfb540727750d3742ee4a65367cf780cb",
+      "output_sha256": "ee6823d3a67e389f4ee6b80e4417fb6cfb540727750d3742ee4a65367cf780cb",
+      "bytes": 115078,
+      "transform": "Byte-identical to curated source commit. Poster extraction documented in source asset manifest.",
+      "authorization": "Author-selected generic demo; comparison variants explicitly synthetic."
     }
   ],
   "summary": {
@@ -478,5 +533,10 @@
       "verified": "2026-09-08",
       "finding": "First place: The Space Base, Alberto Brambila Solórzano, Colima’s University, Mexico. SEM NaF microstructures, image width 0.5 mm."
     }
-  ]
+  ],
+  "debubbler_revision": {
+    "date": "2026-09-10",
+    "source_commit": "0037f8fca665fc02eeda5d19e6e8d09710247fd7",
+    "scope": "Generic transient VOF demonstration; no industrial validation claim. Animation timing inferred; source method documents limitations."
+  }
 }

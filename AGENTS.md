@@ -175,3 +175,9 @@ The managed block above is generated; edit PORTFOLIO.md in the separate
 portfolio-standards repository and use its explicit sync command. Keep local
 engineering instructions outside the markers. A standalone clone contains the
 full standard and needs no sibling folders to follow it.
+
+## Current lead case
+
+The author explicitly onboarded Debubbler on 2026-09-10 and selected it as the
+homepage feature, superseding the managed block's earlier deferral. See the local
+project context and source register; preserve solver execution restrictions.

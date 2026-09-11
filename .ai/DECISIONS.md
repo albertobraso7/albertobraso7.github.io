@@ -207,3 +207,14 @@ remote, and verify the result without repeating routine permission questions.
 This supersedes older per-task no-commit/no-push notes unless the current user
 request explicitly restricts publication. Confidentiality, existing visibility,
 asset exclusions and solver execution boundaries remain in force.
+
+## Debubbler lead case — 2026-09-10
+
+The author explicitly requested source repository onboarding, website integration
+and replacement of the pump lead feature. This supersedes the earlier Debubbler
+deferral and pump-first order. Use the selected late-stage 27 s original video;
+keep the pump next and preserve its page. Show a concise profile under the name.
+The 30-project breadth is author-reported professional context, not 30 public
+case studies. Never conflate industrial outcomes with the generic transient VOF
+demo. Only the blue comparison series is CFD; synthetic variants must retain
+clear adjacent disclosure. The 78.2% figure is an internal net-routing metric.

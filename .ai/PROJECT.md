@@ -21,7 +21,7 @@ build step, backend, installation or CI change.
 
 | Area | Files / behavior |
 | --- | --- |
-| Homepage | `index.html`: existing hero/pump feature; four visual case cards (pump/FSI animated; reactor/residential static); six retained industrial cards; approach/about/contact |
+| Homepage | `index.html`: Debubbler video hero and brief profile; five visual case cards (pump/FSI animated; reactor/residential static); six retained industrial cards; approach/about/contact |
 | Main identity | `styles.css`, `recruiter-layout.css`: original charcoal/mint design, unchanged from verified remote |
 | Industrial experience | `projects.js`: original six cards and native details/hash links, unchanged |
 | Research narrative layer | `research-depth.css` / `research-depth.js`: substantial visual chapters, evidence-linked skills, full-resolution dialog and responsive figure layouts |
@@ -41,7 +41,7 @@ surface `#181d1f`, light text `#f0f2ed`, muted `#b0b9b9`, mint `#a5efcc`
 and warm `#e8b882`. Reuse restrained borders, editorial sections and real CFD
 visuals. New cases demonstrate capabilities instead of repeating whole READMEs.
 
-Priority: pump, reactor, doctoral FSI, residential consulting, followed by preserved
+Priority: Debubbler, pump, reactor, doctoral FSI, residential consulting, followed by preserved
 industrial experience. Academic and consulting contexts are explicit. The six
 existing industrial claims are retained; this task did not independently audit
 their confidential supporting work.
@@ -107,3 +107,13 @@ local entry point. CLAUDE.md imports it; Copilot in VS Code can use AGENTS.md
 directly. PROJECT owns technical knowledge; CURRENT owns only this project's
 task. Historical machine/tool observations must be checked against the active
 environment. General lifecycle rules now live in AGENTS, not duplicated here.
+
+## Debubbler integration — 2026-09-10
+
+The author explicitly selected Debubbler to replace the pump homepage feature.
+Pump remains the second selected case and its detailed page is preserved.
+The short profile beneath the name draws breadth from the author's private
+30-project professional log; do not publish that source document on this site.
+The public demo is generic/simplified and is separate from industrial models.
+New files: debubbler/index.html, debubbler/debubbler.css, five selected assets
+and debubbler-feature.css. Reuse existing media and figure-dialog JavaScript.

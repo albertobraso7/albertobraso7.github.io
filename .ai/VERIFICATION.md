@@ -89,3 +89,18 @@ streamline hero and elastic-pipe MP4 returned HTTP 200 with expected MIME types.
 Initial timeouts/stale 404s cleared on retries after deployment. The reusable
 ADD_PROJECT.md guide is linked from both agent entry points and README; document
 links resolve and committed Markdown contains no absolute machine paths.
+
+## Debubbler checks — 2026-09-10
+
+Homepage and Debubbler case passed eight viewport checks at 320, 390, 768 and
+1440 px with no horizontal overflow or broken images. Both also passed 200%
+root text at 320 px after long-word wrapping corrections. Video playback,
+offscreen pause, persistent manual pause and reduced-motion pause passed.
+Figure dialog opens/closes with Escape. With scripts disabled the case retains
+four chapters, six direct figure links and native video controls. Desktop and
+mobile heroes and evidence captions were visually reviewed. Five website media
+files match the published source SHA-256; 65 local HTML references resolve.
+The source net-flux integration independently reproduces 78.22206454081913%.
+No new solver run, industrial validation or native Discovery opening was tested.
+Temporary browser screenshots are local QA artifacts, not website content.
+Publication checks are recorded in CURRENT.md after deployment.

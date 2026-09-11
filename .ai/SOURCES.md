@@ -260,3 +260,17 @@ exact-asset questions authorized this selected local reuse; no publication
 occurred. Third-party reactor diagrams/micrographs and uncurated archives were
 omitted. Existing pump media/data were preserved from the verified site baseline.
 All four source worktrees were checked clean/current again at completion.
+
+## Debubbler — authorized onboarding, 2026-09-10
+
+Public repository: https://github.com/albertobraso7/debubbler-multiphase-cfd
+Source commit: 0037f8fca665fc02eeda5d19e6e8d09710247fd7. Read docs/portfolio_case.md, docs/methodology.md
+and docs/asset_manifest.json. The repository contains curated CAD, drivers,
+settings/workflow references and selected media; cases/meshes/outputs excluded.
+This explicitly requested source onboarding is an exception to normal read-only
+website source access. No Fluent solve was performed. The calculation script
+reproduced 78.22206454081913% net internal reservoir routing over 0–15 s.
+Only the blue demo series is CFD-derived; comparison variants are synthetic.
+The separate private author-provided professional log lists 30 projects and
+supports the concise profile breadth. Do not publish the log or treat its
+industrial outcomes as validation of this generic demonstration.

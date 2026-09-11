@@ -21,7 +21,7 @@ useful depth and progressive inspection beyond the source README.
 1. Read CURRENT.md, PROJECT.md, DECISIONS.md, SOURCES.md and PROJECT_INVENTORY.md.
    Inspect current tracked, staged and untracked work before editing.
 2. Locate the relevant source repository using SOURCES.md and the actual workspace.
-   Source worktrees are read-only. Check its remote freshness before reusing new
+   Source worktrees are read-only unless the author also requests source onboarding. Check its remote freshness before reusing new
    content; do not pull, merge, rebase or modify the source.
 3. Start at docs/portfolio_case.md, otherwise README, then targeted methodology,
    numerical setup, results and validation. Open raw data only for a specific gap.
@@ -70,7 +70,7 @@ figure counts, numbers or headings merely to fill a template.
 Reuse styles.css and recruiter-layout.css for identity; case-studies.css for
 shared case structure; research-depth.css for research chapters, evidence layouts
 and capability maps. Use relative paths (../ from a case page). Preserve the
-homepage hero, pump feature, industrial cards, CV, contact and existing URLs.
+approved homepage feature (currently Debubbler), industrial cards, CV, contact and existing URLs.
 
 Existing useful hooks: body.research-page; .wrap; .chapter with stable id;
 .chapter-head; .story-pair; .wide-evidence; .capability-map; .scope-detail.
@@ -128,8 +128,17 @@ Keep machine-specific paths, credentials, scratch screenshots and raw research
 archives out of committed memory. Relative source paths and repository URLs make
 this guide portable to another chat or checkout.
 
-A request to develop is not automatically a request to publish. When the user
-explicitly requests uploading, inspect/fetch the target, preserve all reviewed
+The author's standing backup authorization in AGENTS.md covers reviewed completed
+work; do not repeat routine approval questions. Before uploading, inspect/fetch the target, preserve all reviewed
 work, commit and use an ordinary fast-forward push. Never force-push or blindly
 pull over an edited working tree. Check the Pages deployment result and affected
 live routes before claiming publication. Do not reopen already granted approval.
+
+## Reuse the Debubbler onboarding example
+
+Use debubbler/index.html for a compact video-first story and its public repository
+for a functional folder layout with a strict public allowlist. Inspect native
+CAD archive metadata as well as visible geometry. Keep originals privately when
+sanitizing paths. Record exact transformations and hashes. Keep synthetic series
+explicitly separate from CFD and measured results. Use professional project logs
+only as context; curate public claims without copying private source documents.
