@@ -1,6 +1,6 @@
 # Throttle-body onboarding and editorial refinement
 
-Status: READY_FOR_PUBLICATION
+Status: COMPLETE
 Last Agent: Codex
 Date: 2026-09-11
 
@@ -15,5 +15,5 @@ hero hash match; image dialog Escape/focus and no-JS fallback. No solver run.
 Technical docs distinguish generic evidence, professional context, area units,
 pressure datum and prior checks from a converged campaign.
 
-Next: publish exact website files and recovery updates; verify Pages/live routes.
+Published product ef673584ef21d0e0d4e818f490d0ca3d387e58f1; Pages run 34594949440 succeeded. Home, Debubbler and throttle routes returned HTTP 200. Live checks confirm project order, no repeated Debubbler card/badges, plain headings, disclosure and pressure caption. Deployed hero hash matches the source image. Standards recovery commit 8532c69338810548fdb68917990bdd9a32e98c09 is pushed. All three branches matched their GitHub remotes. No remaining product actions.
 Unrelated Fluent runtime files remain untracked and untouched.
