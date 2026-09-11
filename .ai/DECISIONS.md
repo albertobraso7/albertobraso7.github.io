@@ -193,3 +193,17 @@ requirements to maintain two matching entry-point texts. Retain COMPLETE until
 the next task; use HANDOFF for transfer. Numerical, confidentiality, asset,
 licensing and publication decisions remain in force. The helper takes explicit
 targets and never stages, commits or pushes.
+
+## 2026-09-10 — Standing GitHub backup authorization
+
+**Decision:** The author requested GitHub backup of completed work for recovery
+on another computer, with confirmation for new large files. The shared standard
+version 1.1.0 records this standing authorization.
+
+**Reason:** Local commits and non-Git workspace files alone are not remote backups.
+
+**Consequences:** Review and commit task changes, push to the verified existing
+remote, and verify the result without repeating routine permission questions.
+This supersedes older per-task no-commit/no-push notes unless the current user
+request explicitly restricts publication. Confidentiality, existing visibility,
+asset exclusions and solver execution boundaries remain in force.

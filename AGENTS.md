@@ -5,10 +5,10 @@
 This repository is the GitHub Pages website. Engineering source repositories are read-only for website tasks unless the user explicitly requests source edits. Preserve the existing HTML/CSS/JavaScript site, approved identity, URLs and asset provenance.
 
 <!-- portfolio-standards:begin -->
-<!-- source=portfolio-standards/PORTFOLIO.md version=1.0.0 sha256=6b36f8c6cae8b9e6fcb656d1b27b2bdc64886d7b61517296f9b9c21b2573ab64 -->
+<!-- source=portfolio-standards/PORTFOLIO.md version=1.1.0 sha256=c573c5f076daf619fdb6bfff1116a830156f17afc25d79476ae30ccf66fa6e3d -->
 # Shared engineering portfolio standard
 
-Version: 1.0.0
+Version: 1.1.0
 
 ## Scope and authority
 
@@ -16,7 +16,9 @@ These rules apply to the target portfolio repository, not every folder visible
 in an editor. Identify its actual root and requested task before acting.
 Follow the user's current scope and existing session authorization. An audit-only
 request forbids edits, including memory updates. A development request does not
-by itself authorize commit, push, deployment or messages to other people.
+by itself authorize messages to other people. The author's standing GitHub
+backup authorization below covers completed development work; a later explicit
+no-commit/no-push or audit-only instruction overrides that preference.
 
 Repository evidence and shared project files are authoritative for project facts;
 conversation history is not required. Apply local engineering constraints after
@@ -124,6 +126,41 @@ current remote state, preserve local work, use a normal push and verify the
 remote result. Do not automatically pull, reset, clean, force-push or rewrite
 history. For website publication, also verify the deployment and affected routes.
 No automatic action by an instruction-sync helper may commit or publish files.
+
+## Standing GitHub backup preference (2026-09-10)
+
+The author explicitly requested that completed work be saved in GitHub so it
+can be recovered on another computer. After meaningful, reviewed changes and
+appropriate checks, commit the task files and normally push to the verified
+existing remote without asking for routine confirmation again. This supersedes
+older task notes requiring a fresh commit/push request for every change.
+Preserve unrelated edits and staging; never blindly stage an entire workspace.
+The instruction-sync helper itself still never commits or pushes.
+
+Keep existing repository visibility. Use a private repository for non-public
+workspace support or approved unpublished work; backup permission does not
+authorize publishing private research in a public portfolio. Do not commit
+credentials, patient-identifiable data or private communications. Preserve
+existing exclusions and record any material backup gap instead of silently
+claiming everything is recoverable. Debubbler onboarding remains deferred.
+
+Review new files at or above 50 MiB and unusually large batches before upload;
+ask the author which to retain, with paths, sizes and any LFS/quota implications.
+This is a conservative review threshold, not a GitHub hard limit. Do not ask
+again for unchanged files whose inclusion was already approved. No paid storage
+plan, force push, history rewrite or deleted-file restoration is implied.
+
+Check remote branch equality after push. For Git LFS assets, verify their object
+availability when backing them up; a pointer alone is not the binary backup.
+Maintain portable paths and recovery instructions for workspace configuration
+and reusable prompts. A clean Git status does not cover ignored or untracked
+files, local-only archives, installed tools or personal machine configuration.
+
+The author explicitly declined uploading master/doctoral/Debubbler meshes on
+2026-09-10, regardless of size; include mesh-containing Fluent .cas.h5 files in
+that exclusion. Do not repeat that question unless the author changes the scope.
+The doctoral thesis PDF, defense PPTX and thesis ZIP are approved for private
+backup. Existing approved pump meshes remain in their original repository.
 <!-- portfolio-standards:end -->
 
 ## Local project context
