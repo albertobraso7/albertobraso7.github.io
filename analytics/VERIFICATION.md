@@ -29,3 +29,15 @@ statistics were not measured. Blocking the tag was explicitly tested; the page
 remained usable. No legal compliance guarantee is implied.
 
 The owner explicitly approved publication after review on 2026-09-11.
+
+## Published-site check
+
+GitHub Pages built 89033cb successfully. All seven main routes, privacy.html and
+analytics/config.js returned HTTP 200. An isolated production browser observed
+zero Google requests before consent, one GA tag after consent, and a page_view
+request for G-R8SZG8VFHS accepted by the collection endpoint with HTTP 204.
+The sent page location was canonical without a query. Withdrawal removed the
+tag on the published site. Transport is verified; property reports are not.
+No connected GA4 account/browser was available for Realtime/DebugView inspection.
+The isolated production test visit can appear in statistics; later interaction
+checks set debug_mode. Test browser returned to a blank page after withdrawal.
