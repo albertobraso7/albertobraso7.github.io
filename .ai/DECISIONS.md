@@ -242,5 +242,7 @@ default and historical public links. Existing generic visuals, selected data
 and research attribution remain; no customer geometry or confidential operating
 map is introduced. Private career-materials is the canonical CV evidence/skill
 backup. CVs must use two well-filled, visually verified pages and traceable
-achievements. Analytics remains a review deliverable until publication approval;
-the supplied ID configures production only and never permits local sends.
+achievements. The author explicitly approved analytics publication after implementation review
+on 2026-09-11. The supplied ID configures production only, after opt-in consent;
+localhost, preview origins and local debug never send. Account settings and
+actual receipt remain separate checks.

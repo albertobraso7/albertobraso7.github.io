@@ -1,16 +1,16 @@
-# Private sources, visual portfolio and career system
+# Visual portfolio, private career system and analytics
 
 Status: IN_PROGRESS
 Last Agent: Codex
 Date: 2026-09-11
 
-Website redesign and two-page CV reviewed; public source links and Debubbler
-pulse condition removed. Original retired images preserved privately. Six
-engineering sources verified PRIVATE. Career evidence/Overleaf/skill complete
-locally; backup verification and website publication remain.
-Analytics uses G-R8SZG8VFHS, exact production origin, basic opt-in consent.
-Local/production-fixture checks pass; real GA receipt requires account review.
-Analytics files and privacy page are deliberately unstaged review work. They
-are backed up privately and must not be included in the redesign deployment
-until the requested presentation/publication approval. Preserve unrelated
-Fluent runtime outputs in this checkout. No solver execution.
+Redesign/CV published in 89f89eb. Six engineering source repos verified PRIVATE.
+career-materials is the new PRIVATE evidence/Overleaf/skill backup; the skill is
+installed locally. Analytics implementation and production-origin fixture checks
+are complete. The owner explicitly approved analytics publication after review.
+G-R8SZG8VFHS is active only for allowlisted HTTPS production pages after consent;
+localhost/previews cannot send. Finish deployment and remote verification.
+
+Google-account settings/Realtime/DebugView reception remain a documented owner
+check, not a claimed completed dashboard. Preserve unrelated Fluent outputs.
+No solver execution. See analytics/README.md and VERIFICATION.md for operation.

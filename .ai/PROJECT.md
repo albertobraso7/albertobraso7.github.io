@@ -142,5 +142,5 @@ The public CV is the reviewed two-page general version, with visible portfolio
 links. Its LaTeX, evidence index and application skill are backed up privately.
 Debubbler shows one CFD-derived transport curve. The pulse-condition figure and
 synthetic comparison charts were retired from the site and preserved privately.
-Analytics is a separate local review package pending explicit publication review;
+Analytics publication was explicitly approved after review on 2026-09-11;
 G-R8SZG8VFHS is configured for the exact production origin, with consent.
