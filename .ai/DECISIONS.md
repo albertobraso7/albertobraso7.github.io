@@ -256,3 +256,7 @@ Publish the separate three-tower H2 demonstration with the unchanged renamed her
 ## 2026-09-13 ? Problem-led case narratives
 
 Debubbler demonstrates P28; hydrogen relates to P7/P8; throttle to P10; pump to P21/P22/P23. Short three-part context blocks explain the original need, Alberto?s action and engineering consequence before the detailed evidence. Academic and residential cases keep their own identity. H2 hero caption is concise; full scale/provenance information and monitor histories remain accessible. No media, solver settings or numerical results changed.
+
+## Debubbler public scope and physics correction - 2026-09-13
+
+Use the author's VOF correction for P28 over the older source-log methodology. Public wording emphasizes air separation in a liquid circuit, geometry comparison, pressure loss and design decisions. Omit thermal-unit/manifold architecture, component-replacement strategy, customer acceptance and platform implementation from the public case story; these details are unnecessary to demonstrate the methods. Keep generic demonstration results distinct from professional outcomes. This change does not rewrite the approved CV or private source records.

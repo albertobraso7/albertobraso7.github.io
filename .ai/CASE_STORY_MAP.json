@@ -7,8 +7,8 @@
       "projects": [
         28
       ],
-      "story": "Integrated separation to avoid a standalone debubbler; led iterative geometry/pressure-drop and air-routing evaluation with mechanical design; selected layout prototyped, customer-tested, incorporated.",
-      "boundary": "Professional steady Eulerian-Eulerian vs public transient VOF; 78.2% is only the demo internal-routing metric. Synthetic variants stay labelled."
+      "story": "VOF-based air-separation analysis; compare geometry variants, air routing and pressure loss with mechanical designers to guide physical testing. Public wording omits product architecture, customer and platform details.",
+      "boundary": "Author correction 2026-09-13: professional P28 also used VOF, overriding the original log methodology. Do not assume a professional time formulation. Public transient VOF geometry and 78.2% internal-routing metric are demonstration-only; synthetic variants stay labelled."
     },
     "hydrogen-dilution": {
       "projects": [

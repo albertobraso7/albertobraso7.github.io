@@ -311,3 +311,7 @@ The author explicitly requested restoration of Debubbler panels A/B. Only the bl
 ## Narrative source review ? 2026-09-13
 
 Re-read professional Projects 28, 7, 8, 10, 21, 22 and 23 before writing the new case context. CASE_STORY_MAP.json retains the claim boundaries and source hash. No private components, operating maps, raw source log or new industrial numerical values were published. Research/consulting narratives were reviewed separately.
+
+## Author correction: Debubbler P28, 2026-09-13
+
+The author explicitly confirms that the professional P28 study also used VOF. This supersedes the original NDA-free log's steady Eulerian-Eulerian description and its Eulerian competency/STAR wording. The original source is not edited by this website task; future reuse of P28 must apply this correction. The professional time formulation has not been re-confirmed. The public demonstration remains transient VOF.
