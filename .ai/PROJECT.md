@@ -138,8 +138,11 @@ there is no separate About section. Capability filters and conceptual method
 diagrams complement original result figures. The NDA-free author log is the
 record of actual achievements, not merely context. Distinguish its professional
 outcomes from generic independent demonstrations and academic/consulting work.
-The public CV is the reviewed two-page general version, with visible portfolio
-links. Its LaTeX, evidence index and application skill are backed up privately.
+The public CV is the reviewed two-page A4 baseline selected in .ai/PUBLIC_CV.json,
+with a compact header and visible portfolio link. Its LaTeX, evidence index and
+application skill are backed up privately in career-materials. The old cv/general
+PDF is superseded. Public PDF links include the content hash as a query version;
+analytics/config.js records the corresponding baseline build.
 Debubbler shows one CFD-derived transport curve. The pulse-condition figure and
 synthetic comparison charts were retired from the site and preserved privately.
 Analytics publication was explicitly approved after review on 2026-09-11;

@@ -5,7 +5,7 @@ export const config = Object.freeze({
   productionOrigin: 'https://albertobraso7.github.io',
   consentVersion: 1,
   consentDays: 180,
-  cvVersion: '2026-09-general',
+  cvVersion: 'baseline-0e8fd696cbff-a4',
   cvLanguage: 'en',
   visibilityMs: 2000,
   errorSampleRate: 0.1,

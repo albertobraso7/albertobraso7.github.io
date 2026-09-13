@@ -1,0 +1,14 @@
+{
+  "source_repository": "career-materials (private)",
+  "source_path": "cv/baseline/builds/0e8fd696cbff/a4/main.pdf",
+  "build_id": "0e8fd696cbff",
+  "format": "A4",
+  "pages": 2,
+  "sha256": "035393989f75f22f590717f95d9eb0e9fc5bbe413ffc63ccee3654da610a1d46",
+  "bytes": 27395,
+  "destination": "assets/files/Alberto_Brambila_CV.pdf",
+  "link_version": "035393989f75",
+  "analytics_cv_version": "baseline-0e8fd696cbff-a4",
+  "review_date": "2026-09-13",
+  "review": "Both rendered pages inspected; byte-identical copy of the reviewed current baseline. Author requested correction of outdated public CV."
+}

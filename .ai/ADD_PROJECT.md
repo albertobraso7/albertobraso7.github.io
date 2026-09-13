@@ -166,6 +166,13 @@ explicit. Add stable section/card IDs for measurement; do not include visitor
 text or confidential identifiers. Update public CV only from the reviewed
 private source and render both pages before replacing its stable PDF URL.
 
+For an authorized public CV refresh, resolve career-materials/cv/baseline/current-build.json
+instead of assuming cv/general/main.pdf is current. Verify the selected PDF against
+its visual-review receipt, inspect both pages, and update .ai/PUBLIC_CV.json,
+the PDF, all download-link query versions and analytics cvVersion together.
+After deployment, compare the downloaded PDF SHA-256 with the reviewed source.
+Building a private tailored application alone does not authorize replacing the public CV.
+
 ## Author refinement — 2026-09-12
 
 Illustrative comparison figures may explain a professional analysis method when explicitly requested. Label each real CFD series and every synthetic series beside each figure. Do not remove meaningful figures merely because part of the comparison is illustrative. Preserve the user’s current selection and do not restore excluded pulse-condition content.
