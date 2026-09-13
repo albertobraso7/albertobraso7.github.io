@@ -301,3 +301,9 @@ most pressure-drop differences below 10% vs Fluent. Calibration: RMSE <=6.13%
 across -30 to 120 C vs the stated CFD reference. No quantified AI saving claimed.
 Debubbler transport chart was recalculated from the supplied private phase-flux
 report; SHA, integration and plotted sampling are in ASSET_PROVENANCE.json.
+
+## Hydrogen dilution and restored comparisons — 2026-09-12
+
+Private source: fuel-cell-h2-dilution, local folder fuel_cell_h2_dilution. Read PROJECT_CONTEXT.md, docs/portfolio_case.md and docs/results.md. Two author-supplied report ZIPs are local-only; six selected outlet values/ranges and two derived figures are public. Histories are iterative, not physical time; no domain maximum or convergence certificate. Case 1 labeling comes from author context; SET supports Case 2. Professional Projects 7/8 inform the story, not this demonstration’s numerical outcomes.
+
+The author explicitly requested restoration of Debubbler panels A/B. Only the blue demo series is CFD; other variants remain synthetic with adjacent disclosure. The pulse panel remains retired.

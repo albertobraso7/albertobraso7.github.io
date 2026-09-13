@@ -1,0 +1,115 @@
+{
+  "checks": [
+    {
+      "width": 1440,
+      "route": "/",
+      "overflow": false,
+      "h1": 1,
+      "broken": [],
+      "badAnchors": [],
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "route": "/hydrogen-dilution/",
+      "overflow": false,
+      "h1": 1,
+      "broken": [],
+      "badAnchors": [],
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "route": "/debubbler/",
+      "overflow": false,
+      "h1": 1,
+      "broken": [],
+      "badAnchors": [],
+      "errors": []
+    },
+    {
+      "width": 768,
+      "route": "/",
+      "overflow": false,
+      "h1": 1,
+      "broken": [],
+      "badAnchors": [],
+      "errors": []
+    },
+    {
+      "width": 768,
+      "route": "/hydrogen-dilution/",
+      "overflow": false,
+      "h1": 1,
+      "broken": [],
+      "badAnchors": [],
+      "errors": []
+    },
+    {
+      "width": 768,
+      "route": "/debubbler/",
+      "overflow": false,
+      "h1": 1,
+      "broken": [],
+      "badAnchors": [],
+      "errors": []
+    },
+    {
+      "width": 390,
+      "route": "/",
+      "overflow": false,
+      "h1": 1,
+      "broken": [],
+      "badAnchors": [],
+      "errors": []
+    },
+    {
+      "width": 390,
+      "route": "/hydrogen-dilution/",
+      "overflow": false,
+      "h1": 1,
+      "broken": [],
+      "badAnchors": [],
+      "errors": []
+    },
+    {
+      "width": 390,
+      "route": "/debubbler/",
+      "overflow": false,
+      "h1": 1,
+      "broken": [],
+      "badAnchors": [],
+      "errors": []
+    },
+    {
+      "width": 320,
+      "route": "/",
+      "overflow": false,
+      "h1": 1,
+      "broken": [],
+      "badAnchors": [],
+      "errors": []
+    },
+    {
+      "width": 320,
+      "route": "/hydrogen-dilution/",
+      "overflow": false,
+      "h1": 1,
+      "broken": [],
+      "badAnchors": [],
+      "errors": []
+    },
+    {
+      "width": 320,
+      "route": "/debubbler/",
+      "overflow": false,
+      "h1": 1,
+      "broken": [],
+      "badAnchors": [],
+      "errors": []
+    }
+  ],
+  "dialog": "passed",
+  "noJS": "passed",
+  "doubleText": "passed"
+}

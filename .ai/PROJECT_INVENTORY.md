@@ -49,3 +49,7 @@ global improvement statistic was added. Each page maps demonstrated tasks to
 potential applications without claiming those applications were completed work.
 
 Debubbler is the homepage feature only; it is not repeated in the grid.
+
+## Hydrogen dilution — 2026-09-12
+
+New /hydrogen-dilution/ case, after throttle body and before reactor. Three-tower species mixing, selected author hero, per-outlet mass-fraction summary, iteration histories, and separate mesh/setup Python workflow. Debubbler remains featured once; FSI remains before reactor.

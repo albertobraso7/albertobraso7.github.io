@@ -134,3 +134,11 @@ CV compiled with Tectonic 0.17.0, exactly two A4 pages; both rendered and inspec
 Both bodies finish within about 11 pt of the usable lower edge, no margin overflow.
 Public engineering links removed. No Fluent run or new physical validation.
 Analytics test evidence is maintained separately with its review package.
+
+## 2026-09-13 ? Hydrogen dilution and restored Debubbler figures
+
+Chromium checks passed for home, hydrogen-dilution and debubbler at 1440, 768, 390 and 320 px: one h1, no page overflow, no broken images/section anchors. Figure keyboard opening, actual-size zoom, Escape and focus restoration passed. H2 stays visible in the Automation filter. H2 content works without JavaScript and at 200% leaf-text size. Videos were excluded from these tests because playback was unchanged. Inspecting screenshots revealed and corrected a tall mobile hero box; its image now keeps its native aspect ratio. The home-card screenshot was checked again after explicit image decoding. Desktop/mobile hero, result figures, table and captions were visually inspected.
+
+Both Debubbler panels are byte-identical to their selected sources and retain adjacent CFD/synthetic disclosure. The pulse figure remains excluded. H2 figure endpoints and last-200 ranges were independently checked against the saved report arrays; output remains mass%, not mol%. No domain maximum or convergence validation. Private source syntax, exact report columns, finite values and iteration-order rejection checked. Only the displayed six-row summary is a public CSV; full processed histories remain private.
+
+Source repository: private fuel-cell-h2-dilution. See asset provenance for exact hashes. No Fluent run. Publication is verified separately against the pushed Pages deployment.

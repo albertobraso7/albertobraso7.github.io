@@ -15,7 +15,7 @@ export const config = Object.freeze({
 export const pages = Object.freeze({
   '/': 'home', '/pump/': 'pump', '/debubbler/': 'debubbler',
   '/throttle-body/': 'throttle-body', '/aneurysm/': 'aneurysm',
-  '/reactor/': 'reactor', '/ventilation/': 'ventilation',
+  '/hydrogen-dilution/': 'hydrogen-dilution', '/reactor/': 'reactor', '/ventilation/': 'ventilation',
   '/privacy.html': 'privacy', '/blog.html': 'blog', '/projects/dog.html': 'dog',
   '/projects/f1.html': 'f1', '/projects/pump.html': 'pump-archive',
 });

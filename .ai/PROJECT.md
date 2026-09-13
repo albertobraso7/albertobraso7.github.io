@@ -144,3 +144,7 @@ Debubbler shows one CFD-derived transport curve. The pulse-condition figure and
 synthetic comparison charts were retired from the site and preserved privately.
 Analytics publication was explicitly approved after review on 2026-09-11;
 G-R8SZG8VFHS is configured for the exact production origin, with consent.
+
+## H2 case added 2026-09-12
+
+The grid now contains pump, FSI, throttle, hydrogen dilution, reactor and residential studies. Debubbler remains the lead feature. Its restored A/B figures explain comparative post-processing with explicit synthetic-series disclosure. H2 pairs the user-selected render with outlet monitors and private Python automation.

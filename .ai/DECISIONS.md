@@ -246,3 +246,9 @@ achievements. The author explicitly approved analytics publication after impleme
 on 2026-09-11. The supplied ID configures production only, after opt-in consent;
 localhost, preview origins and local debug never send. Account settings and
 actual receipt remain separate checks.
+
+## 2026-09-12 — Restore useful comparative visuals and add H2
+
+Author explicitly selected Debubbler panels A/B; restore their comparison-method role with clear adjacent synthetic-series captions. This supersedes their retirement and the blanket avoidance of synthetic comparisons in the previous editorial note; do not treat synthetic values as real performance. Keep pulse conditions off the public page.
+
+Publish the separate three-tower H2 demonstration with the unchanged renamed hero, selected outlet concentrations and iteration-variability plots. Keep full histories and all implementation files private; no safety certification or domain maximum inferred. Use the new card after throttle and before reactor.

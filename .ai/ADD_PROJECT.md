@@ -165,3 +165,7 @@ comparisons and decorative metric cards. Keep industrial and research context
 explicit. Add stable section/card IDs for measurement; do not include visitor
 text or confidential identifiers. Update public CV only from the reviewed
 private source and render both pages before replacing its stable PDF URL.
+
+## Author refinement — 2026-09-12
+
+Illustrative comparison figures may explain a professional analysis method when explicitly requested. Label each real CFD series and every synthetic series beside each figure. Do not remove meaningful figures merely because part of the comparison is illustrative. Preserve the user’s current selection and do not restore excluded pulse-condition content.

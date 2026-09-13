@@ -529,6 +529,20 @@
     {
       "repository": "https://github.com/albertobraso7/debubbler-multiphase-cfd",
       "commit": "0037f8fca665fc02eeda5d19e6e8d09710247fd7",
+      "source": "media/portfolio_degas_figures/portfolio_Condition_01_C_inlet_air_pulses.png",
+      "destination": "debubbler/assets/inlet-air-pulses.png",
+      "source_sha256": "ee6823d3a67e389f4ee6b80e4417fb6cfb540727750d3742ee4a65367cf780cb",
+      "output_sha256": "ee6823d3a67e389f4ee6b80e4417fb6cfb540727750d3742ee4a65367cf780cb",
+      "bytes": 115078,
+      "transform": "Byte-identical to curated source commit. Poster extraction documented in source asset manifest.",
+      "authorization": "Author-selected generic demo; comparison variants explicitly synthetic.",
+      "status": "Retired from current website on 2026-09-11; originals preserved privately"
+    }
+  ],
+  "debubbler_restored_2026_09_12": [
+    {
+      "repository": "https://github.com/albertobraso7/debubbler-multiphase-cfd",
+      "commit": "0037f8fca665fc02eeda5d19e6e8d09710247fd7",
       "source": "media/portfolio_degas_figures/portfolio_Condition_01_A_capture_efficiency.png",
       "destination": "debubbler/assets/capture-efficiency.png",
       "source_sha256": "20441699ed893a01accfa74baf07cfad39b81eaa4cdbc6373f8c021cb671ceae",
@@ -536,7 +550,7 @@
       "bytes": 186161,
       "transform": "Byte-identical to curated source commit. Poster extraction documented in source asset manifest.",
       "authorization": "Author-selected generic demo; comparison variants explicitly synthetic.",
-      "status": "Retired from current website on 2026-09-11; originals preserved privately"
+      "status": "Restored by explicit author request, 2026-09-12; adjacent CFD/synthetic disclosure retained."
     },
     {
       "repository": "https://github.com/albertobraso7/debubbler-multiphase-cfd",
@@ -548,19 +562,70 @@
       "bytes": 330134,
       "transform": "Byte-identical to curated source commit. Poster extraction documented in source asset manifest.",
       "authorization": "Author-selected generic demo; comparison variants explicitly synthetic.",
-      "status": "Retired from current website on 2026-09-11; originals preserved privately"
-    },
-    {
-      "repository": "https://github.com/albertobraso7/debubbler-multiphase-cfd",
-      "commit": "0037f8fca665fc02eeda5d19e6e8d09710247fd7",
-      "source": "media/portfolio_degas_figures/portfolio_Condition_01_C_inlet_air_pulses.png",
-      "destination": "debubbler/assets/inlet-air-pulses.png",
-      "source_sha256": "ee6823d3a67e389f4ee6b80e4417fb6cfb540727750d3742ee4a65367cf780cb",
-      "output_sha256": "ee6823d3a67e389f4ee6b80e4417fb6cfb540727750d3742ee4a65367cf780cb",
-      "bytes": 115078,
-      "transform": "Byte-identical to curated source commit. Poster extraction documented in source asset manifest.",
-      "authorization": "Author-selected generic demo; comparison variants explicitly synthetic.",
-      "status": "Retired from current website on 2026-09-11; originals preserved privately"
+      "status": "Restored by explicit author request, 2026-09-12; adjacent CFD/synthetic disclosure retained."
     }
-  ]
+  ],
+  "hydrogen_dilution_2026_09_12": {
+    "assets": [
+      {
+        "source_repository": "private fuel-cell-h2-dilution",
+        "source": "media/h2-outlet-comparison.svg",
+        "source_sha256": "aa1a6254cf31cfda9b53d32800255d1083dcf66e7a27bf07abeafa28eee1f026",
+        "destination": "hydrogen-dilution/assets/h2-outlet-comparison.svg",
+        "output_sha256": "aa1a6254cf31cfda9b53d32800255d1083dcf66e7a27bf07abeafa28eee1f026",
+        "bytes": 18678,
+        "transform": "Byte-identical copy",
+        "authorization": "Author-selected hero or selected outlet-monitor visualization; no raw output publication.",
+        "source_commit": "b1c17c802c73ecd28abcacc5aa978ac8c798c7f4"
+      },
+      {
+        "source_repository": "private fuel-cell-h2-dilution",
+        "source": "media/h2-outlet-monitor-history.svg",
+        "source_sha256": "42c54375253a677dee7d88621046ec71105430bee2e8ec2d75ce9b2169247a61",
+        "destination": "hydrogen-dilution/assets/h2-outlet-monitor-history.svg",
+        "output_sha256": "42c54375253a677dee7d88621046ec71105430bee2e8ec2d75ce9b2169247a61",
+        "bytes": 92262,
+        "transform": "Byte-identical copy",
+        "authorization": "Author-selected hero or selected outlet-monitor visualization; no raw output publication.",
+        "source_commit": "b1c17c802c73ecd28abcacc5aa978ac8c798c7f4"
+      },
+      {
+        "source_repository": "private fuel-cell-h2-dilution",
+        "source": "media/hydrogen-dilution-three-tower-comparison.png",
+        "source_sha256": "64417228c4053ac41418022f0a6a5100f6b3c29b0862163fdb91210c13348d1e",
+        "destination": "hydrogen-dilution/assets/hydrogen-dilution-preview.webp",
+        "output_sha256": "96af264988a85770db7b6cff1eb79a39c94c3a577c844742d7c348d21f403af6",
+        "bytes": 52122,
+        "transform": "Full-frame 1600px WebP preview",
+        "authorization": "Author-selected hero or selected outlet-monitor visualization; no raw output publication.",
+        "source_commit": "b1c17c802c73ecd28abcacc5aa978ac8c798c7f4"
+      },
+      {
+        "source_repository": "private fuel-cell-h2-dilution",
+        "source": "media/hydrogen-dilution-three-tower-comparison.png",
+        "source_sha256": "64417228c4053ac41418022f0a6a5100f6b3c29b0862163fdb91210c13348d1e",
+        "destination": "hydrogen-dilution/assets/hydrogen-dilution-three-tower-comparison.png",
+        "output_sha256": "64417228c4053ac41418022f0a6a5100f6b3c29b0862163fdb91210c13348d1e",
+        "bytes": 1978114,
+        "transform": "Byte-identical copy",
+        "authorization": "Author-selected hero or selected outlet-monitor visualization; no raw output publication.",
+        "source_commit": "b1c17c802c73ecd28abcacc5aa978ac8c798c7f4"
+      }
+    ],
+    "reports": [
+      {
+        "case": "case_1",
+        "archive_sha256": "1ff4f49801ec1bcfc445bcf756540b5f689ae31a3de9ec574ea7d2adba89e86e",
+        "report_sha256": "991883aafd05069a634f4ad8d92a2085a4acfa05bf858a934735e470968766e7"
+      },
+      {
+        "case": "case_2",
+        "archive_sha256": "3621946b021f944637474fa249c1843f7e9d22613b7372ead0a0c93e65bb6737",
+        "report_sha256": "aa75120bdae6addc01a2a5283370856fc9daaaea8f9389592170efda277d2861"
+      }
+    ],
+    "calculation": "H2 mass percent = 100 * saved mass fraction; dots iteration 1500; ranges iterations 1301-1500; histories plot 1000-1500. No smoothing, mole conversion or new solver execution.",
+    "public_data": "Only the six-row displayed outlet summary CSV; full processed histories and JSON remain private.",
+    "hero_scope": "Author-supplied two-case render; no inference of domain maximum from its color limits."
+  }
 }

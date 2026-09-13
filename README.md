@@ -32,3 +32,5 @@ Open `index.html` for basic inspection, or serve this directory using a local st
 Start agent work with [AGENTS.md](AGENTS.md), which contains the versioned shared portfolio standard and local instructions. [CLAUDE.md](CLAUDE.md) imports the same entry point. Continue with [.ai/tasks/CURRENT.md](.ai/tasks/CURRENT.md). Source status, project summaries, decisions, media provenance and the verification record live in `.ai/`. Engineering source repositories are read-only. Commit, push and deployment require a separate explicit request.
 
 For the next case study, follow the [engineering project playbook](.ai/ADD_PROJECT.md): narrative, source evidence, transferable skills, media, implementation and verification.
+
+Hydrogen dilution case: [three-tower mixing, outlet concentrations and PyFluent automation](hydrogen-dilution/). Source implementation is maintained privately.
