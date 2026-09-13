@@ -1,0 +1,50 @@
+{
+  "commit": "56826ac586cebd4f33514048bec5f4120365c8c7",
+  "deployment_run": 34758549916,
+  "checks": [
+    {
+      "path": "/",
+      "status": 200,
+      "bytes": 14288
+    },
+    {
+      "path": "/hydrogen-dilution/",
+      "status": 200,
+      "bytes": 14849
+    },
+    {
+      "path": "/debubbler/",
+      "status": 200,
+      "bytes": 11854
+    },
+    {
+      "path": "/hydrogen-dilution/assets/hydrogen-dilution-three-tower-comparison.png",
+      "status": 200,
+      "bytes": 1978114,
+      "published_asset_hash_matches": true
+    },
+    {
+      "path": "/hydrogen-dilution/assets/h2-outlet-comparison.svg",
+      "status": 200,
+      "bytes": 18678,
+      "published_asset_hash_matches": true
+    },
+    {
+      "path": "/hydrogen-dilution/data/outlet-summary.csv",
+      "status": 200,
+      "bytes": 609
+    },
+    {
+      "path": "/debubbler/assets/capture-efficiency.png",
+      "status": 200,
+      "bytes": 186161,
+      "published_asset_hash_matches": true
+    },
+    {
+      "path": "/debubbler/assets/cumulative-capture.png",
+      "status": 200,
+      "bytes": 330134,
+      "published_asset_hash_matches": true
+    }
+  ]
+}
