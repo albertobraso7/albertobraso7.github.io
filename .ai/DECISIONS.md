@@ -252,3 +252,7 @@ actual receipt remain separate checks.
 Author explicitly selected Debubbler panels A/B; restore their comparison-method role with clear adjacent synthetic-series captions. This supersedes their retirement and the blanket avoidance of synthetic comparisons in the previous editorial note; do not treat synthetic values as real performance. Keep pulse conditions off the public page.
 
 Publish the separate three-tower H2 demonstration with the unchanged renamed hero, selected outlet concentrations and iteration-variability plots. Keep full histories and all implementation files private; no safety certification or domain maximum inferred. Use the new card after throttle and before reactor.
+
+## 2026-09-13 ? Problem-led case narratives
+
+Debubbler demonstrates P28; hydrogen relates to P7/P8; throttle to P10; pump to P21/P22/P23. Short three-part context blocks explain the original need, Alberto?s action and engineering consequence before the detailed evidence. Academic and residential cases keep their own identity. H2 hero caption is concise; full scale/provenance information and monitor histories remain accessible. No media, solver settings or numerical results changed.

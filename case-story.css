@@ -1,0 +1,11 @@
+/* A short engineering story before the detailed evidence. */
+.story-context { padding-top:44px; padding-bottom:44px; border-bottom:1px solid var(--line); }
+.story-context h2 { font-size:clamp(1.6rem,2.5vw,2.2rem); line-height:1.2; max-width:900px; margin:12px 0 26px; }
+.story-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:28px; }
+.story-grid article { border-top:2px solid var(--accent); padding-top:16px; min-width:0; }
+.story-grid h3 { font-size:1.05rem; margin:0 0 10px; }
+.story-grid p,.story-boundary { font-size:.95rem; line-height:1.7; color:var(--muted); margin:0; }
+.story-boundary { border-left:2px solid var(--line); padding-left:16px; margin-top:24px; max-width:1000px; }
+.story-context a { color:var(--accent); }
+.hero-wide figcaption a[href$="hydrogen-dilution-three-tower-comparison.png"] { white-space:nowrap; }
+@media(max-width:720px) { .story-grid { grid-template-columns:1fr; gap:20px; } .story-context { padding-top:30px; padding-bottom:30px; } }

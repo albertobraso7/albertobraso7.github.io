@@ -142,3 +142,9 @@ Chromium checks passed for home, hydrogen-dilution and debubbler at 1440, 768, 3
 Both Debubbler panels are byte-identical to their selected sources and retain adjacent CFD/synthetic disclosure. The pulse figure remains excluded. H2 figure endpoints and last-200 ranges were independently checked against the saved report arrays; output remains mass%, not mol%. No domain maximum or convergence validation. Private source syntax, exact report columns, finite values and iteration-order rejection checked. Only the displayed six-row summary is a public CSV; full processed histories remain private.
 
 Source repository: private fuel-cell-h2-dilution. See asset provenance for exact hashes. No Fluent run. Publication is verified separately against the pushed Pages deployment.
+
+## 2026-09-13 - Engineering narrative review
+
+Seven case introductions now explain the engineering problem, personal contribution and outcome or decision. The professional log was reread for Debubbler (28), hydrogen dilution (7/8), throttle body (10) and pump (21/22/23). Academic and residential cases retain their own source context. CASE_STORY_MAP.json records these relationships and the limits of each demonstration.
+
+Chromium checks passed across home and seven cases at 1440, 768, 390 and 320 px: no horizontal page overflow, one h1, no broken section anchors, and one story section per case. Seven context sections also passed at doubled text size. H2 native disclosures work without JavaScript; the nested figure dialog opens and closes with Escape. Desktop/mobile screenshots of the primary stories and shortened H2 hero caption were inspected. STORY_UI_VERIFICATION.json retains the responsive results. Unchanged videos were excluded from browser downloads. No solver runs, media edits or numerical changes.

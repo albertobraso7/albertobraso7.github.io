@@ -1,0 +1,53 @@
+{
+  "date": "2026-09-13",
+  "source": "Author NDA-free professional project log; academic/consulting source narratives for remaining cases",
+  "source_sha256": "881613f573a30bedcaf2d1d99f4ae174a53933c6b50e25f8f4ba9be41dc33ac4",
+  "cases": {
+    "debubbler": {
+      "projects": [
+        28
+      ],
+      "story": "Integrated separation to avoid a standalone debubbler; led iterative geometry/pressure-drop and air-routing evaluation with mechanical design; selected layout prototyped, customer-tested, incorporated.",
+      "boundary": "Professional steady Eulerian-Eulerian vs public transient VOF; 78.2% is only the demo internal-routing metric. Synthetic variants stay labelled."
+    },
+    "hydrogen-dilution": {
+      "projects": [
+        7,
+        8
+      ],
+      "story": "Baffle/back-pressure comparison and fan-driven dilution sensitivity; compare mixture, extraction and hydraulic resistance.",
+      "boundary": "Three-tower 4/10 mol% illustration is a separate study; outlet monitors fluctuate, no safety/convergence claim."
+    },
+    "throttle-body": {
+      "projects": [
+        10
+      ],
+      "story": "Bench capacity blocked larger-valve characterization; establish CFD with a measurable valve, extend operating matrix, deliver mass-flow curves.",
+      "boundary": "Public geometry/image not industrial map or validation dataset; private driver is not an automatic angle sweep."
+    },
+    "pump": {
+      "projects": [
+        21,
+        22,
+        23
+      ],
+      "story": "Integration changes mean hydraulic performance and pressure pulsations; professional signal-processing tool motivates reusable Python workflow.",
+      "boundary": "Generic performance/spectra/CPU-GPU metrics stay case-specific; no IP status or radiated sound claims."
+    },
+    "reactor": {
+      "projects": [],
+      "story": "Academic synthesis problem; dimensionless thermal reasoning connects precursor placement to observed growth.",
+      "boundary": "Masters research, not an industrial log demonstration."
+    },
+    "aneurysm": {
+      "projects": [],
+      "story": "Separate rheology, turbulence, FSI and particle studies to assess model assumptions.",
+      "boundary": "Doctoral research; no clinical validation or single combined experiment implied."
+    },
+    "ventilation": {
+      "projects": [],
+      "story": "Consulting layout comparison; room-level wind paths and separate solar exposure.",
+      "boundary": "Independent case, no quantified energy savings."
+    }
+  }
+}

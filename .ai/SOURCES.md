@@ -307,3 +307,7 @@ report; SHA, integration and plotted sampling are in ASSET_PROVENANCE.json.
 Private source: fuel-cell-h2-dilution, local folder fuel_cell_h2_dilution. Read PROJECT_CONTEXT.md, docs/portfolio_case.md and docs/results.md. Two author-supplied report ZIPs are local-only; six selected outlet values/ranges and two derived figures are public. Histories are iterative, not physical time; no domain maximum or convergence certificate. Case 1 labeling comes from author context; SET supports Case 2. Professional Projects 7/8 inform the story, not this demonstration’s numerical outcomes.
 
 The author explicitly requested restoration of Debubbler panels A/B. Only the blue demo series is CFD; other variants remain synthetic with adjacent disclosure. The pulse panel remains retired.
+
+## Narrative source review ? 2026-09-13
+
+Re-read professional Projects 28, 7, 8, 10, 21, 22 and 23 before writing the new case context. CASE_STORY_MAP.json retains the claim boundaries and source hash. No private components, operating maps, raw source log or new industrial numerical values were published. Research/consulting narratives were reviewed separately.
