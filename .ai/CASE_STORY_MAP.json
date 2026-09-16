@@ -48,6 +48,15 @@
       "projects": [],
       "story": "Consulting layout comparison; room-level wind paths and separate solar exposure.",
       "boundary": "Independent case, no quantified energy savings."
+    },
+    "electric-motor-cooling": {
+      "projects": [
+        2,
+        3
+      ],
+      "story": "Develop and execute staged oil-delivery/thermal methodology within a team; analyze winding sectors and rotation-direction effects; deliver local metrics to system-modeling colleagues.",
+      "boundary": "Generic VOF moving-mesh demo has energy off; no DPM/CHT implementation. Normalized figure is illustrative. No industrial numerical result or sole method authorship claimed.",
+      "review_date": "2026-09-15"
     }
   }
 }

@@ -151,3 +151,7 @@ G-R8SZG8VFHS is configured for the exact production origin, with consent.
 ## H2 case added 2026-09-12
 
 The grid now contains pump, FSI, throttle, hydrogen dilution, reactor and residential studies. Debubbler remains the lead feature. Its restored A/B figures explain comparative post-processing with explicit synthetic-series disclosure. H2 pairs the user-selected render with outlet monitors and private Python automation.
+
+## Electric-motor integration — 2026-09-15
+
+The author selected electric-motor oil cooling as a trial homepage feature, superseding Debubbler-first notes above. Debubbler is now the first animated grid card, followed by pump, FSI, throttle, hydrogen, reactor and residential. No duplicate motor card. The new /electric-motor-cooling/ page uses existing media/dialog behavior. Professional P2/P3 supplies the narrative; the independent VOF demo has energy off. The eight-sector analysis graphic is illustrative.

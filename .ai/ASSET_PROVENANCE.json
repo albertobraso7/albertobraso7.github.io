@@ -482,6 +482,45 @@
       "transform": "Byte-identical author-selected image. No cropping or field modification.",
       "authorization": "Explicitly selected generic 4k2 hero; all other source PNGs and component CAD excluded.",
       "scope": "Generic geometry and results, not a specific component. Exact image angle/pressure pair not inferred from driver."
+    },
+    {
+      "repository": "https://github.com/albertobraso7/emachine-oil-cooling-cfd",
+      "visibility": "private",
+      "commit": "21b8da6e1bd69b16ebbdb0623072360b083d12cc",
+      "source": "media/videos/emachine_hero_WEB_1440p_20fps.mp4",
+      "destination": "electric-motor-cooling/assets/emachine_hero_WEB_1440p_20fps.mp4",
+      "source_sha256": "ae8a36dec4df503f9b86a43aad71e9f3bad844e99e70caf40b9cbd6bd0d48547",
+      "output_sha256": "ae8a36dec4df503f9b86a43aad71e9f3bad844e99e70caf40b9cbd6bd0d48547",
+      "bytes": 2719640,
+      "transform": "Byte-identical author-selected 1440p/20fps MP4; browser reports 2560 x 1440 and 5 seconds.",
+      "authorization": "Author selected generic demonstration video and illustrative analysis image on 2026-09-15. CAD/source code remain private.",
+      "review_date": "2026-09-15"
+    },
+    {
+      "repository": "https://github.com/albertobraso7/emachine-oil-cooling-cfd",
+      "visibility": "private",
+      "commit": "21b8da6e1bd69b16ebbdb0623072360b083d12cc",
+      "source": "media/figures/emachine_analysis.png",
+      "destination": "electric-motor-cooling/assets/emachine_analysis.png",
+      "source_sha256": "4960b5ace1c5e007f546b5cc4c36643aac04cc0ce3da6af898ad8cd3b2fb92ee",
+      "output_sha256": "4960b5ace1c5e007f546b5cc4c36643aac04cc0ce3da6af898ad8cd3b2fb92ee",
+      "bytes": 1880920,
+      "transform": "Byte-identical selected image; explicitly illustrative normalized section analysis, not computed thermal results.",
+      "authorization": "Author selected generic demonstration video and illustrative analysis image on 2026-09-15. CAD/source code remain private.",
+      "review_date": "2026-09-15"
+    },
+    {
+      "repository": "https://github.com/albertobraso7/emachine-oil-cooling-cfd",
+      "visibility": "private",
+      "commit": "21b8da6e1bd69b16ebbdb0623072360b083d12cc",
+      "source": "media/figures/emachine-poster.jpg",
+      "destination": "electric-motor-cooling/assets/emachine-poster.jpg",
+      "source_sha256": "1d7c13d7fafde5db26f7aab8b5a3d37545631442de35dc516480fc5cc3cfebe8",
+      "output_sha256": "1d7c13d7fafde5db26f7aab8b5a3d37545631442de35dc516480fc5cc3cfebe8",
+      "bytes": 193503,
+      "transform": "Faithful frame extracted at playback time 1.0 s from selected MP4 through browser decoding/canvas, JPEG quality 0.90; full 2560 x 1440 frame retained.",
+      "authorization": "Author selected generic demonstration video and illustrative analysis image on 2026-09-15. CAD/source code remain private.",
+      "review_date": "2026-09-15"
     }
   ],
   "summary": {

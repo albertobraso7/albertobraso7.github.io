@@ -315,3 +315,9 @@ Re-read professional Projects 28, 7, 8, 10, 21, 22 and 23 before writing the new
 ## Author correction: Debubbler P28, 2026-09-13
 
 The author explicitly confirms that the professional P28 study also used VOF. This supersedes the original NDA-free log's steady Eulerian-Eulerian description and its Eulerian competency/STAR wording. The original source is not edited by this website task; future reuse of P28 must apply this correction. The professional time formulation has not been re-confirmed. The public demonstration remains transient VOF.
+
+## Electric-motor integration — 2026-09-15
+
+Private source: emachine-oil-cooling-cfd; workspace folder eaxle. Read README, docs/technical-review.md and original context/physics notes. Professional P2/P3 supplies team-based staged flow/thermal work, rotation-direction assessment and local metrics for system models. Independent demonstration: implicit VOF with true moving mesh, energy off; no DPM/CHT stage. The normalized eight-sector graphic is illustrative. Current mesh driver uses 3.21 mm maximum volume size, overriding stale ~87 mm physics notes. Setup notes predate the supplied animation; the Python driver does not execute a transient. No solves performed during integration.
+
+Motor source snapshot: `21b8da6e1bd69b16ebbdb0623072360b083d12cc`. Selected media hashes are recorded in ASSET_PROVENANCE.json. Original native references and Python remain private.

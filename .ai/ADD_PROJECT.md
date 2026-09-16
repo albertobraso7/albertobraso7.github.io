@@ -180,3 +180,7 @@ Illustrative comparison figures may explain a professional analysis method when 
 ## Tell the actual engineering story ? 2026-09-13
 
 Before editing a demonstration, read its specific professional project in the author?s source log. Open with the problem, personal contribution and supported outcome, then connect the visual example to the physics and transferable decisions. Keep the distinction between industrial results and the demonstration concise and explicit. Place useful verification detail in native disclosures; keep units and material limitations adjacent to results. A gallery or list of software cannot replace the story. Do not map academic/consulting work to unrelated industrial projects. See CASE_STORY_MAP.json.
+
+## Electric-motor integration — 2026-09-15
+
+Electric motor oil cooling is the current author-selected trial feature. Debubbler remains the first grid card; do not repeat the featured case there. Follow current task/decisions over historical Debubbler feature references.

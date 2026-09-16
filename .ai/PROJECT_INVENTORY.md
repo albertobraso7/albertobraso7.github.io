@@ -53,3 +53,7 @@ Debubbler is the homepage feature only; it is not repeated in the grid.
 ## Hydrogen dilution — 2026-09-12
 
 New /hydrogen-dilution/ case, after throttle body and before reactor. Three-tower species mixing, selected author hero, per-outlet mass-fraction summary, iteration histories, and separate mesh/setup Python workflow. Debubbler remains featured once; FSI remains before reactor.
+
+## Electric-motor integration — 2026-09-15
+
+Feature: [Electric motor oil cooling](../electric-motor-cooling/). Oil delivery, sliding-mesh VOF, illustrative sector analysis and Python preparation. First grid card: Debubbler; remaining order unchanged. Earlier Debubbler-only feature statements are superseded by this author-requested trial.

@@ -34,3 +34,5 @@ Start agent work with [AGENTS.md](AGENTS.md), which contains the versioned share
 For the next case study, follow the [engineering project playbook](.ai/ADD_PROJECT.md): narrative, source evidence, transferable skills, media, implementation and verification.
 
 Hydrogen dilution case: [three-tower mixing, outlet concentrations and PyFluent automation](hydrogen-dilution/). Source implementation is maintained privately.
+
+Electric motor oil cooling: [oil delivery, winding analysis and automation](electric-motor-cooling/). Current trial homepage feature; Debubbler remains in the project grid. Private implementation sources are not published by this website.

@@ -181,3 +181,7 @@ full standard and needs no sibling folders to follow it.
 The author explicitly onboarded Debubbler on 2026-09-10 and selected it as the
 homepage feature, superseding the managed block's earlier deferral. See the local
 project context and source register; preserve solver execution restrictions.
+
+## Electric-motor integration — 2026-09-15
+
+The author requests Electric Motor Oil Cooling as a trial homepage feature; Debubbler remains an animated grid case. This supersedes the earlier lead-case selection above. Respect the motor flow-only/illustrative thermal distinction.

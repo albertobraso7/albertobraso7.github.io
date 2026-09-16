@@ -150,3 +150,23 @@ Seven case introductions now explain the engineering problem, personal contribut
 Chromium checks passed across home and seven cases at 1440, 768, 390 and 320 px: no horizontal page overflow, one h1, no broken section anchors, and one story section per case. Seven context sections also passed at doubled text size. H2 native disclosures work without JavaScript; the nested figure dialog opens and closes with Escape. Desktop/mobile screenshots of the primary stories and shortened H2 hero caption were inspected. STORY_UI_VERIFICATION.json retains the responsive results. Unchanged videos were excluded from browser downloads. No solver runs, media edits or numerical changes.
 
 Publication receipt: f3b2de62096d377267edcc0cafa33a9f476ae743 is pushed and matched origin/main. Production responses for all seven case routes and shared CSS were HTTP 200; home, seven case HTML files and CSS match local content after normalizing line endings. The short H2 caption and new story anchors are present. Pages latest-build metadata returned built/success but still named the previous documentation commit 43751ac; actual production content was therefore verified directly against all nine changed public files.
+
+
+## Electric-motor integration — 2026-09-15
+
+Chromium checks passed on home and /electric-motor-cooling/ at 1440, 768, 390 and
+320 px: one h1, no horizontal overflow, no broken section anchors or loaded images,
+and no page script errors. New video decodes at 2560 x 1440, duration 5 seconds.
+Visible playback, offscreen pause, persistent manual pause and reduced-motion
+pause passed. Figure keyboard opening, Escape and restored focus passed.
+Debubbler participates in the Multiphysics filter. Native disclosures and case
+text work without JavaScript. Desktop/mobile feature and decoded analysis figure
+were visually inspected; full-resolution enlargement keeps small plot labels accessible.
+
+New-page/home local links resolve. Video and PNG match the authorized source
+bytes; poster is a full-frame extraction at 1 second. All 50 original engineering
+files were hash-checked after relocation; Python syntax and relocated CAD path
+checked without executing Fluent. Mesh/case/data exclusions reviewed separately.
+Public CV SHA remains 035393989f75f22f590717f95d9eb0e9fc5bbe413ffc63ccee3654da610a1d46.
+Flow-only VOF, illustrative thermal chart and professional P2/P3 outcomes remain
+explicitly separated. Publication receipt follows in CURRENT.

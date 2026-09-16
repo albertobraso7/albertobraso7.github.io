@@ -1,0 +1,7 @@
+.research-intro{grid-template-columns:1fr;max-width:1000px}
+.example-boundary{max-width:960px;color:var(--muted);font-size:.9rem;line-height:1.7}
+.reading-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin-top:30px}
+.script-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-bottom:28px}
+.script-grid article{padding:26px;border:1px solid var(--line);background:var(--surface)}
+.script-grid article p:last-child,.reading-grid article p:last-child{margin-bottom:0}
+@media(max-width:740px){.reading-grid,.script-grid{grid-template-columns:1fr;gap:24px}.script-grid article{padding:20px}}

@@ -13,7 +13,7 @@ export const config = Object.freeze({
 });
 
 export const pages = Object.freeze({
-  '/': 'home', '/pump/': 'pump', '/debubbler/': 'debubbler',
+  '/': 'home', '/electric-motor-cooling/': 'electric-motor-cooling', '/pump/': 'pump', '/debubbler/': 'debubbler',
   '/throttle-body/': 'throttle-body', '/aneurysm/': 'aneurysm',
   '/hydrogen-dilution/': 'hydrogen-dilution', '/reactor/': 'reactor', '/ventilation/': 'ventilation',
   '/privacy.html': 'privacy', '/blog.html': 'blog', '/projects/dog.html': 'dog',

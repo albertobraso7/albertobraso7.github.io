@@ -260,3 +260,7 @@ Debubbler demonstrates P28; hydrogen relates to P7/P8; throttle to P10; pump to 
 ## Debubbler public scope and physics correction - 2026-09-13
 
 Use the author's VOF correction for P28 over the older source-log methodology. Public wording emphasizes air separation in a liquid circuit, geometry comparison, pressure loss and design decisions. Omit thermal-unit/manifold architecture, component-replacement strategy, customer acceptance and platform implementation from the public case story; these details are unnecessary to demonstrate the methods. Keep generic demonstration results distinct from professional outcomes. This change does not rewrite the approved CV or private source records.
+
+## Electric-motor integration — 2026-09-15
+
+Author requests the motor feature and Debubbler in the grid for comparison. Use the exact selected 1440p/20fps MP4 and analysis PNG; extract a faithful video frame for the poster. Private CAD/STL/Python/WFT/SET are not website assets. The professional staged thermal workflow is separate from the VOF-only demo. Keep synthetic normalized plots labelled. Wetting alone does not establish heat removal. No numerical industrial improvement is reused.

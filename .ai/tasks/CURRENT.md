@@ -1,9 +1,15 @@
-# Correct and simplify the Debubbler professional story
+# Integrate electric-motor oil cooling
 
-Status: COMPLETE
+Status: IN_PROGRESS
 Last Agent: Codex
-Date: 2026-09-13
+Date: 2026-09-15
 
-Author correction: the professional P28 study also used VOF. This overrides the original NDA-free log's steady Eulerian-Eulerian wording. Do not infer the professional time formulation from that superseded sentence. Simplify product context on the public case/homepage while retaining engineering problem, personal contribution, physics and transferable skills.
+Implemented and reviewed: /electric-motor-cooling/ using selected author video
+and illustrative analysis PNG; motor trial feature; Debubbler first animated grid
+card; private source organization and recovery mapping. Professional P2/P3 story
+is separate from the flow-only generic model and illustrative thermal figure.
 
-Published commit 5d22bd02fb6693915dd7053e7468368e482a3cf3; remote SHA matched. Pages run 34777252451 completed successfully. Production home and Debubbler HTML match the reviewed files. Checked VOF attribution, removed product descriptors, internal anchors and unchanged current-CV links. Source map and source precedence notes updated. No remaining steps. Numerical evidence, media and the current CV are unchanged; private engineering source records are unchanged.
+Browser checks passed at 1440/768/390/320 px; playback, pause, reduced motion,
+figure keyboard behavior and no-JS fallback passed. CV unchanged. No Fluent run.
+Private source commit: 21b8da6e1bd69b16ebbdb0623072360b083d12cc. See VERIFICATION and ASSET_PROVENANCE.
+Remaining: verify source push, publish reviewed website/support commits and check Pages.
