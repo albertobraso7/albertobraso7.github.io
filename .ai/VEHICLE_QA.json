@@ -1,0 +1,84 @@
+{
+  "date": "2026-09-16",
+  "content_commit": "03dee6ed75950696b6764fa62f777bd2d99a694b",
+  "pages_run": 35120861595,
+  "checks": {
+    "index.html": {
+      "status": 200,
+      "matches_local": true,
+      "sha256": "936cb07b73eda13e5c5c4784f703f424a96c3f287d97121805782adc77c2575c"
+    },
+    "vehicle-aerodynamics/index.html": {
+      "status": 200,
+      "matches_local": true,
+      "sha256": "dee7bbc0e7e0f40710a56dfa0707b9c0fabb1f0e96061b5d6b7dc8f1988e9b19"
+    },
+    "vehicle-aerodynamics/vehicle.css": {
+      "status": 200,
+      "matches_local": true,
+      "sha256": "38278a7fb713def427561277a0e1c9ae0e765072db8852245bb9b9da11573290"
+    },
+    "vehicle-aerodynamics/assets/aerosuv-geometry.png": {
+      "status": 200,
+      "matches_local": true,
+      "sha256": "3549d05eb59a4815e5c14f8f7c3855f2e025d81b402aabec3136d0374b0a33c9"
+    },
+    "analytics/config.js": {
+      "status": 200,
+      "matches_local": true,
+      "sha256": "3070a46877c040b3670db02bf1de2e8e7cbd1783e49b1ce9b515ff62728fcb6a"
+    },
+    "portfolio-visual.js": {
+      "status": 200,
+      "matches_local": true,
+      "sha256": "9bcec79426e1676482de6e61173ec5a9b196ca77270f7f1457199cec9e2ce691"
+    }
+  },
+  "browser": {
+    "results": [
+      {
+        "width": 1440,
+        "overflow": false,
+        "images": true,
+        "anchors": true,
+        "order": [
+          "study-ventilation",
+          "study-vehicle"
+        ]
+      },
+      {
+        "width": 768,
+        "overflow": false,
+        "images": true,
+        "anchors": true,
+        "order": [
+          "study-ventilation",
+          "study-vehicle"
+        ]
+      },
+      {
+        "width": 390,
+        "overflow": false,
+        "images": true,
+        "anchors": true,
+        "order": [
+          "study-ventilation",
+          "study-vehicle"
+        ]
+      },
+      {
+        "width": 320,
+        "overflow": false,
+        "images": true,
+        "anchors": true,
+        "order": [
+          "study-ventilation",
+          "study-vehicle"
+        ]
+      }
+    ],
+    "errors": [],
+    "nojs": true
+  },
+  "visual_review": "Inspected desktop and mobile screenshots; preserved geometry composition and credits. Figure dialog opens and closes with Escape. Hero responsive height corrected."
+}
