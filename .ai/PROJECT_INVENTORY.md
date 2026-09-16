@@ -57,3 +57,7 @@ New /hydrogen-dilution/ case, after throttle body and before reactor. Three-towe
 ## Electric-motor integration — 2026-09-15
 
 Feature: [Electric motor oil cooling](../electric-motor-cooling/). Oil delivery, sliding-mesh VOF, illustrative sector analysis and Python preparation. First grid card: Debubbler; remaining order unchanged. Earlier Debubbler-only feature statements are superseded by this author-requested trial.
+
+## Vehicle aerodynamics — 2026-09-16
+
+`vehicle-aerodynamics/` is an independent AeroSUV study in development, placed after Residential. Its geometry hero is author-supplied; there are no numerical results yet. Professional context relates to NDA-free P01. Keep proposed physics and future deliverables visibly separate from completed industrial work.

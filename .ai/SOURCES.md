@@ -321,3 +321,7 @@ The author explicitly confirms that the professional P28 study also used VOF. Th
 Private source: emachine-oil-cooling-cfd; workspace folder eaxle. Read README, docs/technical-review.md and original context/physics notes. Professional P2/P3 supplies team-based staged flow/thermal work, rotation-direction assessment and local metrics for system models. Independent demonstration: implicit VOF with true moving mesh, energy off; no DPM/CHT stage. The normalized eight-sector graphic is illustrative. Current mesh driver uses 3.21 mm maximum volume size, overriding stale ~87 mm physics notes. Setup notes predate the supplied animation; the Python driver does not execute a transient. No solves performed during integration.
 
 Motor source snapshot: `21b8da6e1bd69b16ebbdb0623072360b083d12cc`. Selected media hashes are recorded in ASSET_PROVENANCE.json. Original native references and Python remain private.
+
+## Vehicle aerodynamics — 2026-09-16
+
+Private source repository: `vehicle-aerodynamics-cooling-cfd`, local `vehicle_aerodynamics`. Source brief: `docs/AEROSUV_PROJECT_CONTEXT_AND_PORTFOLIO_BRIEF.md`; hero: `assets/images/vehicle.png`. Hero copied byte-identically. AeroSUV attribution: FKFS/Röchling Automotive, ECARA https://www.ecara.org/drivaer-1, SAE paper https://saemobilus.sae.org/papers/introduction-aerosuv-a-new-generic-suv-model-aerodynamic-research-2019-01-0646. Publication includes the selected geometry rendering, not downloaded CAD/STL archives. Case is in development; no final solver results.

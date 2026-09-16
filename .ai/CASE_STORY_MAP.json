@@ -57,6 +57,13 @@
       "story": "Develop and execute staged oil-delivery/thermal methodology within a team; analyze winding sectors and rotation-direction effects; deliver local metrics to system-modeling colleagues.",
       "boundary": "Generic VOF moving-mesh demo has energy off; no DPM/CHT implementation. Normalized figure is illustrative. No industrial numerical result or sole method authorship claimed.",
       "review_date": "2026-09-15"
+    },
+    "vehicle-aerodynamics": {
+      "projects": [
+        1
+      ],
+      "story": "Professional full-vehicle and underhood CFD supplied radiator flow to system engineers and compared front pressures with Pitot measurements.",
+      "boundary": "Independent AeroSUV demonstration is in geometry preparation/meshing. Models and comparisons are proposed; no numerical results, drag reduction, heat-rejection prediction or AeroSUV validation claimed."
     }
   }
 }

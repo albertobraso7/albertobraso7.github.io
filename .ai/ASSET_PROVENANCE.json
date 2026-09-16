@@ -521,6 +521,17 @@
       "transform": "Faithful frame extracted at playback time 1.0 s from selected MP4 through browser decoding/canvas, JPEG quality 0.90; full 2560 x 1440 frame retained.",
       "authorization": "Author selected generic demonstration video and illustrative analysis image on 2026-09-15. CAD/source code remain private.",
       "review_date": "2026-09-15"
+    },
+    {
+      "repository": "private vehicle-aerodynamics-cooling-cfd",
+      "source": "assets/images/vehicle.png",
+      "destination": "vehicle-aerodynamics/assets/aerosuv-geometry.png",
+      "source_sha256": "3549d05eb59a4815e5c14f8f7c3855f2e025d81b402aabec3136d0374b0a33c9",
+      "output_sha256": "3549d05eb59a4815e5c14f8f7c3855f2e025d81b402aabec3136d0374b0a33c9",
+      "bytes": 799329,
+      "transform": "Byte-identical author-supplied geometry view, explicitly selected for publication. Component colors, not CFD results.",
+      "attribution": "AeroSUV: FKFS and Röchling Automotive, distributed through ECARA; SAE 2019-01-0646. No geometry archive redistributed.",
+      "authorization": "Author requested this supplied image as the initial public hero, 2026-09-16."
     }
   ],
   "summary": {

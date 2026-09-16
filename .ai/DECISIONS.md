@@ -273,3 +273,7 @@ the hero followed directly by Engineering projects. Remove that section and its
 Automation navigation item. Keep concrete automation evidence inside individual
 case studies, professional project cards, the existing profile and project filter.
 Do not reintroduce a generic capability section between the hero and projects.
+
+## Vehicle study and mandatory CV examples — 2026-09-16
+
+Author requests the new vehicle case below Residential. It illustrates methods from professional P01 using a separate credited AeroSUV geometry; development status must stay visible. Do not wait for a vacancy to create this page. All future CVs retain Public Technical Examples, including motor oil cooling and the vehicle study; canonical CV rules/templates remain in private career-materials. New baseline creation does not silently replace the public selected CV.

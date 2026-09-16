@@ -1,22 +1,15 @@
-# Simplify homepage reading order
+# Vehicle study and shared career system
 
-Status: COMPLETE
+Status: IN_PROGRESS
 Last Agent: Codex
 Date: 2026-09-16
 
-Author requests removing the abstract Workflow Improvement section so Engineering
-projects follows the hero directly. Section and its navigation item removed.
-Automation remains demonstrated in case studies, project cards, profile and filter.
-Acceptance: direct section order, working navigation/filter, desktop/mobile layout,
-reviewed commit/push and production verification. No engineering source changes.
+Objective: publish the independent Vehicle Aerodynamics & Cooling Airflow case after Residential, create the private source repository, and preserve mandatory public examples in the shared CV template. In parallel consolidate the author-requested portable CV evidence/rules system inside career-materials.
 
-Chromium passed at 1440/768/390/320 px: home -> work -> approach -> contact;
-no overflow or broken local anchors. Automation filter still shows its four
-eligible grid cases. Desktop transition screenshot inspected. No changes to case
-pages, media, CV or engineering sources.
+Acceptance: correct attribution and development status; no invented results; working responsive page, figure and filter; private source backup; shared CV section and reviewed two-page builds; canonical career documents and thin agent adapters; tested evidence/release gates and reviewed normal pushes.
 
-Published content commit: 30bb7f9399910327d9b5ca171d57dc16022cfedb; remote main
-matched. Pages run 35045646788 succeeded. On 2026-09-16, production home returned
-HTTP 200 and matched reviewed HTML (line endings normalized), with the removed
-section absent. The previous usage-limit interruption prevented only this final
-production check and closure record; both are now complete. No remaining work.
+Vehicle source repository created and pushed privately at 2d4da500c50c1c08b9707f72d3756a46bad55927. Website verified at 1440/768/390/320 px, including card order, flow filter, no false automation tag, figure keyboard close and no-JS fallback. Geometry image copied unchanged; proposed physics and pending results labelled.
+
+Career system implemented with five canonical documents, shared agent adapters, generated evidence bank and requirement-map checker. 32 regression tests pass. Reviewed baseline build 27d5ea7d6da9 has two A4/Letter pages; all four pages inspected, nine project links verified and flat Overleaf ZIPs recompiled with identical text/positions. No public CV replacement or vacancy-specific application requested in this revision.
+
+Next: publish reviewed website changes, verify Pages and push career/standards updates. The temporary approval-service capacity failure was resolved through normal review; no permission block remains.
