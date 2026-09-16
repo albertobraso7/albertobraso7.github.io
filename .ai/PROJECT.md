@@ -155,3 +155,12 @@ The grid now contains pump, FSI, throttle, hydrogen dilution, reactor and reside
 ## Electric-motor integration — 2026-09-15
 
 The author selected electric-motor oil cooling as a trial homepage feature, superseding Debubbler-first notes above. Debubbler is now the first animated grid card, followed by pump, FSI, throttle, hydrogen, reactor and residential. No duplicate motor card. The new /electric-motor-cooling/ page uses existing media/dialog behavior. Professional P2/P3 supplies the narrative; the independent VOF demo has energy off. The eight-sector analysis graphic is illustrative.
+
+
+## Direct route to projects — 2026-09-15
+
+The author finds the standalone Workflow Improvement section abstract and wants
+the hero followed directly by Engineering projects. Remove that section and its
+Automation navigation item. Keep concrete automation evidence inside individual
+case studies, professional project cards, the existing profile and project filter.
+Do not reintroduce a generic capability section between the hero and projects.

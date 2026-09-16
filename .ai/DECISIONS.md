@@ -264,3 +264,12 @@ Use the author's VOF correction for P28 over the older source-log methodology. P
 ## Electric-motor integration — 2026-09-15
 
 Author requests the motor feature and Debubbler in the grid for comparison. Use the exact selected 1440p/20fps MP4 and analysis PNG; extract a faithful video frame for the poster. Private CAD/STL/Python/WFT/SET are not website assets. The professional staged thermal workflow is separate from the VOF-only demo. Keep synthetic normalized plots labelled. Wetting alone does not establish heat removal. No numerical industrial improvement is reused.
+
+
+## Direct route to projects — 2026-09-15
+
+The author finds the standalone Workflow Improvement section abstract and wants
+the hero followed directly by Engineering projects. Remove that section and its
+Automation navigation item. Keep concrete automation evidence inside individual
+case studies, professional project cards, the existing profile and project filter.
+Do not reintroduce a generic capability section between the hero and projects.
