@@ -1,15 +1,15 @@
-# Vehicle aerodynamics publication
+# Reactor hero image swap
 
 Status: COMPLETE
-Last Agent: Codex
-Date: 2026-09-16
+Last Agent: Claude
+Date: 2026-09-18
 
-Objective: publish the independent Vehicle Aerodynamics & Cooling Airflow case after Residential.
+Objective: replace the reactor streamline image with the author-selected `view_centrado_3.png` on the reactor case hero and homepage card.
 
-Acceptance: correct attribution and development status; no invented results; working responsive page, figure and filter; reviewed publication and production verification.
+Acceptance: byte-identical original on the case page, 2:1 WebP card preview, provenance recorded, production routes return HTTP 200.
 
-Website verified at 1440/768/390/320 px, including card order, flow filter, no false automation tag, figure keyboard close and no-JS fallback. Geometry image copied unchanged; proposed physics and pending results labelled.
+Changed: `reactor/index.html` (hero + enlarge links -> `assets/streamlines-centered.png`), `index.html` (card -> `reactor/assets/streamlines-centered-preview.webp`), `.ai/ASSET_PROVENANCE.json` (two entries). Previous `streamlines.png` / `streamlines-preview.webp` retained, now unreferenced.
 
-Published website content: 03dee6ed75950696b6764fa62f777bd2d99a694b; Pages run 35120861595 succeeded. Production homepage, case HTML, image, CSS, filter and analytics config returned HTTP 200 and matched reviewed files. Receipt: .ai/VEHICLE_QA.json.
+Source: cvd-tubular-reactor-cfd `figures/source_exports/view_centrado_3.png` (private repo; commit f984873). Alt text and caption unchanged: same simulation and flow structures.
 
-No remaining website work. Future vehicle meshing and results are deliberately outside this documentation milestone. Private workspace records are maintained separately.
+The GitHub profile README (`albertobraso7/albertobraso7`) is a separate repo, created by the author; it references the same preview URL.
