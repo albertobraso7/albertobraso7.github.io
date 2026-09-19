@@ -33,9 +33,21 @@
       "anonymous_publication_verified": false,
       "source_sha256": "4250df516c24c4a038abd37e450980da1520784b09fab8853befb1dd6f16dbff",
       "destination": "reactor/assets/streamlines-centered-preview.webp",
-      "output_sha256": "c049548b03c2045dbfca200cfd1d4b3bde36965bca4e129635b408081b7be365",
-      "bytes": 90552,
-      "transform": "Pillow 12.0.0: full-frame 1280x640 LANCZOS WebP, quality 88, metadata removed. Homepage card preview; original retained alongside."
+      "output_sha256": "17729f01482f03fde197598fd7a2be82ddb615b42d5ecbebc4df62fba6ca6fc2",
+      "bytes": 71254,
+      "transform": "Pillow 12.0.0: crop box (600,300,1400,700) centered on the preform, 800x400 native pixels (no resampling), WebP quality 90, metadata removed. Homepage card and profile README preview; original retained alongside."
+    },
+    {
+      "repository": "https://github.com/albertobraso7/cvd-tubular-reactor-cfd",
+      "commit": "f984873f29f4af49db56d60a3f20616f4a011235",
+      "source": "figures/source_exports/view_centrado_3.png",
+      "public_git_blob": "ca0afb0f561b34dc2291e98d28af45e994d24f06",
+      "anonymous_publication_verified": false,
+      "source_sha256": "4250df516c24c4a038abd37e450980da1520784b09fab8853befb1dd6f16dbff",
+      "destination": "reactor/assets/streamlines-centered-hero.webp",
+      "output_sha256": "601e6dd63b009a6b755fb7fe6fd710ccd7227099eae1269e5411c2c74d233a26",
+      "bytes": 155712,
+      "transform": "Pillow 12.0.0: crop box (200,340,1800,660) removing empty black margins, 1600x320 native pixels (no resampling), WebP quality 90, metadata removed. Reactor case hero display; 'Enlarge figure' links the unmodified original."
     },
     {
       "repository": "https://github.com/albertobraso7/cvd-tubular-reactor-cfd",

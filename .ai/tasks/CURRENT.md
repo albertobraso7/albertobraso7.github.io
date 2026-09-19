@@ -8,7 +8,7 @@ Objective: replace the reactor streamline image with the author-selected `view_c
 
 Acceptance: byte-identical original on the case page, 2:1 WebP card preview, provenance recorded, production routes return HTTP 200.
 
-Changed: `reactor/index.html` (hero + enlarge links -> `assets/streamlines-centered.png`), `index.html` (card -> `reactor/assets/streamlines-centered-preview.webp`), `.ai/ASSET_PROVENANCE.json` (two entries). Previous `streamlines.png` / `streamlines-preview.webp` retained, now unreferenced.
+Changed: `reactor/index.html` (hero -> cropped `assets/streamlines-centered-hero.webp` 1600x320; enlarge links -> unmodified `assets/streamlines-centered.png`), `index.html` (card -> 800x400 preform-centered crop `reactor/assets/streamlines-centered-preview.webp`), `.ai/ASSET_PROVENANCE.json`. Crops follow author request to remove empty black margins. Previous `streamlines.png` / `streamlines-preview.webp` retained, now unreferenced.
 
 Source: cvd-tubular-reactor-cfd `figures/source_exports/view_centrado_3.png` (private repo; commit f984873). Alt text and caption unchanged: same simulation and flow structures.
 
