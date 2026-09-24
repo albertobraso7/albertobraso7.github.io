@@ -1,0 +1,9 @@
+# Ansys Fluent and PyFluent write into the current working directory, so launching a
+# solver session from this folder leaves process output in the site root. None of it
+# belongs to the published site. Run transcripts and report-definition histories are
+# kept with their case, under that case's local-output/ folder.
+fluent-*.trn
+*-rfile.out
+fluent-*-error.log
+pyfluent_watchdog.err
+cleanup-fluent-*.bat
