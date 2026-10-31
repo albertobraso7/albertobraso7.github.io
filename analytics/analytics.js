@@ -19,7 +19,7 @@ function initialize() {
   const sections = [], cards = [], videos = [], seenScroll = new Set();
   const sampledErrors = Math.random() < config.errorSampleRate;
   const cleanId = value => String(value || 'none').replace(/[^a-zA-Z0-9_-]/g, '-').slice(0, 64);
-  const projectId = ['home', 'blog', 'privacy'].includes(pageId) ? 'none' : pageId;
+  const projectId = ['home', 'blog', 'privacy', 'credentials'].includes(pageId) ? 'none' : pageId;
   const position = el => el.closest('header') ? 'header' : el.closest('footer') ? 'footer' :
     el.closest('.hero,.research-hero,.pump-hero') ? 'hero' :
     cleanId(el.closest('section[id]')?.id || 'body');

@@ -1,15 +1,15 @@
-# Reactor hero image swap
+# Certifications page and links
 
 Status: COMPLETE
 Last Agent: Claude
-Date: 2026-09-18
+Date: 2026-10-31
 
-Objective: replace the reactor streamline image with the author-selected `view_centrado_3.png` on the reactor case hero and homepage card.
+Objective: publish the author's public training records at `/credentials/` and link them from the homepage, footer and GitHub profile README.
 
-Acceptance: byte-identical original on the case page, 2:1 WebP card preview, provenance recorded, production routes return HTTP 200.
+Acceptance: 41 public credentials with byte-identical PDFs (SHA-256 checked at build); private-only records (8 scanned constancias, 1 employer-internal record) absent and returning 404; page reachable from homepage experience intro and footer; analytics allowlist includes `/credentials/` as a non-project page.
 
-Changed: `reactor/index.html` (hero -> cropped `assets/streamlines-centered-hero.webp` 1600x320; enlarge links -> unmodified `assets/streamlines-centered.png`), `index.html` (card -> 800x400 preform-centered crop `reactor/assets/streamlines-centered-preview.webp`), `.ai/ASSET_PROVENANCE.json`. Crops follow author request to remove empty black margins. Previous `streamlines.png` / `streamlines-preview.webp` retained, now unreferenced.
+Changed: `credentials/` (generated; do not edit by hand), `index.html` (experience intro + footer link), `analytics/config.js`, `analytics/analytics.js`.
 
-Source: cvd-tubular-reactor-cfd `figures/source_exports/view_centrado_3.png` (private repo; commit f984873). Alt text and caption unchanged: same simulation and flow structures.
+Source of record: private repo `albertobraso7/credentials-archive` (`credentials.json`; regenerate with `scripts/build_public_page.py <this clone>`). Author decisions 2026-10-31: CSWA and Coursera verification URLs may be public; scanned constancias stay private; degree titles deferred.
 
-The GitHub profile README (`albertobraso7/albertobraso7`) is a separate repo, created by the author; it references the same preview URL.
+Limitation: Amesim PDFs show 2025-10-29 (printed date); real completion dates pending from the author. No in-browser visual check was run for this change (no browser tool in session); HTTP and byte checks only.

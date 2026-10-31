@@ -17,7 +17,7 @@ export const pages = Object.freeze({
   '/throttle-body/': 'throttle-body', '/aneurysm/': 'aneurysm',
   '/hydrogen-dilution/': 'hydrogen-dilution', '/reactor/': 'reactor', '/ventilation/': 'ventilation',
   '/vehicle-aerodynamics/': 'vehicle-aerodynamics',
-  '/privacy.html': 'privacy', '/blog.html': 'blog', '/projects/dog.html': 'dog',
+  '/privacy.html': 'privacy', '/blog.html': 'blog', '/credentials/': 'credentials', '/projects/dog.html': 'dog',
   '/projects/f1.html': 'f1', '/projects/pump.html': 'pump-archive',
 });
 
