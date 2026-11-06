@@ -10,7 +10,7 @@ Acceptance: homepage header nav has "Certifications" (between Capabilities and P
 
 Changed: `index.html`; `credentials/index.html` (generated). In the private `credentials-archive` repo: `credentials.json` (Amesim `display_date: "2025"` plus note; `date` keeps the PDF-printed value), `scripts/build_public_page.py` (`display_date` precedence, Amesim blurb), `LINKS.md` (regenerated).
 
-Follow-up: course durations removed from the page (author: irrelevant).
+Follow-up: course durations removed and rows show the year only; full dates stay in the PDFs and private LINKS.md (author: cleaner).
 
 Checks: iframe layout at 1280/390/320 px (nav wraps to two rows on mobile, no overflow); regenerated page shows 2025 for the ten Amesim rows; only `credentials/index.html` changed under `credentials/`.
 
