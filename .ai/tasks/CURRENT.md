@@ -1,17 +1,17 @@
-# Certifications discoverability and Amesim dates
+# Capability map: separate throttle bodies from engines
 
 Status: COMPLETE
 Last Agent: Claude
 Date: 2026-11-06
 
-Objective: make `/credentials/` reachable from the homepage, and stop showing the Amesim PDF download date (2025-10-29) as if it were the completion date.
+Objective: show throttle-body work and engine/fuel-injection work as separate application areas in the homepage capability map.
 
-Acceptance: homepage header nav has "Certifications" (between Capabilities and Profile); hero actions have "Certifications and training ↗"; existing Industrial-experience and footer links kept; Amesim rows show "2025" and the group text says "completed during 2025"; no invented day-level dates; PDFs unchanged; no horizontal overflow at 1280/390/320 px.
+Acceptance: 13 areas; "Engines & fuel injection" holds the seven injection/mixture studies with no case link; "Throttle bodies" holds the virtual characterization study with the throttle-body image and case link; totals unchanged (40 studies, 16 rows, 8 public cases); no squeezed Total column or horizontal scroll at 1280 px desktop.
 
-Changed: `index.html`; `credentials/index.html` (generated). In the private `credentials-archive` repo: `credentials.json` (Amesim `display_date: "2025"` plus note; `date` keeps the PDF-printed value), `scripts/build_public_page.py` (`display_date` precedence, Amesim blurb), `LINKS.md` (regenerated).
+Changed: `capability-map.js` (areas, one study re-tagged), `capability-map.css` (min-width 1130, thumbnails 56×34, tighter header padding), `.ai/DECISIONS.md`.
 
-Follow-up: course durations removed and rows show the year only; full dates stay in the PDFs and private LINKS.md (author: cleaner).
+Checks: local Chrome; iframe widths 1280/1366/1920 fit without table scroll, 390 scrolls horizontally as designed; 59 cells, no broken images.
 
-Checks: iframe layout at 1280/390/320 px (nav wraps to two rows on mobile, no overflow); regenerated page shows 2025 for the ten Amesim rows; only `credentials/index.html` changed under `credentials/`.
+Next: when the author adds the engine/injection portfolio project, add `img` and `pub` to the `eng` area.
 
-Open: real Amesim completion dates (Siemens learning transcript) can replace `display_date` when the author provides them. Do not substitute estimated days.
+Previous task (2026-11-06, certifications discoverability and year-only dates) is complete and published.

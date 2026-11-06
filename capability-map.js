@@ -4,7 +4,8 @@ const root=document.getElementById('capability-map'); if(!root)return;
 const areas=[
  {k:'emot',t:'Electric motors',img:'electric-motor-cooling/assets/emachine-poster.jpg',pub:{href:'electric-motor-cooling/',label:'Case study'}},
  {k:'veh',t:'Vehicle airflow',img:'vehicle-aerodynamics/assets/aerosuv-geometry.png',pub:{href:'vehicle-aerodynamics/',label:'In development',dev:1}},
- {k:'eng',t:'Engines & fuel injection',img:'throttle-body/assets/compressible-flow.png',pub:{href:'throttle-body/',label:'Case study'}},
+ {k:'eng',t:'Engines & fuel injection'},
+ {k:'thr',t:'Throttle bodies',img:'throttle-body/assets/compressible-flow.png',pub:{href:'throttle-body/',label:'Case study'}},
  {k:'h2',t:'Hydrogen & fuel cells',img:'hydrogen-dilution/assets/hydrogen-dilution-preview.webp',pub:{href:'hydrogen-dilution/',label:'Case study'}},
  {k:'hp',t:'Heat pumps & refrigerants'},
  {k:'pump',t:'Pumps',img:'pump/assets/smm_flow_field_frame.jpg',pub:{href:'pump/',label:'Case study'}},
@@ -33,7 +34,7 @@ const studies=[
  ['h2','Hydrogen dilution: baffle design','spec','Industrial'],
  ['h2','Hydrogen ventilation system check','spec','Industrial'],
  ['h2','Water injection for fuel-cell cathode air cooling','spray pc por','Industrial'],
- ['eng','Throttle-body virtual characterization','comp val','Industrial'],
+ ['thr','Throttle-body virtual characterization','comp val','Industrial'],
  ['h2','Two-phase flow in an electrolyzer porous layer','multi por red auto','Industrial'],
  ['eng','Hydrogen engine mixture formation','comp spec','Industrial'],
  ['eng','Alternative-fuel injector sensitivity','comp por','Industrial'],

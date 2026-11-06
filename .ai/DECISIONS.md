@@ -281,3 +281,7 @@ The author selected a physics/methods × application-area count matrix over a pr
 ## Vehicle study and mandatory CV examples — 2026-09-16
 
 Author requests the new vehicle case below Residential. It illustrates methods from professional P01 using a separate credited AeroSUV geometry; development status must stay visible. Do not wait for a vacancy to create this page. All future CVs retain Public Technical Examples, including motor oil cooling and the vehicle study; canonical CV rules/templates remain in private career-materials. New baseline creation does not silently replace the public selected CV.
+
+## Throttle bodies separate from engines in the capability map — 2026-11-06
+
+The author split the former "Engines & fuel injection" column: "Throttle bodies" (P10, linked to the throttle-body case) and "Engines & fuel injection" (seven injection/mixture studies, no public case yet). The author plans a public engine/injection portfolio project; when it exists, add `img` and `pub` to the `eng` area in `capability-map.js`. Thirteen areas fit at 1280 px after slightly smaller thumbnails.
