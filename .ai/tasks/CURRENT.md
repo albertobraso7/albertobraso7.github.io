@@ -1,15 +1,15 @@
-# Certifications page redesign
+# Certifications discoverability and Amesim dates
 
 Status: COMPLETE
 Last Agent: Claude
-Date: 2026-11-05
+Date: 2026-11-06
 
-Objective: the author found `/credentials/` hard to read (narrow centered column, oversized collapsible headings, plain header). Redesign it in the site's identity without changing any record, PDF or link.
+Objective: make `/credentials/` reachable from the homepage, and stop showing the Amesim PDF download date (2025-10-29) as if it were the completion date.
 
-Acceptance: site header/footer and AB identity; hero with intro and stats strip (41 records, 1 certification, 3 instructor-led, 37 online, 5 issuers); jump chips per group; each group as a two-column block (issuer · kind eyebrow, title, count, description | record rows with date, hours, PDF/Verify buttons); groups always open; group anchors (`#avl`, …) and per-record anchors unchanged; 41 PDFs byte-identical; LINKS.md URLs unchanged (only group order); no overflow at 320/390 px.
+Acceptance: homepage header nav has "Certifications" (between Capabilities and Profile); hero actions have "Certifications and training ↗"; existing Industrial-experience and footer links kept; Amesim rows show "2025" and the group text says "completed during 2025"; no invented day-level dates; PDFs unchanged; no horizontal overflow at 1280/390/320 px.
 
-Changed: `credentials/index.html` (generated). Generator lives in the private `credentials-archive` repo (`scripts/build_public_page.py`, inline CSS with `cr-` prefix); regenerate with `python -I scripts/build_public_page.py <this clone>`; never edit the page by hand.
+Changed: `index.html`; `credentials/index.html` (generated). In the private `credentials-archive` repo: `credentials.json` (Amesim `display_date: "2025"` plus note; `date` keeps the PDF-printed value), `scripts/build_public_page.py` (`display_date` precedence, Amesim blurb), `LINKS.md` (regenerated).
 
-Checks: Chrome at desktop, 1280, 390 and 320 px (iframes); all 41 PDF links resolve locally; group and record anchors present.
+Checks: iframe layout at 1280/390/320 px (nav wraps to two rows on mobile, no overflow); regenerated page shows 2025 for the ten Amesim rows; only `credentials/index.html` changed under `credentials/`.
 
-Previous task (2026-11-05, capability map) is complete; see DECISIONS "Capability map after the project lists".
+Open: real Amesim completion dates (Siemens learning transcript) can replace `display_date` when the author provides them. Do not substitute estimated days.
