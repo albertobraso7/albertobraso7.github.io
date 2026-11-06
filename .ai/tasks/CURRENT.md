@@ -1,17 +1,15 @@
-# Homepage capability map
+# Certifications page redesign
 
 Status: COMPLETE
 Last Agent: Claude
 Date: 2026-11-05
 
-Objective: show the breadth of the author's work as one interactive matrix (physics/methods × application areas) on the homepage, without repeating the case cards.
+Objective: the author found `/credentials/` hard to read (narrow centered column, oversized collapsible headings, plain header). Redesign it in the site's identity without changing any record, PDF or link.
 
-Acceptance: new `02 / CAPABILITY MAP` section between Industrial experience and Engineering approach (approach → 03, contact → 04); nav link "Capabilities"; 40 studies (37 industrial from the NDA-free log + PhD, MSc, consulting) counted by cell, select-to-list panel; areas with a public case link to it; no project IDs, customer names, operating data or results; hero count 30 → 37 to match the log; no page overflow at 390/320 px (table scrolls inside its frame); no console errors.
+Acceptance: site header/footer and AB identity; hero with intro and stats strip (41 records, 1 certification, 3 instructor-led, 37 online, 5 issuers); jump chips per group; each group as a two-column block (issuer · kind eyebrow, title, count, description | record rows with date, hours, PDF/Verify buttons); groups always open; group anchors (`#avl`, …) and per-record anchors unchanged; 41 PDFs byte-identical; LINKS.md URLs unchanged (only group order); no overflow at 320/390 px.
 
-Changed: `capability-map.js` (data + render), `capability-map.css` (`capx-` prefix; avoids research-depth `.capability-map`), `index.html` (section, nav link, stylesheet/script, eyebrow numbers, hero count).
+Changed: `credentials/index.html` (generated). Generator lives in the private `credentials-archive` repo (`scripts/build_public_page.py`, inline CSS with `cr-` prefix); regenerate with `python -I scripts/build_public_page.py <this clone>`; never edit the page by hand.
 
-Checks: Chrome at desktop width (rendering, hover cross-highlight, cell click/keyboard focus, panel, thumbnails load, console clean); 390/320 px through same-origin iframes (no document overflow, sticky row labels, 4 nav links visible). Thumbnails reuse images already loaded by the homepage cards.
+Checks: Chrome at desktop, 1280, 390 and 320 px (iframes); all 41 PDF links resolve locally; group and record anchors present.
 
-Author decisions 2026-11-05: the classification and generic study labels shown in the prototype were approved as they are ("Me agrada así como está"). P28 counted as VOF per the earlier author correction, although `career-materials/evidence/projects.json` still says Eulerian-Eulerian.
-
-Limitation: classification of each study into physics/areas was derived from the method text in the private log; update `capability-map.js` when new projects are added there.
+Previous task (2026-11-05, capability map) is complete; see DECISIONS "Capability map after the project lists".
