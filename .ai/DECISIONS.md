@@ -284,4 +284,8 @@ Author requests the new vehicle case below Residential. It illustrates methods f
 
 ## Throttle bodies separate from engines in the capability map — 2026-11-06
 
-The author split the former "Engines & fuel injection" column: "Throttle bodies" (P10, linked to the throttle-body case) and "Engines & fuel injection" (seven injection/mixture studies, no public case yet). The author plans a public engine/injection portfolio project; when it exists, add `img` and `pub` to the `eng` area in `capability-map.js`. Thirteen areas fit at 1280 px after slightly smaller thumbnails.
+The author split the former "Engines & fuel injection" column: "Throttle bodies" (P10, linked to the throttle-body case) and "Engines & fuel injection" (seven injection/mixture studies, no public case yet). The author plans a public engine/injection portfolio project; when it exists, add `img` and `pub` to the `eng` area in `capability-map.js`. The author rejected smaller thumbnails: they stay 62×38; the table keeps its natural width (fits from about 1366 px, scrolls sideways below).
+
+## GitHub profile linked from the portfolio — 2026-11-06
+
+The author wants visitors arriving from LinkedIn or messages to reach the GitHub profile as well. Link the profile (https://github.com/albertobraso7) from the homepage Contact links and footer. The profile README is public; engineering repositories remain private, so never link individual repositories or implementation files.

@@ -1,17 +1,15 @@
-# Capability map: separate throttle bodies from engines
+# Capability-map thumbnails and GitHub profile link
 
 Status: COMPLETE
 Last Agent: Claude
 Date: 2026-11-06
 
-Objective: show throttle-body work and engine/fuel-injection work as separate application areas in the homepage capability map.
+Objective: restore the capability-map thumbnail size the author preferred (62×38) while keeping the throttle/engine column split, and link the GitHub profile from the portfolio.
 
-Acceptance: 13 areas; "Engines & fuel injection" holds the seven injection/mixture studies with no case link; "Throttle bodies" holds the virtual characterization study with the throttle-body image and case link; totals unchanged (40 studies, 16 rows, 8 public cases); no squeezed Total column or horizontal scroll at 1280 px desktop.
+Acceptance: thumbnails 62×38, header padding and row-header width as before the split; Total column never squeezed (table `min-width:max-content`, column hint 70 px); homepage Contact shows LinkedIn · GitHub · Email and the footer shows Certifications · GitHub · Blog; GitHub link opens the profile in a new tab.
 
-Changed: `capability-map.js` (areas, one study re-tagged), `capability-map.css` (min-width 1130, thumbnails 56×34, tighter header padding), `.ai/DECISIONS.md`.
+Changed: `capability-map.css`, `index.html`, `recruiter-layout.css` (GitHub/Email links share 15 px), `.ai/DECISIONS.md`.
 
-Checks: local Chrome; iframe widths 1280/1366/1920 fit without table scroll, 390 scrolls horizontally as designed; 59 cells, no broken images.
+Checks: local Chrome iframes at 1280/1366/1920/390/320 px; table fits from 1366 px and scrolls sideways at 1280 and on phones; contact links wrap cleanly at 390/320.
 
-Next: when the author adds the engine/injection portfolio project, add `img` and `pub` to the `eng` area.
-
-Previous task (2026-11-06, certifications discoverability and year-only dates) is complete and published.
+Next: when the engine/injection project exists, add `img` and `pub` to the `eng` area in `capability-map.js`.
