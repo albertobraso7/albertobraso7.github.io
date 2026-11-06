@@ -1,15 +1,17 @@
-# Certifications page and links
+# Homepage capability map
 
 Status: COMPLETE
 Last Agent: Claude
-Date: 2026-10-31
+Date: 2026-11-05
 
-Objective: publish the author's public training records at `/credentials/` and link them from the homepage, footer and GitHub profile README.
+Objective: show the breadth of the author's work as one interactive matrix (physics/methods × application areas) on the homepage, without repeating the case cards.
 
-Acceptance: 41 public credentials with byte-identical PDFs (SHA-256 checked at build); private-only records (8 scanned constancias, 1 employer-internal record) absent and returning 404; page reachable from homepage experience intro and footer; analytics allowlist includes `/credentials/` as a non-project page.
+Acceptance: new `02 / CAPABILITY MAP` section between Industrial experience and Engineering approach (approach → 03, contact → 04); nav link "Capabilities"; 40 studies (37 industrial from the NDA-free log + PhD, MSc, consulting) counted by cell, select-to-list panel; areas with a public case link to it; no project IDs, customer names, operating data or results; hero count 30 → 37 to match the log; no page overflow at 390/320 px (table scrolls inside its frame); no console errors.
 
-Changed: `credentials/` (generated; do not edit by hand), `index.html` (experience intro + footer link), `analytics/config.js`, `analytics/analytics.js`.
+Changed: `capability-map.js` (data + render), `capability-map.css` (`capx-` prefix; avoids research-depth `.capability-map`), `index.html` (section, nav link, stylesheet/script, eyebrow numbers, hero count).
 
-Source of record: private repo `albertobraso7/credentials-archive` (`credentials.json`; regenerate with `scripts/build_public_page.py <this clone>`). Author decisions 2026-10-31: CSWA and Coursera verification URLs may be public; scanned constancias stay private; degree titles deferred.
+Checks: Chrome at desktop width (rendering, hover cross-highlight, cell click/keyboard focus, panel, thumbnails load, console clean); 390/320 px through same-origin iframes (no document overflow, sticky row labels, 4 nav links visible). Thumbnails reuse images already loaded by the homepage cards.
 
-Limitation: Amesim PDFs show 2025-10-29 (printed date); real completion dates pending from the author. No in-browser visual check was run for this change (no browser tool in session); HTTP and byte checks only.
+Author decisions 2026-11-05: the classification and generic study labels shown in the prototype were approved as they are ("Me agrada así como está"). P28 counted as VOF per the earlier author correction, although `career-materials/evidence/projects.json` still says Eulerian-Eulerian.
+
+Limitation: classification of each study into physics/areas was derived from the method text in the private log; update `capability-map.js` when new projects are added there.

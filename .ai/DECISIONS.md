@@ -274,6 +274,10 @@ Automation navigation item. Keep concrete automation evidence inside individual
 case studies, professional project cards, the existing profile and project filter.
 Do not reintroduce a generic capability section between the hero and projects.
 
+## Capability map after the project lists — 2026-11-05
+
+The author selected a physics/methods × application-area count matrix over a project-column matrix or image mosaic, because project columns repeated the case cards. It sits after Industrial experience, not between hero and projects (see 2026-09-15). Industrial studies appear only as generic labels by method and area; public cases are linked from their area column, never counted twice. The breadth count is now 37 professional projects (log P01–P37), superseding the earlier 30.
+
 ## Vehicle study and mandatory CV examples — 2026-09-16
 
 Author requests the new vehicle case below Residential. It illustrates methods from professional P01 using a separate credited AeroSUV geometry; development status must stay visible. Do not wait for a vacancy to create this page. All future CVs retain Public Technical Examples, including motor oil cooling and the vehicle study; canonical CV rules/templates remain in private career-materials. New baseline creation does not silently replace the public selected CV.

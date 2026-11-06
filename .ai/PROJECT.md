@@ -24,6 +24,7 @@ build step, backend, installation or CI change.
 | Homepage | `index.html`: Debubbler video hero and brief profile; five visual case cards (pump/FSI animated; reactor/residential static); six retained industrial cards; automation/integrated profile/approach/contact |
 | Main identity | `styles.css`, `recruiter-layout.css`: original charcoal/mint design, unchanged from verified remote |
 | Industrial experience | `projects.js`: original six cards and native details/hash links, unchanged |
+| Capability map | `capability-map.js` / `capability-map.css`: section `#capabilities`; study list and physics/area tags live in the JS; add new log projects there |
 | Research narrative layer | `research-depth.css` / `research-depth.js`: substantial visual chapters, evidence-linked skills, full-resolution dialog and responsive figure layouts |
 | New shared additions | `case-studies.css`: visual cards, case layouts, visible mobile navigation, keyboard focus, reduced motion |
 | Pump | `pump/index.html`, `pump/pump.css`, `pump/equations.css`, figures/font/CSV data; only shared navigation stylesheet added to page |
