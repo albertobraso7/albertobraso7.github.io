@@ -1,6 +1,6 @@
 # Vehicle aerodynamics results page
 
-Status: IN_PROGRESS (author approved; publishing)
+Status: COMPLETE
 Last Agent: Claude
 Date: 2026-11-07
 
@@ -14,4 +14,6 @@ Checks: local Chrome at 1366 and iframes at 390/320 (no horizontal overflow), ch
 
 Follow-up from review: removed HPC/core mentions, rewrote MRF rationale, rebuilt the homepage preview with larger labelled vehicles. Records updated (DECISIONS, SOURCES, PROJECT_INVENTORY, ASSET_PROVENANCE).
 
-Next: commit, push, verify Pages deployment.
+Published: e982739 on main; Pages build for e982739 reported "built"; live /vehicle-aerodynamics/, vehicle.js, preview and FlowPilot assets return 200; live page has no HPC/core wording. FlowPilot source screenshot backed up in the private flowpilot repo (084bdf9).
+
+Next: when the notchback converges or a large-domain/open-cooling run exists, extend the comparison; Cd chart data live in `vehicle-aerodynamics/vehicle.js`.
