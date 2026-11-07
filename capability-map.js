@@ -3,7 +3,7 @@ const root=document.getElementById('capability-map'); if(!root)return;
 // Application areas (columns); `pub` links the area's public case study when one exists.
 const areas=[
  {k:'emot',t:'Electric motors',img:'electric-motor-cooling/assets/emachine-poster.jpg',pub:{href:'electric-motor-cooling/',label:'Case study'}},
- {k:'veh',t:'Vehicle airflow',img:'vehicle-aerodynamics/assets/aerosuv-wake-preview.webp',pub:{href:'vehicle-aerodynamics/',label:'Preliminary results',dev:1}},
+ {k:'veh',t:'Vehicle airflow',img:'vehicle-aerodynamics/assets/aerosuv-wake-preview.webp',pub:{href:'vehicle-aerodynamics/',label:'Case study'}},
  {k:'eng',t:'Engines & fuel injection'},
  {k:'thr',t:'Throttle bodies',img:'throttle-body/assets/compressible-flow.png',pub:{href:'throttle-body/',label:'Case study'}},
  {k:'h2',t:'Hydrogen & fuel cells',img:'hydrogen-dilution/assets/hydrogen-dilution-preview.webp',pub:{href:'hydrogen-dilution/',label:'Case study'}},

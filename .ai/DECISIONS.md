@@ -297,3 +297,7 @@ Author decisions: no radiator figures (closed-bay result looked misleading); iso
 ## Homepage case order — 2026-11-07
 
 Author order for the selected-work grid: Vehicle aerodynamics, Air separation, Pump, Throttle body, Hydrogen dilution, Aneurysm FSI, Reactor, Residential ventilation. Supersedes "vehicle card follows Residential" (2026-09-16). Case-page previous/next links were already independent of this order and were not changed.
+
+## AeroSUV framing — 2026-11-07
+
+Author dropped "Preliminary results" from the homepage and capability map: the case is a public example of industrial full-vehicle CFD (P01) and counts as a public case study. Validation limits stay explicit inside the page (not validated; notchback pending).
