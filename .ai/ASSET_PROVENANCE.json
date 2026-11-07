@@ -732,6 +732,16 @@
       "transform": "248 px wide capability-map thumbnail.",
       "attribution": "FlowPilot: author's software. AeroSUV geometry: FKFS and Röchling Automotive via ECARA, loaded for illustration only.",
       "authorization": "Author supplied the screenshot to show the FlowPilot interface, 2026-11-07; reviewed: truncated project path, no hostnames or internal identifiers."
+    },
+    {
+      "repository": "private vehicle-aerodynamics-cooling-cfd",
+      "source": "results/figures/iso_cpt0_side_{estate,fastback}.png",
+      "destination": "vehicle-aerodynamics/assets/aerosuv-wake-preview-16x9.webp",
+      "output_sha256": "d8548108c57e9d83e1b3406aea03e08d82aab485a78baf86d0d74ab5bb36b637",
+      "bytes": 132804,
+      "transform": "16:9 variant of aerosuv-wake-preview.webp (2000×1125, same vehicle scale and labels) for the GitHub profile README grid; WebP q88.",
+      "attribution": "AeroSUV: FKFS and Röchling Automotive, distributed through ECARA; SAE 2019-01-0646. CFD results: independent author study.",
+      "authorization": "Author asked for the vehicle case next to the electric motor on the GitHub profile, 2026-11-07."
     }
   ],
   "summary": {
