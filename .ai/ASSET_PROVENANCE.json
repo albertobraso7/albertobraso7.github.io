@@ -568,6 +568,170 @@
       "transform": "Byte-identical author-supplied geometry view, explicitly selected for publication. Component colors, not CFD results.",
       "attribution": "AeroSUV: FKFS and Röchling Automotive, distributed through ECARA; SAE 2019-01-0646. No geometry archive redistributed.",
       "authorization": "Author requested this supplied image as the initial public hero, 2026-09-16."
+    },
+    {
+      "repository": "private vehicle-aerodynamics-cooling-cfd",
+      "source": "results/figures/iso_cpt0_side_estate.png",
+      "destination": "vehicle-aerodynamics/assets/iso-cpt0-side-estate.webp",
+      "source_sha256": "1b108e48157b26f5387a4b1e07477034893b141ce7bdce7f005c680c7f6378c6",
+      "output_sha256": "f02210d64138168ad864d2eea2e7150b0672476e065165becc2f1e4963efa19c",
+      "bytes": 66780,
+      "transform": "Cropped to the shared vehicle box (VTK colour bar removed, replaced by an HTML bar with the same viridis 0–1.2 scale); WebP q88. Pixels inside the crop unchanged apart from compression.",
+      "attribution": "AeroSUV: FKFS and Röchling Automotive, distributed through ECARA; SAE 2019-01-0646. CFD results: independent author study.",
+      "authorization": "Author selected these figures for the public page, 2026-11-07 (no radiator figures)."
+    },
+    {
+      "repository": "private vehicle-aerodynamics-cooling-cfd",
+      "source": "results/figures/iso_cpt0_side_fastback.png",
+      "destination": "vehicle-aerodynamics/assets/iso-cpt0-side-fastback.webp",
+      "source_sha256": "feef6f0cf0c65194cbd73afc78a6b4912f6c3ec8cdf54084b237062f53fe92e0",
+      "output_sha256": "005eec3f04191d930420c1f4a3bd0ce1cc66df257e64c8e94cbe9556317ea7a5",
+      "bytes": 59728,
+      "transform": "Cropped to the shared vehicle box (VTK colour bar removed, replaced by an HTML bar with the same viridis 0–1.2 scale); WebP q88. Pixels inside the crop unchanged apart from compression.",
+      "attribution": "AeroSUV: FKFS and Röchling Automotive, distributed through ECARA; SAE 2019-01-0646. CFD results: independent author study.",
+      "authorization": "Author selected these figures for the public page, 2026-11-07 (no radiator figures)."
+    },
+    {
+      "repository": "private vehicle-aerodynamics-cooling-cfd",
+      "source": "results/figures/surface_cp_rear_estate.png",
+      "destination": "vehicle-aerodynamics/assets/surface-cp-rear-estate.webp",
+      "source_sha256": "4fc1ab65ccb4a05dcbf45ff8d887957a79151ea5a5fb286f229815f9c86b7a63",
+      "output_sha256": "d204b7781f8f490d63ce6d6ec09698a358c3a7ba02da28f94d6a74819ded694c",
+      "bytes": 41370,
+      "transform": "Cropped to the shared vehicle box (VTK colour bar removed, replaced by an HTML bar with the same RdBu −0.8–0.4 scale); WebP q88.",
+      "attribution": "AeroSUV: FKFS and Röchling Automotive, distributed through ECARA; SAE 2019-01-0646. CFD results: independent author study.",
+      "authorization": "Author selected these figures for the public page, 2026-11-07 (no radiator figures)."
+    },
+    {
+      "repository": "private vehicle-aerodynamics-cooling-cfd",
+      "source": "results/figures/surface_cp_rear_fastback.png",
+      "destination": "vehicle-aerodynamics/assets/surface-cp-rear-fastback.webp",
+      "source_sha256": "0468c70b02dafe60dc2958a28602f80e7eff9971584f74a29feb2fc5dc67dd3a",
+      "output_sha256": "a520630bd412ed54780c7f51b1b47c4e2cb4ae65c257d57bf663d8573fb34a57",
+      "bytes": 42836,
+      "transform": "Cropped to the shared vehicle box (VTK colour bar removed, replaced by an HTML bar with the same RdBu −0.8–0.4 scale); WebP q88.",
+      "attribution": "AeroSUV: FKFS and Röchling Automotive, distributed through ECARA; SAE 2019-01-0646. CFD results: independent author study.",
+      "authorization": "Author selected these figures for the public page, 2026-11-07 (no radiator figures)."
+    },
+    {
+      "repository": "private vehicle-aerodynamics-cooling-cfd",
+      "source": "results/figures/y0_u_estate.png",
+      "destination": "vehicle-aerodynamics/assets/y0-u-estate.webp",
+      "source_sha256": "70d1a2a3664e0438ff28e8bb5f3f6af67ea365a050aef261b41ffbf80d0993e0",
+      "output_sha256": "30600e56a57b91f956000f34b5e705a8e5df40589f0a0370133a313c89948301",
+      "bytes": 139854,
+      "transform": "Full frame, dark theme, centered_linear_bar scale; WebP q88.",
+      "attribution": "AeroSUV: FKFS and Röchling Automotive, distributed through ECARA; SAE 2019-01-0646. CFD results: independent author study.",
+      "authorization": "Author selected these figures for the public page, 2026-11-07 (no radiator figures)."
+    },
+    {
+      "repository": "private vehicle-aerodynamics-cooling-cfd",
+      "source": "results/figures/y0_u_fastback.png",
+      "destination": "vehicle-aerodynamics/assets/y0-u-fastback.webp",
+      "source_sha256": "9afb4a71d03aa6a7e76ff45431fb42339c89a8586db01569cfe6aa3533bd30a9",
+      "output_sha256": "663f7486d2ec30e8c745f0bcce2bf281bbf8409e92f6d45df77ebe1a7777a22e",
+      "bytes": 118180,
+      "transform": "Full frame, dark theme, centered_linear_bar scale; WebP q88.",
+      "attribution": "AeroSUV: FKFS and Röchling Automotive, distributed through ECARA; SAE 2019-01-0646. CFD results: independent author study.",
+      "authorization": "Author selected these figures for the public page, 2026-11-07 (no radiator figures)."
+    },
+    {
+      "repository": "private vehicle-aerodynamics-cooling-cfd",
+      "source": "results/figures/y0_cpt_estate.png",
+      "destination": "vehicle-aerodynamics/assets/y0-cpt-estate.webp",
+      "source_sha256": "be8c52a73d5f6e1fd8eb5f525de70e0f1ff7a203b6462084dc07cfb78cbc9862",
+      "output_sha256": "ab4e2bdd4c4d215eb02bd59e806f9f8c5a485f1c89ddcab0f16757de2b572df9",
+      "bytes": 304250,
+      "transform": "Full frame, dark theme; WebP q88.",
+      "attribution": "AeroSUV: FKFS and Röchling Automotive, distributed through ECARA; SAE 2019-01-0646. CFD results: independent author study.",
+      "authorization": "Author selected these figures for the public page, 2026-11-07 (no radiator figures)."
+    },
+    {
+      "repository": "private vehicle-aerodynamics-cooling-cfd",
+      "source": "results/figures/y0_cpt_fastback.png",
+      "destination": "vehicle-aerodynamics/assets/y0-cpt-fastback.webp",
+      "source_sha256": "3b9ed6ba09ea66fce76947a9dc8b71fece67c305bfe04b1f7400c7d15910b938",
+      "output_sha256": "bee1ec62eb8516798f2ed11998b484c6a437b9cd2c915d60e5547ba41d33c488",
+      "bytes": 367432,
+      "transform": "Full frame, dark theme; WebP q88.",
+      "attribution": "AeroSUV: FKFS and Röchling Automotive, distributed through ECARA; SAE 2019-01-0646. CFD results: independent author study.",
+      "authorization": "Author selected these figures for the public page, 2026-11-07 (no radiator figures)."
+    },
+    {
+      "repository": "private vehicle-aerodynamics-cooling-cfd",
+      "source": "results/figures/wake_cpt_estate.png",
+      "destination": "vehicle-aerodynamics/assets/wake-cpt-estate.webp",
+      "source_sha256": "bff711155619ba73a74da4e37f54faf3d09f8d6e3441050ab7b3d5bde78db2db",
+      "output_sha256": "29fe20edb4b8fb2ba1170bd7f96183a167cc4e3ec0fdd6720a8b0ad4aee1a2d7",
+      "bytes": 234672,
+      "transform": "Full frame, dark theme; WebP q88.",
+      "attribution": "AeroSUV: FKFS and Röchling Automotive, distributed through ECARA; SAE 2019-01-0646. CFD results: independent author study.",
+      "authorization": "Author selected these figures for the public page, 2026-11-07 (no radiator figures)."
+    },
+    {
+      "repository": "private vehicle-aerodynamics-cooling-cfd",
+      "source": "results/figures/wake_cpt_fastback.png",
+      "destination": "vehicle-aerodynamics/assets/wake-cpt-fastback.webp",
+      "source_sha256": "3a28ccb39390f2fc4973fd8d83c3aabb9059c7fee67b026e67103e4e32e006a8",
+      "output_sha256": "bb4790b6e4be74e0a185fd696c68642741e5a784839f18185ed034f6708808f5",
+      "bytes": 247736,
+      "transform": "Full frame, dark theme; WebP q88.",
+      "attribution": "AeroSUV: FKFS and Röchling Automotive, distributed through ECARA; SAE 2019-01-0646. CFD results: independent author study.",
+      "authorization": "Author selected these figures for the public page, 2026-11-07 (no radiator figures)."
+    },
+    {
+      "repository": "private vehicle-aerodynamics-cooling-cfd",
+      "source": "results/figures/chart_cumulative_drag.svg",
+      "destination": "vehicle-aerodynamics/assets/cumulative-drag.svg",
+      "source_sha256": "fa160082724a5b620877c64a40d6691df31f66e3fdcbeb603b8584b222cb45c0",
+      "output_sha256": "fa160082724a5b620877c64a40d6691df31f66e3fdcbeb603b8584b222cb45c0",
+      "bytes": 180354,
+      "transform": "Byte-identical copy.",
+      "attribution": "AeroSUV: FKFS and Röchling Automotive, distributed through ECARA; SAE 2019-01-0646. CFD results: independent author study.",
+      "authorization": "Author selected these figures for the public page, 2026-11-07 (no radiator figures)."
+    },
+    {
+      "repository": "private vehicle-aerodynamics-cooling-cfd",
+      "source": "results/figures/chart_cumulative_drag_delta.svg",
+      "destination": "vehicle-aerodynamics/assets/cumulative-drag-delta.svg",
+      "source_sha256": "b7dbd0b1650b1b19be98495255c74bcd3440a360f8926339eda826bc57fc0607",
+      "output_sha256": "b7dbd0b1650b1b19be98495255c74bcd3440a360f8926339eda826bc57fc0607",
+      "bytes": 57682,
+      "transform": "Byte-identical copy.",
+      "attribution": "AeroSUV: FKFS and Röchling Automotive, distributed through ECARA; SAE 2019-01-0646. CFD results: independent author study.",
+      "authorization": "Author selected these figures for the public page, 2026-11-07 (no radiator figures)."
+    },
+    {
+      "repository": "private vehicle-aerodynamics-cooling-cfd",
+      "source": "results/figures/iso_cpt0_side_{estate,fastback}.png",
+      "destination": "vehicle-aerodynamics/assets/aerosuv-wake-preview.webp",
+      "output_sha256": "7fb70cef4e30c64b1af3c0e2ce9a3da5e1a04c41bf4199a907d0534e3d7ea011",
+      "bytes": 131962,
+      "transform": "Homepage/social preview: both iso renders cropped, scaled ×1.09 and stacked on a 2000×1000 #111418 canvas with ESTATE/FASTBACK labels; WebP q88.",
+      "attribution": "AeroSUV: FKFS and Röchling Automotive, distributed through ECARA; SAE 2019-01-0646. CFD results: independent author study.",
+      "authorization": "Author asked for an attractive homepage image, 2026-11-07."
+    },
+    {
+      "repository": "private flowpilot (author-supplied file in the working folder, not yet committed there)",
+      "source": "FlowPilot_ simulación CFD de un SUV.png",
+      "destination": "assets/flowpilot/flowpilot-interface.webp",
+      "source_sha256": "32a552fb44fcad0dd285da7fa4e0a529cd2e3af3584f380bc35b96c367bdbc85",
+      "output_sha256": "dcaf8d17ce4b15facbf31f5b1118ebabb0ff39aafd98a96b2603823bc8b7e629",
+      "bytes": 79560,
+      "transform": "Full screenshot re-encoded to WebP q90; no metadata.",
+      "attribution": "FlowPilot: author's software. AeroSUV geometry: FKFS and Röchling Automotive via ECARA, loaded for illustration only.",
+      "authorization": "Author supplied the screenshot to show the FlowPilot interface, 2026-11-07; reviewed: truncated project path, no hostnames or internal identifiers."
+    },
+    {
+      "repository": "private flowpilot (author-supplied file in the working folder, not yet committed there)",
+      "source": "FlowPilot_ simulación CFD de un SUV.png",
+      "destination": "assets/flowpilot/flowpilot-thumb.webp",
+      "source_sha256": "32a552fb44fcad0dd285da7fa4e0a529cd2e3af3584f380bc35b96c367bdbc85",
+      "output_sha256": "a05104653a1f131ba4572572a74d2eb36773597186cabb2c2cf4d4071da3235d",
+      "bytes": 4008,
+      "transform": "248 px wide capability-map thumbnail.",
+      "attribution": "FlowPilot: author's software. AeroSUV geometry: FKFS and Röchling Automotive via ECARA, loaded for illustration only.",
+      "authorization": "Author supplied the screenshot to show the FlowPilot interface, 2026-11-07; reviewed: truncated project path, no hostnames or internal identifiers."
     }
   ],
   "summary": {

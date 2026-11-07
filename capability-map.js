@@ -3,7 +3,7 @@ const root=document.getElementById('capability-map'); if(!root)return;
 // Application areas (columns); `pub` links the area's public case study when one exists.
 const areas=[
  {k:'emot',t:'Electric motors',img:'electric-motor-cooling/assets/emachine-poster.jpg',pub:{href:'electric-motor-cooling/',label:'Case study'}},
- {k:'veh',t:'Vehicle airflow',img:'vehicle-aerodynamics/assets/aerosuv-geometry.png',pub:{href:'vehicle-aerodynamics/',label:'In development',dev:1}},
+ {k:'veh',t:'Vehicle airflow',img:'vehicle-aerodynamics/assets/aerosuv-wake-preview.webp',pub:{href:'vehicle-aerodynamics/',label:'Preliminary results',dev:1}},
  {k:'eng',t:'Engines & fuel injection'},
  {k:'thr',t:'Throttle bodies',img:'throttle-body/assets/compressible-flow.png',pub:{href:'throttle-body/',label:'Case study'}},
  {k:'h2',t:'Hydrogen & fuel cells',img:'hydrogen-dilution/assets/hydrogen-dilution-preview.webp',pub:{href:'hydrogen-dilution/',label:'Case study'}},
@@ -11,7 +11,7 @@ const areas=[
  {k:'pump',t:'Pumps',img:'pump/assets/smm_flow_field_frame.jpg',pub:{href:'pump/',label:'Case study'}},
  {k:'valve',t:'Valves & manifolds'},
  {k:'cool',t:'Coolant modules',img:'debubbler/assets/debubbler-poster.jpg',pub:{href:'debubbler/',label:'Case study'}},
- {k:'tool',t:'Simulation tools'},
+ {k:'tool',t:'Simulation tools',img:'assets/flowpilot/flowpilot-thumb.webp'},
  {k:'bio',t:'Biomedical (PhD)',img:'aneurysm/assets/fsi-poster.jpg',pub:{href:'aneurysm/',label:'Case study'}},
  {k:'proc',t:'Materials reactor (MSc)',img:'reactor/assets/streamlines-centered-preview.webp',pub:{href:'reactor/',label:'Case study'}},
  {k:'bld',t:'Buildings',img:'ventilation/assets/streamlines.jpg',pub:{href:'ventilation/',label:'Case study'}}

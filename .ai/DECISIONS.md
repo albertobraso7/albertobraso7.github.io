@@ -289,3 +289,7 @@ The author split the former "Engines & fuel injection" column: "Throttle bodies"
 ## GitHub profile linked from the portfolio — 2026-11-06
 
 The author wants visitors arriving from LinkedIn or messages to reach the GitHub profile as well. Link the profile (https://github.com/albertobraso7) from the homepage Contact links and footer. The profile README is public; engineering repositories remain private, so never link individual repositories or implementation files.
+
+## Vehicle aerodynamics publication — 2026-11-07
+
+Author decisions: no radiator figures (closed-bay result looked misleading); iso Cpt = 0 pair as hero; HTML charts for Cd and drag budget, CLf/CLr only as a short note and table; both cumulative-drag charts; paired figures shown together, switch only for y0_cpt; no mention of HPC or core counts on the public page; rotating-wall wheels explained by computational budget and a comparative scope; title "Vehicle Aerodynamics: Estate vs Fastback" with unchanged URL. FlowPilot screenshot goes on its own project card and the Simulation tools thumbnail, never on the AeroSUV page (results there are from Fluent).

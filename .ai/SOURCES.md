@@ -325,3 +325,7 @@ Motor source snapshot: `21b8da6e1bd69b16ebbdb0623072360b083d12cc`. Selected medi
 ## Vehicle aerodynamics — 2026-09-16
 
 Private source repository: `vehicle-aerodynamics-cooling-cfd`, local `vehicle_aerodynamics`. Source brief: `docs/AEROSUV_PROJECT_CONTEXT_AND_PORTFOLIO_BRIEF.md`; hero: `assets/images/vehicle.png`. Hero copied byte-identically. AeroSUV attribution: FKFS/Röchling Automotive, ECARA https://www.ecara.org/drivaer-1, SAE paper https://saemobilus.sae.org/papers/introduction-aerosuv-a-new-generic-suv-model-aerodynamic-research-2019-01-0646. Publication includes the selected geometry rendering, not downloaded CAD/STL archives. Case is in development; no final solver results.
+
+## Vehicle aerodynamics results — 2026-11-07
+
+Source: private `vehicle-aerodynamics-cooling-cfd` at 6edc77a — `docs/AEROSUV_CFD_REPORT.md`, `results/convergence/coefficients_summary.json`, `results/figures/` (dark theme, `centered_linear_bar`). Page numbers: Cd 0.3605/0.3503 (mean of last 1000 of 3000 iterations), group drag from the JSON, experiment/published CFD values from Zhang et al. (2019) via the report. Time-averaged difference is −10.2 counts (report rounds to −11; the cumulative curve uses the final iteration, −11.5). FlowPilot screenshot: author-supplied `flowpilot/FlowPilot_ simulación CFD de un SUV.png`.

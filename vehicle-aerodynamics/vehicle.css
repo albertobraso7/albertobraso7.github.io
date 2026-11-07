@@ -1,9 +1,94 @@
 .research-intro{grid-template-columns:1fr;max-width:1050px}
 .research-page .hero-wide{margin:26px 0}
-.research-page .hero-wide img{display:block;height:auto;aspect-ratio:16/9}
 .development-note{border-left:2px solid var(--accent);padding:12px 18px;margin:0 0 26px;background:var(--surface);font-size:.9rem;line-height:1.7;color:var(--muted)}
 .development-note strong{color:var(--accent);font-weight:500}
-.configuration-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-bottom:34px}
-.configuration-grid article{border:1px solid var(--line);padding:24px;background:var(--surface)}
-.configuration-grid article p{margin-bottom:0}
-@media(max-width:740px){.configuration-grid{grid-template-columns:1fr;gap:14px}.configuration-grid article{padding:20px}}
+
+/* Series colours, validated for the dark surface (dataviz validator): estate/fastback keep the hues of the rendered charts. */
+.research-page{--estate:#3987e5;--fastback:#d95926;--exp:#c98500;--ref-cfd:#9085e9;--study:#199e70;--fig-bg:#111418}
+
+/* Paired figures: same camera and scale, labelled in place. */
+.pair-stack{display:grid;gap:2px;background:var(--line)}
+.research-page .pair-stack>a,.research-page .story-pair figure>a,.research-page .variant-images>a{position:relative;display:block;background:var(--fig-bg);border:0}
+.research-page .story-pair figure>a{border:1px solid var(--line)}
+.pair-stack img,.variant-images img,.surface-pair img,.wake-pair img{display:block;width:100%;height:auto}
+.research-page .wake-hero{background:var(--fig-bg)}
+.research-page .wake-hero img{max-height:none;object-fit:initial}
+.pair-label{display:block;font:.75rem/1.4 'Courier New',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);background:var(--surface);border-bottom:1px solid var(--line);padding:7px 12px}
+.wake-hero .pair-label{position:absolute;top:12px;left:14px;z-index:1;background:#101314cc;border:1px solid var(--line);padding:4px 9px}
+.plane-pair{border:1px solid var(--line)}
+
+/* Colour bars drawn in HTML so labels stay crisp and correct. */
+.scale-bar{display:grid;grid-template-columns:auto minmax(0,420px);justify-content:start;gap:4px 14px;align-items:center;padding:14px 22px 4px;font-size:.8125rem;color:var(--muted)}
+.wake-hero .scale-bar{background:var(--fig-bg)}
+.scale-name{grid-row:1/3;color:var(--ink);font-size:.875rem}
+.scale-ramp{height:10px;border-radius:2px}
+.scale-ramp.viridis{background:linear-gradient(90deg,#440154,#414487 17%,#2a788e 42%,#22a884 62%,#7ad151 82%,#fde725)}
+.scale-ramp.rdbu{background:linear-gradient(90deg,#053061,#2166ac 12.5%,#4393c3 25%,#92c5de 37.5%,#f7f7f7 50%,#f4a582 62.5%,#d6604d 75%,#b2182b 87.5%,#67001f)}
+.scale-ticks{display:flex;justify-content:space-between;font-variant-numeric:tabular-nums}
+.scale-bar.diverging{padding:16px 0 0}
+.research-page .chapter .figure-note{font-size:.875rem;line-height:1.65;margin:14px 0 0;max-width:1000px}
+.research-page .chapter .short-note{border-left:2px solid var(--line);padding-left:16px;margin:28px 0 0;max-width:1000px;font-size:.9375rem}
+
+/* Headline numbers. */
+.aero-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0 0 28px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.aero-stats>div{padding:22px 24px 22px 0;min-width:0}
+.aero-stats>div+div{border-left:1px solid var(--line);padding-left:24px}
+.aero-stats dt{color:var(--accent);font-size:clamp(1.6rem,3vw,2.3rem);letter-spacing:-.04em;line-height:1.2;margin-bottom:8px}
+.aero-stats dd{margin:0;color:var(--muted);font-size:.9375rem;line-height:1.6}
+
+/* Switchable figure (estate / fastback). Without JS both images stay visible. */
+.variant-images{display:grid;gap:2px;background:var(--line);border:1px solid var(--line)}
+.variant-tabs{display:inline-flex;border:1px solid var(--line);margin:0 0 12px}
+.variant-tabs button{font:inherit;font-size:.875rem;min-height:44px;padding:0 20px;background:transparent;color:var(--muted);border:0;cursor:pointer}
+.variant-tabs button+button{border-left:1px solid var(--line)}
+.variant-tabs button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:inset 0 -2px 0 var(--accent)}
+.variant-tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* Horizontal grouped bar charts. */
+.chart-figure{border:1px solid var(--line);background:var(--surface);padding:24px 26px 18px}
+.research-page .chart-figure figcaption{margin-top:16px}
+.chart-figure .table-view{margin-top:16px;border-bottom:0}
+.chart-figure .evidence-table{margin:8px 0 12px}
+.hbar-chart{position:relative;--catw:132px}
+.hbar-legend{display:flex;flex-wrap:wrap;gap:8px 22px;margin:0 0 18px;font-size:.875rem;color:var(--muted)}
+.hbar-legend span{display:inline-flex;align-items:center;gap:8px}
+.hbar-legend i{width:12px;height:12px;border-radius:2px;display:inline-block}
+.hbar-plot{display:grid;grid-template-columns:var(--catw) minmax(0,1fr);position:relative}
+.hbar-grid{position:absolute;left:var(--catw);right:0;top:0;bottom:0;pointer-events:none}
+.hbar-grid span{position:absolute;top:0;bottom:0;width:1px;background:#262d2f}
+.hbar-cat{grid-column:1;align-self:center;font-size:.875rem;color:var(--ink);padding:10px 12px 10px 0;line-height:1.3}
+.hbar-bars{grid-column:2;display:grid;gap:2px;padding:10px 0;position:relative;z-index:1}
+.hbar-line{display:flex;align-items:center;gap:8px;min-height:14px}
+.hbar{height:12px;border-radius:0 4px 4px 0;cursor:default;flex:none;outline-offset:2px}
+.hbar:hover,.hbar:focus-visible{filter:brightness(1.2)}
+.hbar:focus-visible{outline:2px solid var(--ink)}
+.hbar-val{font-size:.8125rem;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+.hbar-axis{margin-left:var(--catw);position:relative;height:26px;border-top:1px solid #3b4446;font-size:.75rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.hbar-axis span{position:absolute;top:6px;transform:translateX(-50%)}
+.hbar-axis span:first-child{transform:none}
+.hbar-axis span:last-child{transform:translateX(-100%)}
+.hbar-axis-title{margin-left:var(--catw);font-size:.75rem;color:var(--muted);text-align:center;margin-top:2px}
+.hbar-tip{position:absolute;z-index:3;pointer-events:none;background:var(--bg);border:1px solid var(--line);padding:8px 12px;font-size:.8125rem;line-height:1.45;color:var(--muted);white-space:nowrap;box-shadow:0 6px 18px #0008}
+.hbar-tip strong{display:block;color:var(--ink);font-size:.9375rem;font-variant-numeric:tabular-nums}
+.hbar-tip i{display:inline-block;width:12px;height:2px;margin-right:6px;vertical-align:middle}
+
+/* Method and limits. */
+.research-page .aero-route{grid-template-columns:repeat(5,minmax(0,1fr))}
+.fix-list{padding-left:20px;margin:0}
+.fix-list li{margin-bottom:12px}
+.research-page #limits .evidence-table td:first-child{white-space:nowrap}
+.research-page #limits .story-pair{margin-top:40px}
+.research-page #method .story-pair{margin:40px 0 8px}
+
+@media(max-width:1100px){.research-page .aero-route{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:740px){
+ .aero-stats{grid-template-columns:1fr}
+ .aero-stats>div{padding:16px 0}
+ .aero-stats>div+div{border-left:0;border-top:1px solid var(--line);padding-left:0}
+ .research-page .aero-route{grid-template-columns:1fr}
+ .chart-figure{padding:18px 14px 12px}
+ .hbar-chart{--catw:92px}
+ .scale-bar{padding:12px 14px 4px}
+ .wake-hero .pair-label{top:6px;left:6px;font-size:.6875rem;padding:2px 6px}
+ .research-page #limits .evidence-table td:first-child{white-space:normal}
+}

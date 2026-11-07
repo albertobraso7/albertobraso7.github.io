@@ -1,15 +1,17 @@
-# Capability-map thumbnails and GitHub profile link
+# Vehicle aerodynamics results page
 
-Status: COMPLETE
+Status: IN_PROGRESS (author approved; publishing)
 Last Agent: Claude
-Date: 2026-11-06
+Date: 2026-11-07
 
-Objective: restore the capability-map thumbnail size the author preferred (62×38) while keeping the throttle/engine column split, and link the GitHub profile from the portfolio.
+Objective: replace the "in development" AeroSUV page with the estate/fastback preliminary results, update the homepage card and capability map, and add the FlowPilot screenshot to its own project card.
 
-Acceptance: thumbnails 62×38, header padding and row-header width as before the split; Total column never squeezed (table `min-width:max-content`, column hint 70 px); homepage Contact shows LinkedIn · GitHub · Email and the footer shows Certifications · GitHub · Blog; GitHub link opens the profile in a new tab.
+Author decisions: no radiator figures; HTML charts for Cd and drag budget (CLf/CLr only as short note + table); both cumulative drag charts; iso Cpt=0 pair as hero (cropped, VTK colour bar replaced by HTML bar); paired figures shown side by side/stacked, y0_cpt with an estate/fastback switch; limits and differences vs Zhang et al. (2019), including why rotating walls instead of MRF.
 
-Changed: `capability-map.css`, `index.html`, `recruiter-layout.css` (GitHub/Email links share 15 px), `.ai/DECISIONS.md`.
+Done: `vehicle-aerodynamics/index.html`, `vehicle.css`, new `vehicle.js`, WebP/SVG assets from the private repo `results/figures/` (dark theme, centered_linear_bar), `aerosuv-wake-preview.webp`; `index.html` card; `capability-map.js` (veh preview + "Preliminary results", tool thumbnail); `projects.js` + `recruiter-layout.css` FlowPilot shot (`assets/flowpilot/`). Private source repo backed up at 6edc77a.
 
-Checks: local Chrome iframes at 1280/1366/1920/390/320 px; table fits from 1366 px and scrolls sideways at 1280 and on phones; contact links wrap cleanly at 390/320.
+Checks: local Chrome at 1366 and iframes at 390/320 (no horizontal overflow), chart palette validated for the dark surface with the dataviz validator.
 
-Next: when the engine/injection project exists, add `img` and `pub` to the `eng` area in `capability-map.js`.
+Follow-up from review: removed HPC/core mentions, rewrote MRF rationale, rebuilt the homepage preview with larger labelled vehicles. Records updated (DECISIONS, SOURCES, PROJECT_INVENTORY, ASSET_PROVENANCE).
+
+Next: commit, push, verify Pages deployment.

@@ -61,3 +61,7 @@ Feature: [Electric motor oil cooling](../electric-motor-cooling/). Oil delivery,
 ## Vehicle aerodynamics — 2026-09-16
 
 `vehicle-aerodynamics/` is an independent AeroSUV study in development, placed after Residential. Its geometry hero is author-supplied; there are no numerical results yet. Professional context relates to NDA-free P01. Keep proposed physics and future deliverables visibly separate from completed industrial work.
+
+## Vehicle aerodynamics results — 2026-11-07
+
+`vehicle-aerodynamics/` now publishes preliminary estate/fastback results (notchback pending): Re-matched full-scale AeroSUV, Cd compared with Zhang et al. (2019) experiment and CFD, cumulative drag build-up, surface Cp, wake planes, iso Cpt = 0 hero and component drag budget. Radiator/grille figures are deliberately excluded. Homepage card and capability map use `aerosuv-wake-preview.webp`; capability label "Preliminary results". FlowPilot card 06 shows an interface screenshot (`assets/flowpilot/`).
