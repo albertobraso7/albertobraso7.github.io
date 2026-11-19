@@ -301,3 +301,7 @@ Author order for the selected-work grid: Vehicle aerodynamics, Air separation, P
 ## AeroSUV framing — 2026-11-07
 
 Author dropped "Preliminary results" from the homepage and capability map: the case is a public example of industrial full-vehicle CFD (P01) and counts as a public case study. Validation limits stay explicit inside the page (not validated; notchback pending).
+
+## Vehicle-efficiency notes published — 2026-11-18
+
+The author asked for a public notes section built from the private interview study page, in the CFD Knowledge Hub's reading style (In brief, equations, interactive calculators), "built and uploaded today, to be modified later". Location: `notes/ev-efficiency/`, linked as the first real article on `blog.html`; the three planned "coming soon" topics stay. Public-content rules for this section: no employer, customer or interview material, no absolute values from industrial projects, author projects referenced only through public cases; generic illustrative vehicles; every calculator cross-checked against an independent Python implementation. The valve-calibration method is described only at the level of the public project card (it is the subject of an internal invention report). Disclosure on the page: drafted with AI assistance; the author had not yet reviewed it at publication.

@@ -329,3 +329,7 @@ Private source repository: `vehicle-aerodynamics-cooling-cfd`, local `vehicle_ae
 ## Vehicle aerodynamics results — 2026-11-07
 
 Source: private `vehicle-aerodynamics-cooling-cfd` at 6edc77a — `docs/AEROSUV_CFD_REPORT.md`, `results/convergence/coefficients_summary.json`, `results/figures/` (dark theme, `centered_linear_bar`). Page numbers: Cd 0.3605/0.3503 (mean of last 1000 of 3000 iterations), group drag from the JSON, experiment/published CFD values from Zhang et al. (2019) via the report. Time-averaged difference is −10.2 counts (report rounds to −11; the cumulative curve uses the final iteration, −11.5). FlowPilot screenshot: author-supplied `flowpilot/FlowPilot_ simulación CFD de un SUV.png`.
+
+## Vehicle-efficiency notes (2026-11-18)
+
+`notes/ev-efficiency/` uses US EPA UDDS/HWFET speed traces (public domain; hashes in ASSET_PROVENANCE.json), the five accepted MRF points of the public pump case, and textbook relations cited in the page's reference list (Gillespie; Hucho; Larminie & Lowry; Ehsani et al.; Pyrhönen et al.; Gülich; Kays & London; SAE J1263/J2263/J1634; 40 CFR 600). Motor loss model, heat-pump COP trend and example vehicles are illustrative, not measured data.

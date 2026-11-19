@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="author" content="Alberto Brambila Solórzano">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vehicle Efficiency Notes | Alberto Brambila</title>
+<meta name="description" content="Engineering notes connecting forces, losses and thermal systems to electric-vehicle energy use and range, with interactive calculators.">
+<meta name="theme-color" content="#101314">
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../case-studies.css">
+<link rel="stylesheet" href="ev.css">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+</head>
+<body class="case-page">
+<a class="skip" href="#main">Skip to content</a>
+<header class="header wrap"><a class="identity" href="../../" aria-label="Alberto Brambila, portfolio home">AB<span class="identity-rule"></span><span>ALBERTO<br>BRAMBILA</span></a><nav aria-label="Main navigation"><a href="../../blog.html">Notes</a><a href="../../#work">All projects</a><a class="nav-contact" href="../../#contact">Contact ↗</a></nav></header>
+
+<main id="main">
+<section class="notes-hero wrap">
+  <p class="eyebrow">ENGINEERING NOTES / VEHICLE EFFICIENCY</p>
+  <h1>From forces to <em>range.</em></h1>
+  <p class="lede">How aerodynamic drag, tyre losses, drive-unit losses and thermal systems decide how far an electric vehicle travels on a charge, and how a CFD result becomes a number that a vehicle-level decision can use.</p>
+  <p class="lede">Each chapter starts with the essentials, develops the physics, and includes calculators you can change. Example vehicles are generic; they are not data from any manufacturer.</p>
+  <div class="notes-meta"><span>FIRST EDITION · NOVEMBER 2026</span><span>12 CHAPTERS · 8 INTERACTIVE MODELS</span><span>SI UNITS, WITH US CONVERSIONS</span></div>
+</section>
+
+<div class="notes-layout wrap">
+<nav class="notes-toc" aria-label="Chapters">
+  <p>CHAPTERS</p>
+  <ol>
+    <li><a href="#c1"><span>01</span>Energy per distance</a></li>
+    <li><a href="#c2"><span>02</span>Road load and coast-down</a></li>
+    <li><a href="#c3"><span>03</span>Drive cycles and the range label</a></li>
+    <li><a href="#c4"><span>04</span>Aerodynamic drag</a></li>
+    <li><a href="#c5"><span>05</span>Cooling drag</a></li>
+    <li><a href="#c6"><span>06</span>Drive-unit losses</a></li>
+    <li><a href="#c7"><span>07</span>Battery and voltage</a></li>
+    <li><a href="#c8"><span>08</span>Pumps, fans and compressors</a></li>
+    <li><a href="#c9"><span>09</span>Heating and winter range</a></li>
+    <li><a href="#c10"><span>10</span>Fast-charging heat</a></li>
+    <li><a href="#c11"><span>11</span>Which lever is worth more</a></li>
+    <li><a href="#c12"><span>12</span>From CFD to the system model</a></li>
+    <li><a href="#refs"><span>—</span>References</a></li>
+  </ol>
+</nav>
+
+<article class="notes-body">
+
+<!-- 01 -->
+<section class="chapter" id="c1">
+<p class="chapter-num">CHAPTER 01</p>
+<h2>Energy per distance</h2>
+<div class="brief"><h3>In brief</h3><ul>
+  <li>Energy per unit distance has the units of force. A steady force of 1 N costs 1 kJ per kilometre.</li>
+  <li>1 N of road load = <span class="num">0.278 Wh/km</span> at the wheels. Divide by drivetrain efficiency to get battery energy.</li>
+  <li>Auxiliary loads are paid per unit of <em>time</em>. Their cost per kilometre is P/v, so they matter most at low speed.</li>
+</ul></div>
+<p>Range is usable battery energy divided by energy consumed per distance. The second quantity is where engineering lives. If a vehicle needs a force <em>F</em> at the wheels to keep moving, the work done over a distance <em>s</em> is <em>F·s</em>. Energy per distance is therefore a force, and the familiar unit Wh/km is a force in disguise:</p>
+<div class="eq">1 Wh/km = 3600 J / 1000 m = 3.6 N &nbsp;&nbsp;⇔&nbsp;&nbsp; 1 N = 0.278 Wh/km<span class="note">At the wheels. Battery-side consumption adds drivetrain losses and auxiliary loads.</span></div>
+<p>This identity is the bridge between a simulation and a vehicle attribute. A drag force from external aerodynamics, a rolling-resistance force from a tyre model, or the force-equivalent of a pump's electrical power can all be expressed in Wh/km and then in kilometres or miles of range.</p>
+<div class="eq">c<sub>battery</sub> = F<sub>wheel</sub> / η<sub>drivetrain</sub> + P<sub>aux</sub> / v<span class="note">Steady driving. c in J/m (multiply by 0.278 for Wh/km), v in m/s.</span></div>
+<p>The two terms behave differently. The first is a property of the vehicle and its speed. The second is a property of time: a 1 kW heater costs 9 Wh/km at 113 km/h but 33 Wh/km at 30 km/h. Slow traffic and cold weather expose every watt of auxiliary power.</p>
+
+<div class="demo" id="demo-convert">
+  <div class="demo-head"><h3>Convert any engineering quantity into range</h3><span class="demo-tag">INTERACTIVE</span></div>
+  <div class="controls">
+    <label for="cv-F"><span>Steady force at the wheel [N]</span><input id="cv-F" type="number" value="10" step="1"></label>
+    <label for="cv-P"><span>Auxiliary electrical power [W]</span><input id="cv-P" type="number" value="300" step="10"></label>
+    <label for="cv-dp"><span>Coolant-loop pressure drop [kPa]</span><input id="cv-dp" type="number" value="40" step="1"></label>
+    <label for="cv-Q"><span>Coolant flow [L/min]</span><input id="cv-Q" type="number" value="20" step="1"></label>
+    <label for="cv-etap"><span>Pump wire-to-water efficiency [%]</span><input id="cv-etap" type="number" value="35" step="1"></label>
+    <label for="cv-v"><span>Vehicle speed [km/h]</span><input id="cv-v" type="number" value="100" step="5"></label>
+    <label for="cv-eta"><span>Drivetrain efficiency [%]</span><input id="cv-eta" type="number" value="88" step="1"></label>
+    <label for="cv-base"><span>Baseline consumption [Wh/km]</span><input id="cv-base" type="number" value="150" step="5"></label>
+    <label for="cv-bat"><span>Usable battery energy [kWh]</span><input id="cv-bat" type="number" value="100" step="5"></label>
+  </div>
+  <div class="kpis" id="cv-out"></div>
+  <p class="demo-note">Each line is evaluated separately against the baseline. Pump electrical power = Δp·Q / η.</p>
+</div>
+
+<details class="develop"><summary>Units that come up constantly</summary><div>
+<div class="tablewrap"><table>
+<tr><th>Quantity</th><th>Conversion</th><th>Anchor</th></tr>
+<tr><td>Efficiency</td><td>Wh/mi = 1000 / (mi/kWh); Wh/km = Wh/mi / 1.609</td><td>5.0 mi/kWh = 200 Wh/mi = 124 Wh/km = 12.4 kWh/100 km</td></tr>
+<tr><td>Speed</td><td>1 mph = 0.447 m/s; 1 km/h = 0.278 m/s</td><td>70 mph = 31.3 m/s = 113 km/h</td></tr>
+<tr><td>Drag</td><td>1 drag count = 0.001 in C<sub>d</sub></td><td>C<sub>d</sub> 0.200 → 0.190 is 10 counts</td></tr>
+<tr><td>Force</td><td>1 lbf = 4.448 N</td><td>Coast-down coefficients are often quoted in lbf, lbf/mph, lbf/mph²</td></tr>
+<tr><td>Energy</td><td>1 kWh = 3.6 MJ</td><td>Kinetic energy of 2,400 kg at 100 km/h ≈ 0.26 kWh</td></tr>
+</table></div>
+</div></details>
+</section>
+
+<!-- 02 -->
+<section class="chapter" id="c2">
+<p class="chapter-num">CHAPTER 02</p>
+<h2>Road load and the coast-down test</h2>
+<div class="brief"><h3>In brief</h3><ul>
+  <li>Road load = aerodynamic drag + rolling resistance + grade + inertia.</li>
+  <li>Drag force grows with v², drag <em>power</em> with v³. Above roughly 90 km/h a low-drag car spends most of its wheel energy on air.</li>
+  <li>Industry measures road load by coasting and fitting F = A + Bv + Cv². C is mostly aerodynamics; A is mostly tyres.</li>
+</ul></div>
+<div class="eq">F<sub>road</sub> = ½ ρ C<sub>d</sub> A v² + C<sub>rr</sub> m g cos θ + m g sin θ + m<sub>eff</sub> dv/dt<span class="note">m<sub>eff</sub> ≈ 1.03–1.05 m accounts for rotating wheels, rotor and gears. P<sub>wheel</sub> = F<sub>road</sub> · v.</span></div>
+<p><strong>Aerodynamic drag</strong> comes mainly from the pressure difference between the stagnation region at the front and the separated, low-pressure wake behind the vehicle. <strong>Rolling resistance</strong> is hysteresis: the tyre deforms at the contact patch and the rubber does not return all of that energy. Its coefficient C<sub>rr</sub> is typically 0.006–0.010 for passenger tyres and depends on compound, inflation pressure, load and temperature. <strong>Grade</strong> lifts the vehicle; most of that energy returns downhill through regenerative braking. <strong>Inertia</strong> accelerates it; part of that energy also returns through regeneration.</p>
+<h3>Where aerodynamics overtakes the tyres</h3>
+<div class="eq">v* = √( 2 C<sub>rr</sub> m g / (ρ C<sub>d</sub> A) )<span class="note">For C<sub>d</sub> 0.20, A 2.3 m², 2,400 kg and C<sub>rr</sub> 0.008: v* ≈ 26 m/s ≈ 94 km/h ≈ 58 mph.</span></div>
+
+<div class="demo" id="demo-road">
+  <div class="demo-head"><h3>Road-load and range calculator</h3><span class="demo-tag">INTERACTIVE · STEADY SPEED</span></div>
+  <div class="controls">
+    <label for="rl-v"><span>Speed [km/h]</span><input id="rl-v" type="number" value="113" step="1"></label>
+    <label for="rl-cd"><span>C<sub>d</sub> [–]</span><input id="rl-cd" type="number" value="0.20" step="0.005"></label>
+    <label for="rl-a"><span>Frontal area A [m²]</span><input id="rl-a" type="number" value="2.3" step="0.05"></label>
+    <label for="rl-m"><span>Mass [kg]</span><input id="rl-m" type="number" value="2400" step="50"></label>
+    <label for="rl-crr"><span>C<sub>rr</sub> [–]</span><input id="rl-crr" type="number" value="0.008" step="0.0005"></label>
+    <label for="rl-gr"><span>Grade [%]</span><input id="rl-gr" type="number" value="0" step="0.5"></label>
+    <label for="rl-eta"><span>Drivetrain efficiency [%]</span><input id="rl-eta" type="number" value="88" step="1"></label>
+    <label for="rl-aux"><span>Aux + HVAC power [W]</span><input id="rl-aux" type="number" value="400" step="50"></label>
+    <label for="rl-bat"><span>Usable battery [kWh]</span><input id="rl-bat" type="number" value="100" step="5"></label>
+    <label for="rl-rho"><span>Air density [kg/m³]</span><input id="rl-rho" type="number" value="1.2" step="0.01"></label>
+  </div>
+  <div class="kpis" id="rl-out"></div>
+  <div class="stack" id="rl-stack" role="img" aria-label="Share of battery energy by loss"></div>
+  <div class="legend"><span><i style="background:var(--s-blue)"></i>Aerodynamic</span><span><i style="background:var(--s-mint)"></i>Rolling</span><span><i style="background:var(--s-grey)"></i>Grade</span><span><i style="background:var(--s-warm)"></i>Drivetrain losses</span><span><i style="background:var(--s-violet)"></i>Aux + HVAC</span></div>
+  <svg class="chart" id="rl-chart" viewBox="0 0 640 280" role="img" aria-label="Wheel power against speed"></svg>
+  <div class="legend"><span><i style="background:var(--s-blue)"></i>Aerodynamic power</span><span><i style="background:var(--s-mint)"></i>Rolling power</span><span><i style="background:var(--ink)"></i>Total wheel power</span><span><i style="background:var(--s-coral)"></i>Selected speed</span></div>
+  <h3>What is each change worth at this speed?</h3>
+  <div class="tablewrap"><table id="rl-sens"></table></div>
+</div>
+
+<h3>The coast-down test</h3>
+<p>On a test track the vehicle is brought to high speed, shifted to neutral and allowed to decelerate. Because m<sub>eff</sub>·dv/dt = −F(v), the measured deceleration gives road load directly. Fitting a quadratic gives the road-load coefficients:</p>
+<div class="eq">F(v) = A + B v + C v²<span class="note">A ≈ rolling resistance and constant drag (brakes, bearings). B ≈ speed-dependent tyre and driveline losses. C ≈ ½ ρ C<sub>d</sub> A plus any speed-squared tyre effects.</span></div>
+<p>These coefficients are loaded onto the chassis dynamometer, so every laboratory drive-cycle test reproduces the road. SAE J1263 and J2263 describe the procedures; J2263 adds on-board anemometry to account for wind. Runs are made in both directions to cancel wind and slope.</p>
+
+<div class="demo" id="demo-coast">
+  <div class="demo-head"><h3>Fit a coast-down from noisy data</h3><span class="demo-tag">INTERACTIVE · SYNTHETIC DATA</span></div>
+  <div class="controls">
+    <label for="cd-noise"><span>Speed noise σ [km/h]</span><input id="cd-noise" type="number" value="0.15" step="0.05" min="0"></label>
+    <label for="cd-wind"><span>Constant headwind [m/s]</span><input id="cd-wind" type="number" value="0" step="0.5"></label>
+    <label for="cd-both"><span>Run directions</span><select id="cd-both"><option value="1">One direction</option><option value="2">Both directions, averaged</option></select></label>
+  </div>
+  <div class="btn-row"><button type="button" id="cd-run">New coast-down run</button></div>
+  <svg class="chart" id="cd-chart" viewBox="0 0 640 280" role="img" aria-label="Road load against speed from a coast-down"></svg>
+  <div class="legend"><span><i style="background:var(--s-grey)"></i>Measured points (from noisy deceleration)</span><span><i style="background:var(--s-mint)"></i>Quadratic fit</span><span><i style="background:var(--s-warm)"></i>True road load</span></div>
+  <div class="tablewrap"><table id="cd-table"></table></div>
+  <p class="demo-note">The "true" vehicle uses the calculator's C<sub>d</sub>, A, mass and C<sub>rr</sub>, plus a small B term. Speed is sampled at 1 Hz; deceleration comes from a central difference, which is why noise matters. A steady headwind w turns C(v + w)² into C·v² + 2Cw·v + Cw², so it adds 2Cw to B and Cw² to A. Averaging runs in both directions cancels the error in B but not the error in A, which is why J2263 measures the wind on board.</p>
+</div>
+
+<div class="cfd-link"><p>WHERE CFD FITS</p><p>External aerodynamics CFD predicts the C term; tyre and driveline data feed A and B. When a measured road load disagrees with the model, the split between the coefficients points to the term that needs attention.</p></div>
+</section>
+
+<!-- 03 -->
+<section class="chapter" id="c3">
+<p class="chapter-num">CHAPTER 03</p>
+<h2>Drive cycles and the range label</h2>
+<div class="brief"><h3>In brief</h3><ul>
+  <li>Official consumption comes from speed-versus-time schedules driven on a dynamometer. The urban (UDDS) and highway (HWFET) schedules below are the actual EPA traces.</li>
+  <li>A backward-facing model follows the trace: speed → wheel force → drivetrain efficiency → battery power, with regeneration when braking.</li>
+  <li>In the city, inertia and regeneration dominate. On the highway, aerodynamics dominates.</li>
+</ul></div>
+<p>The US label combines city and highway results with a 55/45 weighting. Manufacturers can run the two-cycle test and multiply the result by 0.7 to approximate real-world driving, or run the full five-cycle procedure, which adds an aggressive high-speed cycle (US06), a hot cycle with air conditioning (SC03) and a cold-temperature city cycle. Battery electric vehicles follow the SAE J1634 multi-cycle range test. The simulator below is a simplified model of the physics, not the certification procedure.</p>
+
+<div class="demo" id="demo-cycle">
+  <div class="demo-head"><h3>Drive-cycle energy simulator</h3><span class="demo-tag">INTERACTIVE · EPA UDDS / HWFET TRACES</span></div>
+  <div class="btn-row" role="group" aria-label="Driving cycle"><button type="button" data-cycle="UDDS" aria-pressed="true">City (UDDS)</button><button type="button" data-cycle="HWFET" aria-pressed="false">Highway (HWFET)</button></div>
+  <div class="controls">
+    <label for="cy-cd"><span>C<sub>d</sub> [–]</span><input id="cy-cd" type="number" value="0.20" step="0.005"></label>
+    <label for="cy-a"><span>Frontal area [m²]</span><input id="cy-a" type="number" value="2.3" step="0.05"></label>
+    <label for="cy-m"><span>Mass [kg]</span><input id="cy-m" type="number" value="2400" step="50"></label>
+    <label for="cy-crr"><span>C<sub>rr</sub> [–]</span><input id="cy-crr" type="number" value="0.008" step="0.0005"></label>
+    <label for="cy-eta"><span>Drivetrain efficiency, traction [%]</span><input id="cy-eta" type="number" value="88" step="1"></label>
+    <label for="cy-reg"><span>Regeneration efficiency, wheel → battery [%]</span><input id="cy-reg" type="number" value="80" step="1"></label>
+    <label for="cy-preg"><span>Max regeneration power [kW]</span><input id="cy-preg" type="number" value="150" step="10"></label>
+    <label for="cy-aux"><span>Aux power [W]</span><input id="cy-aux" type="number" value="400" step="50"></label>
+    <label for="cy-bat"><span>Usable battery [kWh]</span><input id="cy-bat" type="number" value="100" step="5"></label>
+  </div>
+  <svg class="chart" id="cy-trace" viewBox="0 0 640 220" role="img" aria-label="Speed trace and battery power"></svg>
+  <div class="legend"><span><i style="background:var(--ink)"></i>Speed [km/h]</span><span><i style="background:var(--s-warm)"></i>Battery power, traction [kW]</span><span><i style="background:var(--s-mint)"></i>Battery power, regeneration [kW]</span></div>
+  <div class="kpis" id="cy-out"></div>
+  <div class="stack" id="cy-stack" role="img" aria-label="Where the battery energy goes"></div>
+  <div class="legend"><span><i style="background:var(--s-blue)"></i>Aerodynamic</span><span><i style="background:var(--s-mint)"></i>Rolling</span><span><i style="background:var(--s-coral)"></i>Friction braking (lost inertia)</span><span><i style="background:var(--s-warm)"></i>Drivetrain and regeneration losses</span><span><i style="background:var(--s-violet)"></i>Aux</span></div>
+  <div class="tablewrap"><table id="cy-label"></table></div>
+  <p class="demo-note">One-second steps; acceleration from consecutive samples; m<sub>eff</sub> = 1.04 m; regeneration limited by the power cap with friction brakes taking the rest. "Approximate label" applies 55/45 weighting and the 0.7 factor to battery-side energy; the certified value also includes charging losses and follows SAE J1634.</p>
+</div>
+
+<details class="develop"><summary>Backward-facing and forward-facing models</summary><div>
+<p>A <strong>backward-facing</strong> model starts from the required speed trace and computes what each component must deliver, working back from the wheels to the battery. It is fast, always follows the cycle and suits efficiency and range studies. A <strong>forward-facing</strong> model starts from a driver controller that commands torque; components respond with their own dynamics and limits, and the vehicle speed is an output. It is slower but captures controls, saturation and transients, which matters for performance, thermal transients and controller development. Commercial system tools such as GT-SUITE, Simulink/Simscape and Simcenter Amesim support both approaches.</p>
+</div></details>
+</section>
+
+<!-- 04 -->
+<section class="chapter" id="c4">
+<p class="chapter-num">CHAPTER 04</p>
+<h2>Aerodynamic drag</h2>
+<div class="brief"><h3>In brief</h3><ul>
+  <li>Range responds to the drag area C<sub>d</sub>A, not to C<sub>d</sub> alone.</li>
+  <li>Pressure drag dominates passenger cars; the rear end and wake are the main levers, followed by wheels, underbody and cooling flow.</li>
+  <li>CFD predicts differences between variants more reliably than absolute drag, unless the test conditions and the wake are well resolved.</li>
+</ul></div>
+<p>A drag count is 0.001 in C<sub>d</sub>. On a low-drag sedan at highway speed, aerodynamics is a little more than half of battery energy, so 10 counts (5% of a C<sub>d</sub> of 0.20) change consumption by roughly 3%. Use the calculator in chapter 2 to see the value for your own vehicle and speed.</p>
+<h3>Where the drag comes from</h3>
+<ul>
+  <li><strong>Rear end and wake.</strong> A tapered roof and sides with a sharp cut-off edge give a smaller, steadier wake and higher base pressure.</li>
+  <li><strong>Wheels and wheelhouses.</strong> Rotating, open and turbulent; often a fifth to a third of total drag. Wheel covers, tyre profile, deflectors and air curtains are the levers.</li>
+  <li><strong>Underbody.</strong> A flat, closed floor and a rear diffuser. The battery pack of an electric vehicle naturally provides a smooth floor.</li>
+  <li><strong>Cooling flow</strong> through the heat exchangers (chapter 5), and protuberances such as mirrors and handles.</li>
+  <li><strong>Ride height.</strong> Lowering at speed reduces frontal area and underbody flow.</li>
+</ul>
+<h3>Yaw and wind-averaged drag</h3>
+<p>Natural wind combined with driving speed gives a yaw angle of a few degrees, and drag usually rises with yaw. Wind-averaged drag evaluates C<sub>d</sub> at several yaw angles and weights them by how often they occur, so a design that only wins at zero yaw does not look better than it is.</p>
+<h3>Wind tunnel, road and CFD</h3>
+<div class="tablewrap"><table>
+<tr><th>Source</th><th>Strength</th><th>What to watch</th></tr>
+<tr><td>Wind tunnel</td><td>Real geometry; fast sweeps of yaw and ride height</td><td>Fixed floor without a rolling road; non-rotating wheels; blockage corrections</td></tr>
+<tr><td>Coast-down</td><td>The road load the customer sees</td><td>Wind, temperature and tyre warm-up; aero and tyres are not separated directly</td></tr>
+<tr><td>CFD, steady RANS</td><td>Detailed flow insight; reliable trends between variants</td><td>Absolute drag in separated wakes is sensitive to the turbulence model and mesh</td></tr>
+<tr><td>CFD, scale-resolving (DES, LES, lattice-Boltzmann)</td><td>Better unsteady wake and absolute drag</td><td>Cost; long time-averaging windows</td></tr>
+</table></div>
+<div class="cfd-link"><p>WHERE CFD FITS · PUBLIC CASE</p><p>The <a href="../../vehicle-aerodynamics/">AeroSUV estate versus fastback study</a> shows the pattern: experiment, published CFD and steady RANS all rank the fastback below the estate, while the size of the difference does not match. Tracing drag build-up along the body and the wake explains where the difference is made.</p></div>
+</section>
+
+<!-- 05 -->
+<section class="chapter" id="c5">
+<p class="chapter-num">CHAPTER 05</p>
+<h2>Cooling drag and front-end airflow</h2>
+<div class="brief"><h3>In brief</h3><ul>
+  <li>Air that passes through the heat exchangers loses momentum; that momentum deficit is drag.</li>
+  <li>More cooling air means more heat rejection and more drag. Active shutters let the thermal system take only the air it needs.</li>
+  <li>The cooling demand peaks when ram air is weakest: fast charging and slow, high-load driving.</li>
+</ul></div>
+<div class="eq">D<sub>cooling</sub> ≈ ṁ<sub>air</sub> (V<sub>∞</sub> − V<sub>exit</sub>)<span class="note">The momentum lost by the cooling air between the grille and its exit into the underbody or wheel arches.</span></div>
+<p>Electric vehicles need less cooling air at cruise than combustion vehicles, but they still reject heat from the air-conditioning condenser or heat-pump outdoor exchanger, the power electronics and the battery during fast charging. Sealing the front end so that no air bypasses the cores, and guiding the exit flow cleanly, are classic gains. The fan is a pure auxiliary load, often several hundred watts at full speed.</p>
+<p>In CFD, each core is usually a porous medium whose resistance is fitted to the measured pressure drop against face velocity, with the fan represented by a pressure jump from its curve or by a rotating zone when swirl matters:</p>
+<div class="eq">Δp / L = (μ / α) v + C<sub>2</sub> · ½ ρ v²<span class="note">Darcy–Forchheimer form: a viscous term and an inertial term.</span></div>
+<div class="cfd-link"><p>WHERE CFD FITS</p><p>A front-end airflow model gives radiator airflow against vehicle speed, with the fan on and off, as the boundary condition for the 1D thermal model. The same model gives the drag cost of each shutter position, so heat rejection and drag can be traded in one place.</p></div>
+</section>
+
+<!-- 06 -->
+<section class="chapter" id="c6">
+<p class="chapter-num">CHAPTER 06</p>
+<h2>Drive-unit losses</h2>
+<div class="brief"><h3>In brief</h3><ul>
+  <li>Copper loss grows with torque squared; iron loss grows with speed. Peak efficiency is high, but cruising sits at low torque where iron loss is a large share.</li>
+  <li>Copper resistance rises about 0.39% per kelvin, and permanent magnets lose flux as they heat. Cooling is an efficiency topic as well as a durability one.</li>
+  <li>The number that matters is efficiency weighted over the drive cycle, not the peak.</li>
+</ul></div>
+<div class="tablewrap"><table>
+<tr><th>Loss</th><th>Physics</th><th>Scales with</th><th>Dominates</th></tr>
+<tr><td>Copper</td><td>I²R in the windings, plus AC losses (skin and proximity effects) at high frequency</td><td>Current² ≈ torque²; rises with temperature</td><td>High torque, low speed</td></tr>
+<tr><td>Iron</td><td>Hysteresis and eddy currents in the laminations</td><td>Electrical frequency and flux</td><td>High speed, low torque</td></tr>
+<tr><td>Magnet eddy</td><td>Currents induced in the magnets by field harmonics</td><td>Speed, harmonics</td><td>High speed; also heats the magnets</td></tr>
+<tr><td>Mechanical</td><td>Bearings and windage, worse if oil reaches the air gap</td><td>Speed (windage ≈ speed³)</td><td>High speed</td></tr>
+<tr><td>Inverter</td><td>Conduction and switching losses; silicon carbide reduces both</td><td>Current, switching frequency, voltage</td><td>Light load (switching), high current (conduction)</td></tr>
+<tr><td>Gearbox</td><td>Gear mesh, bearings, seals, oil churning</td><td>Torque and speed; viscosity</td><td>Spin losses exist even at zero torque</td></tr>
+</table></div>
+<div class="eq">R(T) = R<sub>20</sub> [1 + α (T − 20 °C)], &nbsp; α<sub>Cu</sub> ≈ 0.0039 K⁻¹<span class="note">A winding at 120 °C instead of 80 °C: 1.393 / 1.236 ≈ 1.13, about 13% more copper loss at the same current.</span></div>
+
+<div class="demo" id="demo-motor">
+  <div class="demo-head"><h3>Efficiency map of an illustrative traction motor</h3><span class="demo-tag">INTERACTIVE · LOSS MODEL</span></div>
+  <div class="controls">
+    <label for="mo-T"><span>Machine temperature [°C] <output id="mo-Tv">80</output></span><input id="mo-T" type="range" min="40" max="160" step="5" value="80"></label>
+    <label for="mo-fe"><span>Iron-loss scale [%] <output id="mo-fev">100</output></span><input id="mo-fe" type="range" min="50" max="150" step="5" value="100"></label>
+  </div>
+  <div class="mapwrap"><canvas id="mo-map" width="640" height="360" aria-label="Motor efficiency map, torque against speed. Click to inspect a point."></canvas></div>
+  <div class="colorbar" id="mo-bar"></div><div class="colorbar-scale"><span>≤ 80%</span><span>85%</span><span>90%</span><span>≥ 95%</span></div>
+  <div class="kpis" id="mo-out"></div>
+  <p class="demo-note">Click or tap the map to inspect a point. Peak torque 350 N·m, peak power 200 kW, base speed ≈ 5,460 rpm. Losses: copper k·τ² with field-weakening current above base speed and an AC-loss factor rising with speed, iron k<sub>h</sub>ω + k<sub>e</sub>ω² scaled by flux above base speed, bearing and windage terms, and stray-load loss of 0.6% of output power (reported with mechanical loss). Temperature changes copper resistance (0.39%/K) and magnet flux (−0.1%/K, so more current for the same torque). Coefficients are illustrative, not a specific machine.</p>
+</div>
+<div class="cfd-link"><p>WHERE CFD FITS · PUBLIC CASE</p><p>Oil-cooling CFD supplies the heat-transfer coefficients of the lumped thermal network that sets winding and magnet temperature, and therefore copper loss and sustained power. The <a href="../../electric-motor-cooling/">electric-motor oil-cooling case</a> shows the oil-distribution side of that problem on a generic geometry.</p></div>
+</section>
+
+<!-- 07 -->
+<section class="chapter" id="c7">
+<p class="chapter-num">CHAPTER 07</p>
+<h2>Battery and voltage</h2>
+<div class="brief"><h3>In brief</h3><ul>
+  <li>Range uses usable energy; a buffer at both ends of the state of charge protects cell life.</li>
+  <li>Internal loss is I²R<sub>int</sub>. Resistance rises sharply in the cold.</li>
+  <li>Doubling pack voltage halves current for the same power and divides resistive losses by four in the same conductors.</li>
+</ul></div>
+<p>Cells prefer a narrow temperature window. Cold cells have high resistance and risk lithium plating while charging; hot cells age faster. Uniformity matters as much as the mean: cells at different temperatures age at different rates, so a cold plate must remove heat <em>evenly</em>, which makes battery cooling a flow-distribution problem.</p>
+<div class="eq">P = V I &nbsp;→&nbsp; P<sub>loss</sub> = I² R = (P / V)² R<span class="note">250 kW at 800 V is 312 A; at 400 V it is 625 A and four times the resistive heat in the same conductors.</span></div>
+<p>A dimpled or ribbed cold plate can be reduced the same way as any compact heat-exchanger surface: simulate one periodic cell of the pattern, extract the Fanning friction factor and the Colburn j factor against Reynolds number, and use those correlations in a plate-level or pack-level model. The trade-off is explicit: more heat transfer costs pressure drop, and pressure drop costs pump power (chapter 8).</p>
+</section>
+
+<!-- 08 -->
+<section class="chapter" id="c8">
+<p class="chapter-num">CHAPTER 08</p>
+<h2>Pumps, fans and compressors</h2>
+<div class="brief"><h3>In brief</h3><ul>
+  <li>Hydraulic efficiency from CFD is P<sub>hyd</sub>/P<sub>shaft</sub>. It contains only what the model contains.</li>
+  <li>The battery pays wire-to-water: hydraulic × volumetric × mechanical × motor × controller. Five stages at 90% give 59%.</li>
+  <li>In a closed loop the system curve is H = kQ². Slowing the pump keeps it near its best-efficiency point; half the flow costs about one eighth of the power. Throttling with a valve wastes most of that.</li>
+</ul></div>
+<div class="eq">H = Δp<sub>t</sub> / (ρ g) &nbsp;&nbsp; P<sub>hyd</sub> = Q Δp<sub>t</sub> = ρ g Q H &nbsp;&nbsp; P<sub>shaft</sub> = T ω &nbsp;&nbsp; η<sub>h</sub> = P<sub>hyd</sub> / P<sub>shaft</sub></div>
+<p>In CFD the shaft power comes from the torque on the impeller walls, so the efficiency includes blade and volute losses and, only if they are meshed, disk friction and leakage. Bearings, seals, motor and controller sit outside it.</p>
+<div class="tablewrap"><table>
+<tr><th>Efficiency</th><th>What is lost</th><th>Levers</th></tr>
+<tr><td>Hydraulic</td><td>Passage friction, incidence at off-design, diffusion and separation, volute mismatch, part-load recirculation</td><td>Blade angles and count, volute area schedule, inlet flow quality</td></tr>
+<tr><td>Volumetric</td><td>Leakage from outlet back to inlet through clearance gaps</td><td>Clearances, seals; relatively larger in small pumps</td></tr>
+<tr><td>Mechanical</td><td>Bearings, shaft seals, disk friction of the shrouds</td><td>Wet-rotor designs without shaft seals; viscosity</td></tr>
+<tr><td>Motor and controller</td><td>Copper, iron and switching losses of the small BLDC drive</td><td>Same physics as chapter 6, at small scale</td></tr>
+</table></div>
+<div class="eq">H<sub>Euler</sub> = (u<sub>2</sub> c<sub>u2</sub> − u<sub>1</sub> c<sub>u1</sub>) / g<span class="note">The impeller adds energy by adding swirl. Pre-swirl at the inlet from a poor suction path changes both head and incidence.</span></div>
+<div class="eq">Q ∝ N &nbsp;&nbsp; H ∝ N² &nbsp;&nbsp; P ∝ N³<span class="note">Affinity laws for the same pump at similar operating points.</span></div>
+
+<div class="demo" id="demo-pump">
+  <div class="demo-head"><h3>Pump curve, system curve and the cost of throttling</h3><span class="demo-tag">INTERACTIVE · PUBLIC PUMP DATA</span></div>
+  <div class="controls">
+    <label for="pu-qb"><span>Loop designed for, at 7000 rpm [L/h] <output id="pu-qbv">1500</output></span><input id="pu-qb" type="range" min="900" max="1650" step="10" value="1500"></label>
+    <label for="pu-qt"><span>Flow actually needed [L/h] <output id="pu-qtv">1050</output></span><input id="pu-qt" type="range" min="900" max="1500" step="10" value="1050"></label>
+    <label for="pu-em"><span>Motor × controller efficiency [%]</span><input id="pu-em" type="number" value="76" step="1"></label>
+  </div>
+  <svg class="chart" id="pu-chart" viewBox="0 0 640 300" role="img" aria-label="Pump head curves and system curves"></svg>
+  <div class="legend"><span><i style="background:var(--ink)"></i>Pump curve, 7000 rpm (fit to CFD)</span><span><i style="background:var(--s-mint)"></i>Pump curve, reduced speed</span><span><i style="background:var(--s-blue)"></i>Loop system curve</span><span><i style="background:var(--s-coral)"></i>Throttled system curve</span></div>
+  <div class="kpis" id="pu-out"></div>
+  <p class="demo-note">Head and efficiency curves are least-squares quadratics through the five accepted MRF points of the <a href="../../pump/">public pump study</a> (7 blades, 7000 rpm, 900–1650 L/h, ρ = 1074 kg/m³). Speed control uses the affinity laws along the loop's own parabola, so the pump stays at the efficiency of the design point. Throttling keeps 7000 rpm and adds a valve. The motor-and-controller efficiency is an assumption; the CFD efficiency covers the impeller and casing only.</p>
+</div>
+<h3>Operating point, viscosity and cavitation</h3>
+<p>The pump only sees the loop through its system curve, H = kQ², where k sums every restriction: valves, cold plates, chiller, motor jacket, hoses. Removing a restriction lowers k, so the same flow needs less head and less power, or a smaller pump. Cold coolant raises viscosity, which raises k and degrades the pump's own curve. If inlet pressure approaches vapour pressure (hot coolant, restrictive suction, low system pressure), cavitation reduces head and erodes the impeller; suction-side restriction matters more than discharge-side.</p>
+<h3>Fans and compressors</h3>
+<p>Radiator fans obey the same affinity laws, so two fans at moderate speed can cost less than one at full speed. The refrigerant compressor is the largest thermal auxiliary load. Its power rises with pressure ratio, so pressure losses on the refrigerant side, in lines, chiller, condenser and valves, raise compressor power and lower the system coefficient of performance.</p>
+<div class="cfd-link"><p>WHERE CFD FITS · PUBLIC CASE</p><p>The <a href="../../pump/">centrifugal pump study</a> automates the operating-point sweep in PyFluent, accepts a point only when head, torque and efficiency stop drifting, and reports head, torque and hydraulic efficiency with a fitted best-efficiency estimate. Those are exactly the curves the demonstration above uses.</p></div>
+</section>
+
+<!-- 09 -->
+<section class="chapter" id="c9">
+<p class="chapter-num">CHAPTER 09</p>
+<h2>Heating and winter range</h2>
+<div class="brief"><h3>In brief</h3><ul>
+  <li>A resistive (PTC) heater has a coefficient of performance of 1. A heat pump moves heat from outside air or waste heat and delivers two to three times its electrical input in mild cold.</li>
+  <li>Heating is paid per hour, so its cost per kilometre is largest in slow winter traffic.</li>
+  <li>Cold also raises battery resistance, tyre rolling resistance, driveline viscosity and air density.</li>
+</ul></div>
+<div class="eq">COP = Q<sub>heat</sub> / P<sub>electric</sub> &nbsp;&nbsp; P<sub>electric</sub> = Q<sub>heat</sub> / COP<span class="note">Heat demand ≈ UA (T<sub>cabin</sub> − T<sub>ambient</sub>), with ventilation air included in UA.</span></div>
+
+<div class="demo" id="demo-winter">
+  <div class="demo-head"><h3>Winter range: resistive heater versus heat pump</h3><span class="demo-tag">INTERACTIVE · ILLUSTRATIVE MODEL</span></div>
+  <div class="controls">
+    <label for="wi-T"><span>Ambient temperature [°C] <output id="wi-Tv">−5</output></span><input id="wi-T" type="range" min="-25" max="20" step="1" value="-5"></label>
+    <label for="wi-v"><span>Average speed [km/h]</span><input id="wi-v" type="number" value="40" step="5"></label>
+    <label for="wi-base"><span>Driving consumption without heating [Wh/km]</span><input id="wi-base" type="number" value="130" step="5"></label>
+    <label for="wi-ua"><span>Cabin UA incl. ventilation [W/K]</span><input id="wi-ua" type="number" value="120" step="10"></label>
+    <label for="wi-bat"><span>Usable battery [kWh]</span><input id="wi-bat" type="number" value="100" step="5"></label>
+  </div>
+  <div class="kpis" id="wi-out"></div>
+  <svg class="chart" id="wi-chart" viewBox="0 0 640 260" role="img" aria-label="Range against ambient temperature"></svg>
+  <div class="legend"><span><i style="background:var(--s-grey)"></i>No heating</span><span><i style="background:var(--s-mint)"></i>Heat pump</span><span><i style="background:var(--s-coral)"></i>Resistive heater</span></div>
+  <p class="demo-note">Cabin held at 21 °C. Heat-pump COP = 2.5 + 0.05·T<sub>amb</sub>, limited to 1.2–4.0 (an illustrative trend, not a specific system). Battery heating, cold tyres and cold driveline losses are not included, so real winter losses are larger.</p>
+</div>
+<p>Thermal architecture decides how much of the heat is bought with electricity. Waste heat from the drive unit, inverter and battery can be routed to the cabin or the battery instead of being rejected, which requires multi-port coolant valves and mode switching. The battery can be pre-conditioned before fast charging, so it accepts high power sooner.</p>
+</section>
+
+<!-- 10 -->
+<section class="chapter" id="c10">
+<p class="chapter-num">CHAPTER 10</p>
+<h2>Fast-charging heat</h2>
+<div class="brief"><h3>In brief</h3><ul>
+  <li>Charging power tapers as cell voltage approaches its limit; 10–80% time is the usual metric.</li>
+  <li>Heat generation scales with current squared, and the vehicle is standing still: the chiller and the front-end fan carry the entire load.</li>
+  <li>Better heat-exchanger models let a design charge closer to the cell limit without oversizing the cooling.</li>
+</ul></div>
+<div class="eq">Q<sub>heat</sub> ≈ (1 − η<sub>charge</sub>) P<sub>charge</sub><span class="note">A 3% loss at 250 kW is 7.5 kW of heat in cells, busbars, cables and power electronics.</span></div>
+<p>The limits are the charger, the connector current, the cell voltage and temperature. Cold cells risk lithium plating and must be heated first; hot cells are derated to protect life. The chiller, a refrigerant-to-coolant heat exchanger, links the battery loop to the refrigerant cycle, so its pressure drop and conductance enter both the coolant pump and the compressor power.</p>
+<div class="cfd-link"><p>WHERE CFD FITS</p><p>A plate-fin chiller can be reduced in three steps: a periodic fin cell gives friction and Colburn j factors against Reynolds number and flow angle; the correlations are frozen and versioned; the full stack replaces the fins with a porous medium that uses them, with heat sources for the heat transfer. The same f and j curves are what a 1D heat-exchanger model needs.</p></div>
+</section>
+
+<!-- 11 -->
+<section class="chapter" id="c11">
+<p class="chapter-num">CHAPTER 11</p>
+<h2>Which lever is worth more</h2>
+<div class="brief"><h3>In brief</h3><ul>
+  <li>Express every proposal as Δ energy per distance on a named cycle, then as range, then compare with cost and mass.</li>
+  <li>On the highway, drag counts beat kilograms. In the city, mass, regeneration and auxiliary power gain weight.</li>
+  <li>For small changes, % Δrange ≈ −% Δconsumption ≈ (share of that loss) × (% change of that loss).</li>
+</ul></div>
+
+<div class="demo" id="demo-sens">
+  <div class="demo-head"><h3>Range sensitivity on the city and highway cycles</h3><span class="demo-tag">INTERACTIVE · USES THE CHAPTER 03 VEHICLE</span></div>
+  <svg class="chart" id="se-chart" viewBox="0 0 640 300" role="img" aria-label="Range change per lever on city and highway cycles"></svg>
+  <div class="legend"><span><i style="background:var(--s-blue)"></i>City (UDDS)</span><span><i style="background:var(--s-warm)"></i>Highway (HWFET)</span></div>
+  <p class="demo-note">Each bar re-runs the drive-cycle simulator with one change and reports the range change against the unchanged vehicle. Edit the vehicle in chapter 3 and the bars update.</p>
+</div>
+<p>Efficiency also compounds through the battery. A heavier vehicle needs more battery for the same range, which adds mass and cost. Energy saved per kilometre can be taken as more range or as a smaller, cheaper and lighter pack, which is why efficiency is often discussed as a cost lever.</p>
+</section>
+
+<!-- 12 -->
+<section class="chapter" id="c12">
+<p class="chapter-num">CHAPTER 12</p>
+<h2>From CFD to the system model</h2>
+<div class="brief"><h3>In brief</h3><ul>
+  <li>A vehicle energy model is only as good as its component inputs. Detailed CFD is one of the best sources for them.</li>
+  <li>The useful deliverable is a reduced form the system model can run: a map, a curve, a correlation or a calibrated component.</li>
+  <li>State the validity range with every reduced model, and correlate the assembled model on the same cycles as the test.</li>
+</ul></div>
+<div class="tablewrap"><table>
+<tr><th>3D result</th><th>Reduced form for the system model</th><th>Efficiency lever</th></tr>
+<tr><td>External aerodynamics</td><td>C<sub>d</sub> against yaw, ride height and shutter position; cooling airflow against speed</td><td>Highway consumption; cooling drag</td></tr>
+<tr><td>Front-end airflow with fans</td><td>Radiator face velocity against vehicle speed, fan on and off</td><td>Fan power; heat rejection; shutter strategy</td></tr>
+<tr><td>Heat-exchanger cells</td><td>Δp against flow; f and j correlations; UA or effectiveness maps</td><td>Pump and compressor power; charging time</td></tr>
+<tr><td>Valves and manifolds</td><td>Δp(Q, T) components calibrated across temperature</td><td>Pump power; cold-start accuracy</td></tr>
+<tr><td>Motor oil cooling</td><td>Heat-transfer coefficients by winding sector for a lumped network</td><td>Copper loss; derating; sustained power</td></tr>
+<tr><td>Pumps and fans</td><td>H–Q, efficiency and power curves; best-efficiency point</td><td>Auxiliary energy; speed-control strategy</td></tr>
+<tr><td>Cold plates</td><td>Flow split, Δp and thermal resistance per cell group</td><td>Cell temperature spread; pump power</td></tr>
+</table></div>
+<h3>Identify the physics before fitting</h3>
+<p>Pressure loss in a hydraulic component has a viscous part, proportional to flow and viscosity, and an inertial part, proportional to flow squared. Which part dominates changes with temperature and flow rate, so a reduced model calibrated at one condition can fail badly at another. A calibration that respects which physics controls each parameter, using operating points across the whole envelope, gives a component that stays valid where the system model will use it. The same rule applies to drag maps, heat-exchanger correlations and loss maps: know which mechanism each fitted coefficient represents, and state the range over which it was fitted.</p>
+<h3>Public cases on this site</h3>
+<ul>
+  <li><a href="../../vehicle-aerodynamics/">Vehicle aerodynamics, estate versus fastback</a>: drag build-up, wake and the limits of steady RANS.</li>
+  <li><a href="../../pump/">Centrifugal pump</a>: automated performance curves, CPU/GPU comparison and pressure pulsation.</li>
+  <li><a href="../../electric-motor-cooling/">Electric-motor oil cooling</a>: oil distribution in rotating hardware.</li>
+</ul>
+</section>
+
+<section class="chapter refs" id="refs">
+<p class="chapter-num">REFERENCES</p>
+<h2>Further reading</h2>
+<ol>
+  <li>T. D. Gillespie, <em>Fundamentals of Vehicle Dynamics</em>, SAE International, 1992.</li>
+  <li>W.-H. Hucho (ed.), <em>Aerodynamics of Road Vehicles</em>, 4th ed., SAE International, 1998.</li>
+  <li>J. Larminie and J. Lowry, <em>Electric Vehicle Technology Explained</em>, 2nd ed., Wiley, 2012.</li>
+  <li>M. Ehsani, Y. Gao, S. Longo and K. Ebrahimi, <em>Modern Electric, Hybrid Electric, and Fuel Cell Vehicles</em>, 3rd ed., CRC Press, 2018.</li>
+  <li>J. Pyrhönen, T. Jokinen and V. Hrabovcová, <em>Design of Rotating Electrical Machines</em>, 2nd ed., Wiley, 2014.</li>
+  <li>J. F. Gülich, <em>Centrifugal Pumps</em>, 3rd ed., Springer, 2014.</li>
+  <li>W. M. Kays and A. L. London, <em>Compact Heat Exchangers</em>, 3rd ed., McGraw-Hill, 1984.</li>
+  <li>SAE J1263, <em>Road Load Measurement and Dynamometer Simulation Using Coastdown Techniques</em>; SAE J2263, <em>Road Load Measurement Using Onboard Anemometry and Coastdown Techniques</em>.</li>
+  <li>SAE J1634, <em>Battery Electric Vehicle Energy Consumption and Range Test Procedure</em>.</li>
+  <li>US EPA, <a href="https://www.epa.gov/vehicle-and-fuel-emissions-testing/dynamometer-drive-schedules" target="_blank" rel="noopener noreferrer">Dynamometer drive schedules</a> (UDDS and HWFET speed traces used in chapters 3 and 11); fuel economy labeling, 40 CFR Part 600.</li>
+</ol>
+<p class="disclosure">Notes by Alberto Brambila, drafted with AI assistance. Example vehicles and coefficients are generic and illustrative. Each calculator was checked against an independent Python implementation of the same equations. The EPA speed traces are public domain. Corrections are welcome through the <a href="../../#contact">contact page</a>.</p>
+</section>
+
+</article>
+</div>
+</main>
+<footer class="wrap"><a href="../../blog.html">← All notes</a><a href="../../#work">Explore engineering case studies ↗</a></footer>
+<p class="copyright wrap">© 2026 Alberto Brambila Solórzano. All rights reserved.</p>
+<script src="cycles.js"></script>
+<script src="ev.js"></script>
+<script type="module" src="/analytics/analytics.js"></script>
+</body>
+</html>

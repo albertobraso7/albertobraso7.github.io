@@ -1,19 +1,15 @@
-# Vehicle aerodynamics results page
+# Vehicle-efficiency notes
 
-Status: COMPLETE
+Status: COMPLETE (first edition; author review pending)
 Last Agent: Claude
-Date: 2026-11-07
+Date: 2026-11-18
 
-Objective: replace the "in development" AeroSUV page with the estate/fastback preliminary results, update the homepage card and capability map, and add the FlowPilot screenshot to its own project card.
+Objective: publish a public "engineering notes" article on electric-vehicle efficiency in the CFD Knowledge Hub style, with interactive calculators, linked from `blog.html`.
 
-Author decisions: no radiator figures; HTML charts for Cd and drag budget (CLf/CLr only as short note + table); both cumulative drag charts; iso Cpt=0 pair as hero (cropped, VTK colour bar replaced by HTML bar); paired figures shown side by side/stacked, y0_cpt with an estate/fastback switch; limits and differences vs Zhang et al. (2019), including why rotating walls instead of MRF.
+Done: `notes/ev-efficiency/index.html` (12 chapters), `ev.css` (portfolio identity, reader layout, sticky chapter list), `ev.js` (converter, road-load and range, coast-down fit, EPA UDDS/HWFET cycle simulator with label estimate, motor efficiency map, pump/system curve with throttling vs speed control, winter range, cycle sensitivity), `cycles.js` (EPA traces). `blog.html` lists it first. Records: DECISIONS, SOURCES, ASSET_PROVENANCE.
 
-Done: `vehicle-aerodynamics/index.html`, `vehicle.css`, new `vehicle.js`, WebP/SVG assets from the private repo `results/figures/` (dark theme, centered_linear_bar), `aerosuv-wake-preview.webp`; `index.html` card; `capability-map.js` (veh preview + "Preliminary results", tool thumbnail); `projects.js` + `recruiter-layout.css` FlowPilot shot (`assets/flowpilot/`). Private source repo backed up at 6edc77a.
+Checks: page JS run in Node and compared with an independent Python implementation (steady road load, both cycles, motor efficiency at two temperatures, pump fits, COP: agreement to ~1e-14); EPA cycle distances 7.45 / 10.26 mi; headless Chrome at 1366 px (visual review of all demos) and 390/320 px via iframes (no horizontal overflow); no console errors in Chrome.
 
-Checks: local Chrome at 1366 and iframes at 390/320 (no horizontal overflow), chart palette validated for the dark surface with the dataviz validator.
+Limitations: content drafted with AI assistance and not yet reviewed by the author; motor loss model, COP trend and vehicles are illustrative; no homepage card added.
 
-Follow-up from review: removed HPC/core mentions, rewrote MRF rationale, rebuilt the homepage preview with larger labelled vehicles. Records updated (DECISIONS, SOURCES, PROJECT_INVENTORY, ASSET_PROVENANCE).
-
-Published: e982739 on main; Pages build for e982739 reported "built"; live /vehicle-aerodynamics/, vehicle.js, preview and FlowPilot assets return 200; live page has no HPC/core wording. FlowPilot source screenshot backed up in the private flowpilot repo (084bdf9).
-
-Next: when the notchback converges or a large-domain/open-cooling run exists, extend the comparison; Cd chart data live in `vehicle-aerodynamics/vehicle.js`.
+Next: author review of wording and physics; possible additions: cooling-drag/shutter demo, battery I²R vs C-rate demo, fast-charge curve, chapter 3 operating points overlaid on the motor map.
