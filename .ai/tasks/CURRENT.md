@@ -1,15 +1,17 @@
-# Vehicle-efficiency notes
+# Vehicle-efficiency notes, revision 2
 
-Status: COMPLETE (first edition; author review pending)
+Status: COMPLETE (author review pending)
 Last Agent: Claude
-Date: 2026-11-18
+Date: 2026-11-26
 
-Objective: publish a public "engineering notes" article on electric-vehicle efficiency in the CFD Knowledge Hub style, with interactive calculators, linked from `blog.html`.
+Objective: extend `notes/ev-efficiency/` with physics from the author's Lucid Tech Talk study topics (inverter light load, winding thermal limits, battery series/parallel and hottest cell, fast-charge limits, thermal architecture, mass compounding, model fidelity), with calculators the author can demonstrate, without publishing interview material.
 
-Done: `notes/ev-efficiency/index.html` (12 chapters), `ev.css` (portfolio identity, reader layout, sticky chapter list), `ev.js` (converter, road-load and range, coast-down fit, EPA UDDS/HWFET cycle simulator with label estimate, motor efficiency map, pump/system curve with throttling vs speed control, winter range, cycle sensitivity), `cycles.js` (EPA traces). `blog.html` lists it first. Records: DECISIONS, SOURCES, ASSET_PROVENANCE.
+Acceptance criteria: (1) new physics sections and equations in chapters 6, 7, 10, 12 and 13 plus a new chapter 11; (2) five new calculators working with no console errors; (3) each calculator matches an independent Python implementation; (4) every "What to look for" claim matches the model; (5) manufacturer facts only in labelled boxes, traceable to public Lucid pages; (6) records updated.
 
-Checks: page JS run in Node and compared with an independent Python implementation (steady road load, both cycles, motor efficiency at two temperatures, pump fits, COP: agreement to ~1e-14); EPA cycle distances 7.45 / 10.26 mi; headless Chrome at 1366 px (visual review of all demos) and 390/320 px via iframes (no horizontal overflow); no console errors in Chrome.
+Done: `index.html` (13 chapters, 13 interactive models; new demos: SiC vs IGBT inverter efficiency, winding hot spot peak vs continuous, DC fast-charge session with limits, oil-temperature trade-off, mass compounding; two "Public example" boxes; references and disclosure updated), `ev.js` (models exported on `window.EVNotes`).
 
-Limitations: content drafted with AI assistance and not yet reviewed by the author; motor loss model, COP trend and vehicles are illustrative. Homepage: "Notes" link in the main navigation and section "03 / Engineering notes" (approach and contact renumbered 04 and 05), added at the author's request the same day.
+Checks: page JS run in Node with a DOM stub; independent Python (period-averaged inverter losses, brentq steady states, solve_ivp burst, re-implemented charge stepping, fixed-point oil and compounding) agrees to ≤3e-8 relative (ODE tolerance), ≤1e-10 otherwise; scenario claims re-run (400 V 26.4 vs 800 V 22.3 min; 45 °C no cooling +4 min; oil optimum 110 °C at 20% load, 30 °C at full load); headless Chrome 1366 px visual review of the five demos. Not done: phone-width recheck of the new demos (they reuse the existing demo components that passed at 390/320 px).
 
-Next: author review of wording and physics; possible additions: cooling-drag/shutter demo, battery I²R vs C-rate demo, fast-charge curve, chapter 3 operating points overlaid on the motor map.
+Limitations: AI-assisted drafting; models illustrative; author has not yet reviewed wording and physics. Verification scripts kept outside the repository (session scratchpad).
+
+Next: author review; optional phone-width check; possible additions: battery hottest-cell demo, front/rear torque-split demo.

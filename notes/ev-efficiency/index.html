@@ -22,7 +22,7 @@
   <h1>From forces to <em>range.</em></h1>
   <p class="lede">How aerodynamic drag, tyre losses, drive-unit losses and thermal systems decide how far an electric vehicle travels on a charge, and how a CFD result becomes a number that a vehicle-level decision can use.</p>
   <p class="lede">Each chapter starts with the essentials, develops the physics, and includes calculators you can change. Example vehicles are generic; they are not data from any manufacturer.</p>
-  <div class="notes-meta"><span>FIRST EDITION · NOVEMBER 2026</span><span>12 CHAPTERS · 8 INTERACTIVE MODELS</span><span>SI UNITS, WITH US CONVERSIONS</span></div>
+  <div class="notes-meta"><span>FIRST EDITION · NOVEMBER 2026 · REVISED 26 NOV</span><span>13 CHAPTERS · 13 INTERACTIVE MODELS</span><span>SI UNITS, WITH US CONVERSIONS</span></div>
 </section>
 
 <div class="notes-layout wrap">
@@ -39,8 +39,9 @@
     <li><a href="#c8"><span>08</span>Pumps, fans and compressors</a></li>
     <li><a href="#c9"><span>09</span>Heating and winter range</a></li>
     <li><a href="#c10"><span>10</span>Fast-charging heat</a></li>
-    <li><a href="#c11"><span>11</span>Which lever is worth more</a></li>
-    <li><a href="#c12"><span>12</span>From CFD to the system model</a></li>
+    <li><a href="#c11"><span>11</span>Thermal architecture</a></li>
+    <li><a href="#c12"><span>12</span>Which lever is worth more</a></li>
+    <li><a href="#c13"><span>13</span>From CFD to the system model</a></li>
     <li><a href="#refs"><span>—</span>References</a></li>
   </ol>
 </nav>
@@ -268,6 +269,54 @@
   <p class="demo-note">Click or tap the map to inspect a point. Peak torque 350 N·m, peak power 200 kW, base speed ≈ 5,460 rpm. Losses: copper k·τ² with field-weakening current above base speed and an AC-loss factor rising with speed, iron k<sub>h</sub>ω + k<sub>e</sub>ω² scaled by flux above base speed, bearing and windage terms, and stray-load loss of 0.6% of output power (reported with mechanical loss). Temperature changes copper resistance (0.39%/K) and magnet flux (−0.1%/K, so more current for the same torque). Coefficients are illustrative, not a specific machine.</p>
 </div>
 <div class="cfd-link"><p>WHERE CFD FITS · PUBLIC CASE</p><p>Oil-cooling CFD supplies the heat-transfer coefficients of the lumped thermal network that sets winding and magnet temperature, and therefore copper loss and sustained power. The <a href="../../electric-motor-cooling/">electric-motor oil-cooling case</a> shows the oil-distribution side of that problem on a generic geometry.</p></div>
+
+<h3>Light load and the inverter</h3>
+<p>The inverter turns battery DC into three-phase AC by switching each phase between the DC rails thousands of times per second. Its two loss mechanisms behave differently. Conduction loss is the voltage drop across the conducting device times the current. Switching loss is the energy dissipated in every turn-on and turn-off, paid at each switching event.</p>
+<div class="eq">MOSFET: P<sub>cond</sub> = 3 I<sub>rms</sub>² R<sub>ds,on</sub>(T<sub>j</sub>) &nbsp;&nbsp; IGBT: P<sub>cond</sub> ≈ 3 (V<sub>0</sub> Ī + r I<sub>rms</sub>²) &nbsp;&nbsp; P<sub>sw</sub> ≈ 3 f<sub>sw</sub> E<sub>sw</sub> (V<sub>dc</sub> / V<sub>ref</sub>)(Ī / I<sub>ref</sub>)<span class="note">Ī = 2√2 I<sub>rms</sub> / π is the mean absolute phase current. A silicon IGBT has a knee voltage V<sub>0</sub> of roughly 0.8–1 V that it pays at any current; a silicon-carbide MOSFET behaves like a resistor, so its conduction loss falls with current squared.</span></div>
+<p>Cruising needs a small fraction of rated current, and that is where a vehicle covers most of its distance. There the IGBT's knee voltage and higher switching energy dominate, while the MOSFET's losses nearly vanish. Silicon carbide's wide bandgap and roughly ten times higher critical field allow a thin, low-resistance drift layer at 1,200 V, which is why it is common in 800 V drives. Its on-resistance rises with junction temperature, so inverter cooling is also an efficiency lever.</p>
+
+<div class="demo" id="demo-inv">
+  <div class="demo-head"><h3>Inverter efficiency: silicon-carbide MOSFET versus silicon IGBT</h3><span class="demo-tag">INTERACTIVE · LOSS MODEL</span></div>
+  <div class="controls">
+    <label for="iv-cur"><span>Phase current [% of rated] <output id="iv-curv">10</output></span><input id="iv-cur" type="range" min="2" max="100" step="1" value="10"></label>
+    <label for="iv-spd"><span>Motor speed [% of base speed] <output id="iv-spdv">50</output></span><input id="iv-spd" type="range" min="10" max="100" step="5" value="50"></label>
+    <label for="iv-vdc"><span>DC-link voltage [V]</span><input id="iv-vdc" type="number" value="800" step="50"></label>
+    <label for="iv-fsw"><span>Switching frequency [kHz]</span><input id="iv-fsw" type="number" value="10" step="1"></label>
+    <label for="iv-tj"><span>Junction temperature [°C]</span><input id="iv-tj" type="number" value="100" step="5"></label>
+    <label for="iv-v"><span>Vehicle speed, for Wh/km [km/h]</span><input id="iv-v" type="number" value="110" step="5"></label>
+  </div>
+  <svg class="chart" id="iv-chart" viewBox="0 0 640 280" role="img" aria-label="Inverter efficiency against phase current for a SiC MOSFET and a Si IGBT"></svg>
+  <div class="legend"><span><i style="background:var(--s-mint)"></i>SiC MOSFET</span><span><i style="background:var(--s-coral)"></i>Si IGBT</span></div>
+  <div class="kpis" id="iv-out"></div>
+  <p class="demo-note">Illustrative 250 kW, 800 V three-phase inverter, rated at 364 A rms. SiC: R<sub>ds,on</sub> 2.0 mΩ at 25 °C rising 0.6%/K; E<sub>on</sub> + E<sub>off</sub> 12 mJ at 800 V and 400 A. IGBT: V<sub>0</sub> 0.9 V, r 1.5 mΩ rising 0.4%/K, three times the SiC switching energy. Both use the same switching frequency; in practice IGBTs often switch more slowly. Output voltage follows motor speed up to base speed (modulation 0.9, power factor 0.9). Gate drive and control add 30 W. Not vendor data. The Wh/km line treats the selected point as a steady cruise.</p>
+</div>
+<p class="demo-note"><strong>What to look for.</strong> Compare the losses, not the efficiencies. At full current the IGBT loses about 1.7 times as much as the SiC device; at 10% current about three times as much, because its knee voltage and switching energy do not shrink with load. At very low current both curves fall, because fixed losses such as gate drive dominate. At this light-load cruise point the difference is about 1.3 Wh/km, close to 1% of consumption, and a drive cycle spends most of its time near such points.</p>
+
+<h3>Temperature limits: copper, insulation and magnets</h3>
+<ul>
+  <li><strong>Copper.</strong> Resistance rises 0.39% per kelvin, so a hot winding loses more for the same torque (equation above).</li>
+  <li><strong>Insulation.</strong> Thermal ageing follows an Arrhenius law; a common rule of thumb is that insulation life halves for every 8–10 K above its rating. The insulation class sets a limit on the <em>hottest</em> point of the winding (155 °C for class F, 180 °C for class H), not on its average.</li>
+  <li><strong>Magnets.</strong> NdFeB remanence falls by about 0.1% per kelvin, so a hot motor needs more current for the same torque, which raises copper loss further. High temperature combined with a strong demagnetizing current can cause irreversible loss, so magnet temperature is a limit as well.</li>
+</ul>
+<p>Peak torque is limited by current and by how long the winding takes to reach its limit. Continuous torque is limited by the steady balance between losses and the thermal resistance from the hot spot to the coolant.</p>
+<div class="eq">Continuous: T<sub>max</sub> = T<sub>oil</sub> + R<sub>th</sub> [P<sub>cu</sub>(I, T<sub>max</sub>) + P<sub>other</sub>] &nbsp;&nbsp; Peak: C dT/dt = P<sub>loss</sub>(I, T) − (T − T<sub>oil</sub>) / R<sub>th</sub><span class="note">Because copper loss is linear in temperature, both have closed-form solutions. The time constant R<sub>th</sub>·C sets how long a burst can last.</span></div>
+
+<div class="demo" id="demo-wind">
+  <div class="demo-head"><h3>Winding hot spot: what better cooling buys</h3><span class="demo-tag">INTERACTIVE · LUMPED THERMAL MODEL</span></div>
+  <div class="controls">
+    <label for="wd-oil"><span>Oil inlet temperature [°C] <output id="wd-oilv">65</output></span><input id="wd-oil" type="range" min="40" max="100" step="1" value="65"></label>
+    <label for="wd-imp"><span>Heat-transfer coefficient gain [%] <output id="wd-impv">30</output></span><input id="wd-imp" type="range" min="0" max="60" step="5" value="30"></label>
+    <label for="wd-pk"><span>Peak current [× rated]</span><input id="wd-pk" type="number" value="2" step="0.1" min="1"></label>
+    <label for="wd-cr"><span>Cruise current before the burst [× rated]</span><input id="wd-cr" type="number" value="0.4" step="0.1" min="0"></label>
+    <label for="wd-max"><span>Hot-spot limit [°C]</span><input id="wd-max" type="number" value="180" step="5"></label>
+  </div>
+  <svg class="chart" id="wd-chart" viewBox="0 0 640 280" role="img" aria-label="Winding hot-spot temperature during a peak-current burst"></svg>
+  <div class="legend"><span><i style="background:var(--s-mint)"></i>With the cooling gain</span><span><i style="background:var(--s-grey)"></i>Without it</span><span><i style="background:var(--s-coral)"></i>Hot-spot limit</span></div>
+  <div class="kpis" id="wd-out"></div>
+  <p class="demo-note">One thermal node for the winding hot spot. Copper loss is 1.5 kW at rated current and 100 °C, rising 0.39%/K; another 300 W of loss reaches the node. Thermal resistance to the oil is 20 mK/W of conduction plus 30 mK/W of convection; the heat-transfer gain divides only the convective part, as a better coefficient from oil-cooling CFD would. Heat capacity 4 kJ/K. The burst starts from the steady state at cruise current. Illustrative values.</p>
+</div>
+<p class="demo-note"><strong>What to look for.</strong> A 30% better heat-transfer coefficient lowers only the convective part of the resistance, so continuous current rises by less than 30%; the conduction path inside the winding caps the benefit. Raise the oil temperature and both continuous current and burst time fall: the cooling circuit's temperature is as important as its coefficient.</p>
+<div class="cfd-link"><p>PUBLIC EXAMPLE · MANUFACTURER DATA</p><p>Lucid lists a complete drive unit, combining inverter, motor and gearbox, of up to 500 kW at a mass down to 74 kg, and has published long technical talks on its motor and its inverter (Tech Talks, episodes 4 and 5). Integration of this kind is what allows inverter, motor and gearbox losses and their cooling to be traded against each other within one design. Sources: <a href="https://lucidmotors.com/technologies" target="_blank" rel="noopener noreferrer">Lucid technologies page</a> and <a href="https://lucidmotors.com/tech-talks" target="_blank" rel="noopener noreferrer">Lucid Tech Talks</a>, accessed November 2026.</p></div>
 </section>
 
 <!-- 07 -->
@@ -282,6 +331,13 @@
 <p>Cells prefer a narrow temperature window. Cold cells have high resistance and risk lithium plating while charging; hot cells age faster. Uniformity matters as much as the mean: cells at different temperatures age at different rates, so a cold plate must remove heat <em>evenly</em>, which makes battery cooling a flow-distribution problem.</p>
 <div class="eq">P = V I &nbsp;→&nbsp; P<sub>loss</sub> = I² R = (P / V)² R<span class="note">250 kW at 800 V is 312 A; at 400 V it is 625 A and four times the resistive heat in the same conductors.</span></div>
 <p>A dimpled or ribbed cold plate can be reduced the same way as any compact heat-exchanger surface: simulate one periodic cell of the pattern, extract the Fanning friction factor and the Colburn j factor against Reynolds number, and use those correlations in a plate-level or pack-level model. The trade-off is explicit: more heat transfer costs pressure drop, and pressure drop costs pump power (chapter 8).</p>
+<h3>Series, parallel and where the heat goes</h3>
+<div class="eq">V<sub>pack</sub> = N<sub>s</sub> V<sub>cell</sub> &nbsp;&nbsp; E = N<sub>s</sub> N<sub>p</sub> E<sub>cell</sub> &nbsp;&nbsp; R<sub>pack</sub> = (N<sub>s</sub> / N<sub>p</sub>) R<sub>cell</sub> &nbsp;&nbsp; Q̇ = I<sub>pack</sub>² R<sub>pack</sub><span class="note">N<sub>s</sub> cells in series, N<sub>p</sub> in parallel.</span></div>
+<p>The same cells arranged for twice the voltage (2N<sub>s</sub>, N<sub>p</sub>/2) have four times the pack resistance and carry half the current, so the heat generated inside the cells at a given power does not change. What a higher voltage saves is the I²R <em>outside</em> the cells: busbars, contactors, fuses, cables and the charging inlet. It also keeps charging current below connector limits (chapter 10).</p>
+<h3>The hottest cell decides</h3>
+<p>A battery is limited by its worst cell. Charging current, power and ageing are set by the hottest cell (or, in winter, the coldest), so a cooling design is judged by the maximum and the spread, not the mean. Wound cells are strongly anisotropic: heat flows easily along the metal current collectors and poorly across the layers of electrode and separator.</p>
+<div class="eq">ΔT<sub>radial</sub> = q‴ r² / (4 k<sub>r</sub>) &nbsp;&nbsp; ΔT<sub>axial</sub> = q‴ L² / (2 k<sub>a</sub>)<span class="note">Uniform heat generation q‴. Radial: a cylinder of radius r cooled on its side. Axial: a cell of length L cooled at one end, other end insulated. Typical wound cells: k<sub>a</sub> ≈ 20–30 W/(m·K), k<sub>r</sub> ≈ 0.2–1 W/(m·K).</span></div>
+<p>For a 21700 cylindrical cell generating 5 W (q‴ ≈ 2.1 × 10⁵ W/m³), the internal rise is about 20 K with end cooling (k<sub>a</sub> = 25) and between 6 and 28 K with side cooling (k<sub>r</sub> from 1 to 0.2). Internal conduction alone does not settle the choice; contact area, interface resistance and the coolant's temperature rise along its path usually do. A model that predicts only an average cell temperature cannot answer the question.</p>
 </section>
 
 <!-- 08 -->
@@ -363,12 +419,86 @@
 </ul></div>
 <div class="eq">Q<sub>heat</sub> ≈ (1 − η<sub>charge</sub>) P<sub>charge</sub><span class="note">A 3% loss at 250 kW is 7.5 kW of heat in cells, busbars, cables and power electronics.</span></div>
 <p>The limits are the charger, the connector current, the cell voltage and temperature. Cold cells risk lithium plating and must be heated first; hot cells are derated to protect life. The chiller, a refrigerant-to-coolant heat exchanger, links the battery loop to the refrigerant cycle, so its pressure drop and conductance enter both the coolant pump and the compressor power.</p>
+<h3>Who limits the charge</h3>
+<div class="eq">P = min( P<sub>cells</sub>(SOC, T), &nbsp;P<sub>station</sub>, &nbsp;V<sub>pack</sub> I<sub>max</sub> )<span class="note">I<sub>max</sub> is the lower of the station's and the connector's current rating. At 500 A a 400 V-class pack takes less than 200 kW; an 800 V-class pack can take about twice that before the current limit applies.</span></div>
+<p>The cell limit comes from the battery management system: a maximum current against state of charge and temperature, chosen to keep the anode away from lithium plating. It tapers at high state of charge, where the anode potential approaches the plating threshold, and falls in the cold, where slower kinetics make plating easier. Which of the three limits is active changes during a session, and a good vehicle model reports it.</p>
+<div class="eq">Range added per minute = P [kW] / (60 · c [kWh/km])<span class="note">The same charging curve adds about 50% more range per minute to a car using 135 Wh/km than to one using 200 Wh/km. Charging speed is also an efficiency metric.</span></div>
+<p>A higher pack voltage needs a DC-DC boost stage to charge from older 400 V stations, and loads such as the compressor and heater are designed for one voltage, so the architecture must decide which components sit on which bus. Preconditioning, heating the pack on the way to a charger, costs energy, about m c<sub>p</sub> ΔT, but can shorten the session considerably in winter.</p>
+
+<div class="demo" id="demo-charge">
+  <div class="demo-head"><h3>DC fast-charge session, 10 to 80%</h3><span class="demo-tag">INTERACTIVE · ELECTRO-THERMAL MODEL</span></div>
+  <div class="controls">
+    <label for="ch-hv"><span>Pack architecture</span><select id="ch-hv"><option value="800">800 V class</option><option value="400">400 V class</option></select></label>
+    <label for="ch-pst"><span>Station maximum power [kW]</span><input id="ch-pst" type="number" value="350" step="10"></label>
+    <label for="ch-ist"><span>Current limit [A]</span><input id="ch-ist" type="number" value="500" step="10"></label>
+    <label for="ch-T"><span>Pack temperature at plug-in [°C] <output id="ch-Tv">25</output></span><input id="ch-T" type="range" min="-10" max="45" step="1" value="25"></label>
+    <label for="ch-cool"><span>Pack cooling capacity [kW]</span><input id="ch-cool" type="number" value="6" step="1"></label>
+    <label for="ch-c"><span>Vehicle consumption [Wh/km]</span><input id="ch-c" type="number" value="160" step="5"></label>
+  </div>
+  <svg class="chart" id="ch-chart" viewBox="0 0 640 280" role="img" aria-label="Charging power against state of charge with the three limits"></svg>
+  <div class="legend"><span><i style="background:var(--ink)"></i>Charging power</span><span><i style="background:var(--s-mint)"></i>Cell (BMS) limit</span><span><i style="background:var(--s-coral)"></i>Current limit × pack voltage</span><span><i style="background:var(--s-grey)"></i>Station power</span></div>
+  <div class="kpis" id="ch-out"></div>
+  <p class="demo-note">A 100 kWh pack built from the same cells, 96 (400 V class) or 192 (800 V class) in series; the current limit is the lower of the station's and the connector's rating. Cell open-circuit voltage 3.45–4.15 V. Cell current limit 2.5 C up to 50% state of charge, tapering to 0.7 C at 80%, multiplied by a temperature factor that falls below 20 °C and above 45 °C. Pack resistance 40 mΩ (800 V) or 10 mΩ (400 V) at 25 °C, rising in the cold. Pack heat capacity 600 kJ/K; a 7 kW heater runs below 20 °C; cooling starts at 25 °C and reaches full capacity at 30 °C. Range added uses the energy stored at open-circuit voltage. Five-second steps. Illustrative, not a specific vehicle.</p>
+</div>
+<p class="demo-note"><strong>What to look for.</strong> Switch to 400 V: the curve flattens at the current limit and the session gets longer, although the cells are the same. Set the plug-in temperature to 0 °C: the cells limit everything until the pack warms, which is the case for preconditioning. Start at 45 °C with the pack cooling set to zero: the pack drifts into its derating range and the session takes about four minutes longer, which is the case for chiller capacity.</p>
+<div class="cfd-link"><p>PUBLIC EXAMPLE · MANUFACTURER DATA</p><p>Lucid lists a pack peak voltage of up to 926 V, DC fast charging of up to 400 kW, and an on-board charging unit (the Wunderbox) that charges at up to 50 kW from 400 V stations and provides a 10 kW, 400 V DC-DC output for other loads. The engineering logic is the one in the calculator: high pack voltage keeps current below connector limits at high power, a boost stage covers the older 400 V chargers, and a lower-voltage bus serves the loads designed for it. Source: <a href="https://lucidmotors.com/technologies" target="_blank" rel="noopener noreferrer">Lucid technologies page</a>, accessed November 2026.</p></div>
 <div class="cfd-link"><p>WHERE CFD FITS</p><p>A plate-fin chiller can be reduced in three steps: a periodic fin cell gives friction and Colburn j factors against Reynolds number and flow angle; the correlations are frozen and versioned; the full stack replaces the fins with a porous medium that uses them, with heat sources for the heat transfer. The same f and j curves are what a 1D heat-exchanger model needs.</p></div>
 </section>
 
 <!-- 11 -->
 <section class="chapter" id="c11">
 <p class="chapter-num">CHAPTER 11</p>
+<h2>Thermal architecture and operating modes</h2>
+<div class="brief"><h3>In brief</h3><ul>
+  <li>An electric vehicle manages three fluids: refrigerant, water-glycol coolant and oil. Heat exchangers and valves connect them, so the same hardware runs in several modes.</li>
+  <li>Each mode has a different binding constraint. Components are sized on the extreme cases; energy is won or lost on the common ones.</li>
+  <li>Thermal time constants range from seconds (power semiconductors) to tens of minutes (the battery), which shapes both hardware and control.</li>
+</ul></div>
+<div class="tablewrap"><table>
+<tr><th>Loop</th><th>Main components</th><th>Role</th></tr>
+<tr><td>Refrigerant</td><td>Compressor, outdoor heat exchanger (condenser, or evaporator in heat-pump mode), cabin evaporator, chiller, expansion valves</td><td>Cabin cooling and heating; battery cooling through the chiller. The largest thermal electrical load</td></tr>
+<tr><td>Coolant</td><td>Pumps, battery cold plates, power-electronics cold plates, radiator, heater, multi-port valves</td><td>Moves heat between the battery, the electronics, the radiator and the refrigerant loop</td></tr>
+<tr><td>Oil</td><td>Motor and gearbox, oil pump, oil-to-coolant heat exchanger</td><td>Cools the winding and rotor at the source and lubricates the gears; rejects heat to the coolant</td></tr>
+</table></div>
+<div class="tablewrap"><table>
+<tr><th>Mode</th><th>Binding constraint</th><th>Typical strategy</th></tr>
+<tr><td>Hot-day fast charge</td><td>Chiller and compressor capacity at standstill, with no ram air</td><td>Pre-cool the battery on the way to the charger; share compressor capacity between battery and cabin</td></tr>
+<tr><td>Cold start and winter driving</td><td>Heat supply: heat-pump COP falls with ambient temperature and waste heat is small at first</td><td>Precondition while plugged in; recover heat from the drive unit and electronics (chapter 9)</td></tr>
+<tr><td>Mild highway cruise</td><td>No thermal limit; losses dominate</td><td>Close shutters (chapter 5), slow the pumps (chapter 8), run warmer oil (calculator below)</td></tr>
+<tr><td>Sustained high power: towing, grade, track</td><td>Winding hot spot, magnet and junction temperature</td><td>Cold oil and coolant, maximum flow, shutters open, fan on</td></tr>
+</table></div>
+
+<h3>Why warmer oil can save energy</h3>
+<p>Colder oil cools better, so why ever run it warmer? Because a transmission fluid's viscosity falls several-fold between 40 and 100 °C, which reduces gear churning, bearing drag and pumping work. At light load copper loss is small, so warm oil wins. At high load I²R dominates and grows with temperature, and the winding limit is close, so cold oil wins. A valve or bypass around the oil-to-coolant heat exchanger moves the operating point between the two: a constrained optimization that a plant model can solve and a controller can schedule.</p>
+
+<div class="demo" id="demo-oil">
+  <div class="demo-head"><h3>The best oil temperature depends on load</h3><span class="demo-tag">INTERACTIVE · ILLUSTRATIVE MODEL</span></div>
+  <div class="controls">
+    <label for="oi-load"><span>Motor load [% of continuous torque] <output id="oi-loadv">20</output></span><input id="oi-load" type="range" min="5" max="100" step="5" value="20"></label>
+    <label for="oi-pv"><span>Viscous and pumping loss at 40 °C oil [W]</span><input id="oi-pv" type="number" value="600" step="50"></label>
+    <label for="oi-pcu"><span>Copper loss at full load, 100 °C winding [W]</span><input id="oi-pcu" type="number" value="3000" step="100"></label>
+    <label for="oi-max"><span>Winding hot-spot limit [°C]</span><input id="oi-max" type="number" value="180" step="5"></label>
+    <label for="oi-v"><span>Vehicle speed, for Wh/km [km/h]</span><input id="oi-v" type="number" value="110" step="5"></label>
+  </div>
+  <svg class="chart" id="oi-chart" viewBox="0 0 640 280" role="img" aria-label="Viscous, copper and total loss against oil temperature"></svg>
+  <div class="legend"><span><i style="background:var(--s-blue)"></i>Viscous and pumping</span><span><i style="background:var(--s-warm)"></i>Copper</span><span><i style="background:var(--ink)"></i>Total</span><span><i style="background:var(--s-mint)"></i>Best feasible</span><span><i style="background:var(--s-coral)"></i>Winding limit</span></div>
+  <div class="kpis" id="oi-out"></div>
+  <p class="demo-note">Viscous drag and pumping loss scale with oil viscosity to the power 0.6; viscosity falls from about 30 to 7 mm²/s between 40 and 100 °C, typical of a low-viscosity transmission fluid. Copper loss scales with load squared and rises 0.39%/K, with the winding hot spot 30 mK/W above the oil. Iron loss and magnet effects are left out. Illustrative values: the shape of the trade, not a specific machine.</p>
+</div>
+<p class="demo-note"><strong>What to look for.</strong> At 20% load the best oil is as hot as the range allows. Raise the load: the optimum moves colder, and at full load it is the coldest oil available, while the winding limit caps how warm the oil may run. With these values the saving at light load is about 200 W, roughly 2 Wh/km at 110 km/h or about 1% of consumption: small, but free once the valve exists.</p>
+
+<h3>Architecture decisions before prototypes</h3>
+<p>Most architecture choices are made before hardware exists, and a system model is how they are made. Size on the worst cases (hot-day fast charge, sustained grade, cold-soak start), then compare energy on the common ones (certification cycles and typical commutes). A layout that wins the sizing case can still lose the energy case.</p>
+<div class="eq">T<sub>j</sub> ≈ T<sub>coolant</sub> + P<sub>loss</sub> ΣR<sub>th</sub><span class="note">Steady junction temperature of a power semiconductor: coolant temperature plus loss times the thermal resistance from junction to coolant.</span></div>
+<p>The order of components in a series coolant loop follows from this. Power electronics have the lowest temperature limit and the smallest thermal mass, so they usually take the coldest coolant first; the motor's oil-to-coolant heat exchanger accepts the warmer coolant downstream. Parallel branches give every component the same inlet temperature and a lower loop pressure drop, at the cost of a flow split that must hold across temperature and flow rate, which is a valve and manifold design problem (chapter 13).</p>
+<h3>Fast and slow dynamics</h3>
+<p>A semiconductor junction reaches most of its steady temperature rise within seconds, a winding within minutes, a battery pack over tens of minutes. A full-power launch is therefore a thermal event for the inverter but not for the battery. The inverter needs fast, model-based junction-temperature estimation and derating; the battery can be managed predictively, for example by preconditioning on the way to a charger. One coolant loop serves both, with very different dynamics.</p>
+<div class="cfd-link"><p>WHERE CFD FITS · PUBLIC CASE</p><p>The oil-to-coolant heat exchanger, the cold plates and the valves each reduce to a Δp(Q, T) curve and a conductance or effectiveness map for the 1D network. The <a href="../../electric-motor-cooling/">electric-motor oil-cooling case</a> and the <a href="../../pump/">centrifugal pump study</a> cover the oil distribution and the pump curve that set those flows.</p></div>
+</section>
+
+<!-- 12 -->
+<section class="chapter" id="c12">
+<p class="chapter-num">CHAPTER 12</p>
 <h2>Which lever is worth more</h2>
 <div class="brief"><h3>In brief</h3><ul>
   <li>Express every proposal as Δ energy per distance on a named cycle, then as range, then compare with cost and mass.</li>
@@ -383,11 +513,27 @@
   <p class="demo-note">Each bar re-runs the drive-cycle simulator with one change and reports the range change against the unchanged vehicle. Edit the vehicle in chapter 3 and the bars update.</p>
 </div>
 <p>Efficiency also compounds through the battery. A heavier vehicle needs more battery for the same range, which adds mass and cost. Energy saved per kilometre can be taken as more range or as a smaller, cheaper and lighter pack, which is why efficiency is often discussed as a cost lever.</p>
+<div class="eq">E = d [c<sub>0</sub> + s (m<sub>g</sub> − m<sub>ref</sub>)] / (1 − d s / ρ)<span class="note">E battery energy for range d; c<sub>0</sub> consumption at reference mass m<sub>ref</sub>; s consumption per kilogram; m<sub>g</sub> vehicle mass without battery; ρ pack-level specific energy. The denominator is the compounding: battery mass raises consumption, which needs more battery.</span></div>
+<div class="demo" id="demo-mass">
+  <div class="demo-head"><h3>Mass compounding: what a saving is worth in battery</h3><span class="demo-tag">INTERACTIVE · CLOSED FORM</span></div>
+  <div class="controls">
+    <label for="mc-d"><span>Target range [km]</span><input id="mc-d" type="number" value="600" step="25"></label>
+    <label for="mc-c0"><span>Consumption at reference mass [Wh/km]</span><input id="mc-c0" type="number" value="150" step="5"></label>
+    <label for="mc-mref"><span>Reference mass [kg]</span><input id="mc-mref" type="number" value="2300" step="50"></label>
+    <label for="mc-s"><span>Consumption per 100 kg [Wh/km]</span><input id="mc-s" type="number" value="4" step="0.5"></label>
+    <label for="mc-mg"><span>Vehicle mass without battery [kg]</span><input id="mc-mg" type="number" value="1700" step="50"></label>
+    <label for="mc-rho"><span>Pack specific energy [Wh/kg]</span><input id="mc-rho" type="number" value="160" step="10"></label>
+    <label for="mc-dc"><span>Efficiency gain to test [Wh/km]</span><input id="mc-dc" type="number" value="10" step="1"></label>
+    <label for="mc-dm"><span>Body mass saving to test [kg]</span><input id="mc-dm" type="number" value="50" step="10"></label>
+  </div>
+  <div class="kpis" id="mc-out"></div>
+  <p class="demo-note">Same range in every case: the saving is taken as a smaller battery. Defaults are illustrative. The compounding factor 1 / (1 − d s / ρ) multiplies every direct saving; it grows with range and with mass sensitivity, and falls as pack specific energy improves.</p>
+</div>
 </section>
 
-<!-- 12 -->
-<section class="chapter" id="c12">
-<p class="chapter-num">CHAPTER 12</p>
+<!-- 13 -->
+<section class="chapter" id="c13">
+<p class="chapter-num">CHAPTER 13</p>
 <h2>From CFD to the system model</h2>
 <div class="brief"><h3>In brief</h3><ul>
   <li>A vehicle energy model is only as good as its component inputs. Detailed CFD is one of the best sources for them.</li>
@@ -406,6 +552,17 @@
 </table></div>
 <h3>Identify the physics before fitting</h3>
 <p>Pressure loss in a hydraulic component has a viscous part, proportional to flow and viscosity, and an inertial part, proportional to flow squared. Which part dominates changes with temperature and flow rate, so a reduced model calibrated at one condition can fail badly at another. A calibration that respects which physics controls each parameter, using operating points across the whole envelope, gives a component that stays valid where the system model will use it. The same rule applies to drag maps, heat-exchanger correlations and loss maps: know which mechanism each fitted coefficient represents, and state the range over which it was fitted.</p>
+<h3>Choosing the fidelity</h3>
+<div class="tablewrap"><table>
+<tr><th>Level</th><th>Examples</th><th>Use it for</th></tr>
+<tr><td>0D maps and quasi-static models</td><td>Loss maps η(T, n), the road-load equation, open-circuit voltage plus resistance for the battery</td><td>Cycle energy, range, gear ratio and torque split; thousands of runs</td></tr>
+<tr><td>1D networks</td><td>Thermal and flow networks, equivalent-circuit battery models, refrigerant cycles (Simcenter Amesim, GT-SUITE, Modelica)</td><td>Transients, controls, thermal-management strategies, charging, HVAC energy</td></tr>
+<tr><td>3D CFD and FEA</td><td>Component flow, heat transfer and electromagnetics</td><td>h and Δp of cold plates and channels, cooling airflow, losses; calibration data for the 1D model</td></tr>
+<tr><td>Surrogates and reduced-order models</td><td>Response surfaces, Kriging, neural networks, reduced thermal models</td><td>Design-space exploration; carrying 3D behaviour into a fast system model</td></tr>
+</table></div>
+<p>Co-simulation of a 1D system with a 3D model is worth its cost for a few strongly coupled cases, such as underhood air and the coolant loop at low speed. For everything else, characterize the 3D component as a map and keep the system model fast.</p>
+<h3>Sensitivity before refinement</h3>
+<p>Before refining any input, run a sensitivity study, often shown as a tornado chart, on the uncertain parameters: contact resistances, rolling resistance, heat-transfer correlations, loss maps. Spend CFD and test effort on the few parameters that change the decision, and report how certain the vehicle-level number is.</p>
 <h3>Public cases on this site</h3>
 <ul>
   <li><a href="../../vehicle-aerodynamics/">Vehicle aerodynamics, estate versus fastback</a>: drag build-up, wake and the limits of steady RANS.</li>
@@ -427,9 +584,10 @@
   <li>W. M. Kays and A. L. London, <em>Compact Heat Exchangers</em>, 3rd ed., McGraw-Hill, 1984.</li>
   <li>SAE J1263, <em>Road Load Measurement and Dynamometer Simulation Using Coastdown Techniques</em>; SAE J2263, <em>Road Load Measurement Using Onboard Anemometry and Coastdown Techniques</em>.</li>
   <li>SAE J1634, <em>Battery Electric Vehicle Energy Consumption and Range Test Procedure</em>.</li>
-  <li>US EPA, <a href="https://www.epa.gov/vehicle-and-fuel-emissions-testing/dynamometer-drive-schedules" target="_blank" rel="noopener noreferrer">Dynamometer drive schedules</a> (UDDS and HWFET speed traces used in chapters 3 and 11); fuel economy labeling, 40 CFR Part 600.</li>
+  <li>US EPA, <a href="https://www.epa.gov/vehicle-and-fuel-emissions-testing/dynamometer-drive-schedules" target="_blank" rel="noopener noreferrer">Dynamometer drive schedules</a> (UDDS and HWFET speed traces used in chapters 3 and 12); fuel economy labeling, 40 CFR Part 600.</li>
+  <li>Lucid Motors, <a href="https://lucidmotors.com/technologies" target="_blank" rel="noopener noreferrer">Technologies</a> and <a href="https://lucidmotors.com/tech-talks" target="_blank" rel="noopener noreferrer">Tech Talks</a> video series (battery pack, space concept, Wunderbox, motor, inverter): public manufacturer material, cited in chapters 6 and 10.</li>
 </ol>
-<p class="disclosure">Notes by Alberto Brambila, drafted with AI assistance. Example vehicles and coefficients are generic and illustrative. Each calculator was checked against an independent Python implementation of the same equations. The EPA speed traces are public domain. Corrections are welcome through the <a href="../../#contact">contact page</a>.</p>
+<p class="disclosure">Notes by Alberto Brambila, drafted with AI assistance. Example vehicles and coefficients are generic and illustrative; manufacturer figures appear only in the boxes marked "Public example", from the cited public pages. Each calculator was checked against an independent Python implementation of the same equations. The EPA speed traces are public domain. Corrections are welcome through the <a href="../../#contact">contact page</a>.</p>
 </section>
 
 </article>

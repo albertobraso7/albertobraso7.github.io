@@ -333,3 +333,7 @@ Source: private `vehicle-aerodynamics-cooling-cfd` at 6edc77a — `docs/AEROSUV_
 ## Vehicle-efficiency notes (2026-11-18)
 
 `notes/ev-efficiency/` uses US EPA UDDS/HWFET speed traces (public domain; hashes in ASSET_PROVENANCE.json), the five accepted MRF points of the public pump case, and textbook relations cited in the page's reference list (Gillespie; Hucho; Larminie & Lowry; Ehsani et al.; Pyrhönen et al.; Gülich; Kays & London; SAE J1263/J2263/J1634; 40 CFR 600). Motor loss model, heat-pump COP trend and example vehicles are illustrative, not measured data.
+
+## Vehicle-efficiency notes, revision (2026-11-26)
+
+Manufacturer figures in the two "Public example" boxes (chapters 6 and 10) come only from Lucid's public pages, fetched 2026-11-26: https://lucidmotors.com/technologies (pack peak voltage up to 926 V; DC charge up to 400 kW and 50 kW at 400 V; DCDC 10 kW, 400 V output; drive unit with inverter, motor and gearbox, up to 500 kW, down to 74 kg) and https://lucidmotors.com/tech-talks (episode list). The page states "900V+" nowhere and does not call the drive-unit inverter SiC, so the notes do not either. The author's private Tech Talk study guides (career-materials, Lucid application folder) were used only as a topic list; no transcript content or timestamps are published. All new calculators are generic and illustrative.

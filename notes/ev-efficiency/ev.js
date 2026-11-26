@@ -326,6 +326,161 @@
       series: [{ pts: z, c: css('--s-grey'), w: 1.5, dash: '4 4' }, { pts: a, c: css('--s-coral'), w: 2.2 }, { pts: b, c: css('--s-mint'), w: 2.4 }], vlines: [{ x: T, c: css('--muted') }] });
   }
 
+  /* ---------- 06 inverter: SiC MOSFET vs Si IGBT ---------- */
+  var INV = { Prated: 250000, Vref: 800, m: 0.9, pf: 0.9, Iref: 400, Esic: 0.012, Eigbt: 0.036, R25: 0.002, aR: 0.006, V0: 0.9, r25: 0.0015, ar: 0.004, aux: 30 };
+  var IRATED = INV.Prated / (3 * INV.m * INV.Vref / (2 * Math.SQRT2) * INV.pf);
+  function inverter(o) {
+    var I = o.cur * IRATED, Iavg = 2 * Math.SQRT2 * I / Math.PI, m = INV.m * Math.min(1, Math.max(o.speed, 0));
+    var Pout = 3 * m * o.vdc / (2 * Math.SQRT2) * I * INV.pf, kV = o.vdc / INV.Vref, kI = Iavg / INV.Iref;
+    var sicC = 3 * I * I * INV.R25 * (1 + INV.aR * (o.tj - 25)), sicS = 3 * o.fsw * INV.Esic * kV * kI;
+    var igC = 3 * (INV.V0 * Iavg + INV.r25 * (1 + INV.ar * (o.tj - 25)) * I * I), igS = 3 * o.fsw * INV.Eigbt * kV * kI;
+    var sic = sicC + sicS + INV.aux, ig = igC + igS + INV.aux;
+    return { I: I, Pout: Pout, sicC: sicC, sicS: sicS, igC: igC, igS: igS, sic: sic, ig: ig, etaS: Pout > 0 ? Pout / (Pout + sic) : 0, etaI: Pout > 0 ? Pout / (Pout + ig) : 0 };
+  }
+  var IV = ['iv-cur', 'iv-spd', 'iv-vdc', 'iv-fsw', 'iv-tj', 'iv-v'];
+  function inverterDemo() {
+    if (!$('iv-chart')) return;
+    var cur = num('iv-cur') / 100, v = Math.max(num('iv-v'), 1);
+    var o = { vdc: num('iv-vdc'), fsw: num('iv-fsw') * 1000, tj: num('iv-tj'), speed: num('iv-spd') / 100, cur: cur };
+    $('iv-curv').textContent = num('iv-cur'); $('iv-spdv').textContent = num('iv-spd');
+    var r = inverter(o), s = [], g = [], lo = 100;
+    for (var c = 1; c <= 100; c += 1) {
+      var x = inverter(Object.assign({}, o, { cur: c / 100 }));
+      s.push([c, 100 * x.etaS]); g.push([c, 100 * x.etaI]); lo = Math.min(lo, 100 * x.etaS, 100 * x.etaI);
+    }
+    chart($('iv-chart'), { x: [0, 100], y: [Math.max(80, Math.floor(lo)), 100], xs: 10, xl: 'Phase current [% of rated]', yl: 'Inverter efficiency [%]',
+      series: [{ pts: g, c: css('--s-coral'), w: 2.2 }, { pts: s, c: css('--s-mint'), w: 2.4 }], vlines: [{ x: cur * 100, c: css('--muted') }],
+      dots: [{ x: cur * 100, y: 100 * r.etaS, c: css('--s-mint'), r: 5 }, { x: cur * 100, y: 100 * r.etaI, c: css('--s-coral'), r: 5 }] });
+    $('iv-out').innerHTML = kpi('Output power', f(r.Pout / 1000, 1) + ' kW') + kpi('Phase current', f(r.I, 0) + ' A rms') +
+      kpi('SiC MOSFET: loss · efficiency', f(r.sic, 0) + ' W · ' + f(100 * r.etaS, 2) + '%', true) + kpi('Si IGBT: loss · efficiency', f(r.ig, 0) + ' W · ' + f(100 * r.etaI, 2) + '%') +
+      kpi('SiC conduction / switching', f(r.sicC, 0) + ' / ' + f(r.sicS, 0) + ' W') + kpi('IGBT conduction / switching', f(r.igC, 0) + ' / ' + f(r.igS, 0) + ' W') +
+      kpi('Extra IGBT loss at ' + f(v, 0) + ' km/h', sgn((r.ig - r.sic) / v, 2) + ' Wh/km', true);
+  }
+
+  /* ---------- 06 winding: peak versus continuous ---------- */
+  var WD = { Pref: 1500, Tref: 100, Pother: 300, Rcond: 0.02, Rconv: 0.03, C: 4000 };
+  function rT(T, Tref) { return (1 + ALPHA * (T - 20)) / (1 + ALPHA * (Tref - 20)); }
+  function windRth(imp) { return WD.Rcond + WD.Rconv / (1 + imp); }
+  function windSteady(i, Toil, R) {
+    var a = R * WD.Pref * i * i / (1 + ALPHA * (WD.Tref - 20)), den = 1 - a * ALPHA;
+    return den > 0 ? (Toil + R * WD.Pother + a * (1 - 20 * ALPHA)) / den : Infinity;
+  }
+  function windCont(Tmax, Toil, R) { var q = (Tmax - Toil) / R - WD.Pother; return q > 0 ? Math.sqrt(q / (WD.Pref * rT(Tmax, WD.Tref))) : 0; }
+  function windBurst(i0, ip, Toil, R, Tmax) {
+    var A = WD.Pref * ip * ip / (1 + ALPHA * (WD.Tref - 20)), c1 = A * ALPHA - 1 / R, c0 = A * (1 - 20 * ALPHA) + WD.Pother + Toil / R;
+    var T0 = windSteady(i0, Toil, R), Tinf = -c0 / c1, tl;
+    if (T0 >= Tmax) tl = 0; else if (c1 < 0 && Tinf <= Tmax) tl = Infinity; else tl = WD.C / c1 * Math.log((Tmax - Tinf) / (T0 - Tinf));
+    return { T0: T0, tlim: tl, at: function (t) { return Tinf + (T0 - Tinf) * Math.exp(c1 * t / WD.C); } };
+  }
+  var WDI = ['wd-oil', 'wd-imp', 'wd-pk', 'wd-cr', 'wd-max'];
+  function windDemo() {
+    if (!$('wd-chart')) return;
+    var Toil = num('wd-oil'), imp = num('wd-imp') / 100, ip = num('wd-pk'), i0 = num('wd-cr'), Tmax = num('wd-max');
+    $('wd-oilv').textContent = Toil; $('wd-impv').textContent = num('wd-imp');
+    var R = windRth(imp), R0 = windRth(0), b = windBurst(i0, ip, Toil, R, Tmax), b0 = windBurst(i0, ip, Toil, R0, Tmax);
+    var ic = windCont(Tmax, Toil, R), ic0 = windCont(Tmax, Toil, R0), a = [], z = [], lim = [], tend = 120;
+    for (var t = 0; t <= tend; t += 1) { a.push([t, b.at(t)]); z.push([t, b0.at(t)]); lim.push([t, Tmax]); }
+    var lo = Math.floor(Math.min(b.T0, b0.T0) / 20) * 20;
+    chart($('wd-chart'), { x: [0, tend], y: [lo, Math.ceil((Tmax + 30) / 20) * 20], xs: 20, xl: 'Time at peak current [s]', yl: 'Winding hot spot [°C]',
+      series: [{ pts: lim, c: css('--s-coral'), w: 1.5, dash: '5 4' }, { pts: z, c: css('--s-grey'), w: 2, dash: '4 3' }, { pts: a, c: css('--s-mint'), w: 2.6 }] });
+    function sec(x) { return x === Infinity ? 'no limit' : f(x, 0) + ' s'; }
+    $('wd-out').innerHTML = kpi('Winding-to-oil resistance', f(R * 1000, 1) + ' mK/W') + kpi('Time constant R·C', f(R * WD.C, 0) + ' s') +
+      kpi('Hot spot at cruise current', f(b.T0, 0) + ' °C') + kpi('Continuous current', f(100 * ic, 0) + '% of rated', true) +
+      kpi('Continuous gain from cooling', sgn(100 * (ic / ic0 - 1), 1) + '%') + kpi('Time at peak before the limit', sec(b.tlim), true) +
+      kpi('Same, without the cooling gain', sec(b0.tlim));
+  }
+
+  /* ---------- 10 fast-charge session ---------- */
+  var CHG = { E: 100, ocv0: 3.45, ocv1: 0.70, Cmax: 2.5, Cend: 0.7, R800: 0.04, Cth: 600000, H: 7000, s0: 0.10, s1: 0.80 };
+  function chgC(s) { return s <= 0.5 ? CHG.Cmax : CHG.Cmax + (CHG.Cend - CHG.Cmax) * Math.min(1, (s - 0.5) / 0.3); }
+  function chgT(T) { return T <= 0 ? 0.1 : T < 20 ? 0.1 + 0.9 * T / 20 : T <= 45 ? 1 : T < 55 ? 1 - 0.07 * (T - 45) : 0.3; }
+  function chargeSession(o) {
+    var Ns = o.hv ? 192 : 96, Q = CHG.E * 1000 / (Ns * 3.8), R25 = o.hv ? CHG.R800 : CHG.R800 / 4;
+    var s = CHG.s0, T = o.T0, t = 0, dt = 5, Est = 0, Ein = 0, Eh = 0, Pmax = 0, pts = [], lim = { cell: 0, conn: 0, station: 0 };
+    while (s < CHG.s1 && t < 4 * 3600) {
+      var ocv = Ns * (CHG.ocv0 + CHG.ocv1 * s), R = R25 * Math.exp(0.03 * (25 - T));
+      var Ic = chgC(s) * chgT(T) * Q, Ip = (-ocv + Math.sqrt(ocv * ocv + 4 * R * o.Pst)) / (2 * R), I = Math.min(Ic, o.Ist, Ip);
+      var who = I === Ic ? 'cell' : I === Ip ? 'station' : 'conn', P = (ocv + I * R) * I, qh = I * I * R;
+      var heat = T < 20 ? CHG.H : 0, qc = o.cool * Math.max(0, Math.min(1, (T - 25) / 5));
+      pts.push([100 * s, P / 1000, (ocv + Ic * R) * Ic / 1000, (ocv + o.Ist * R) * o.Ist / 1000]);
+      lim[who] += dt; Pmax = Math.max(Pmax, P);
+      Est += ocv * I * dt; Ein += (P + heat) * dt; Eh += qh * dt;
+      s += I * dt / 3600 / Q; T += (qh + heat - qc) * dt / CHG.Cth; t += dt;
+    }
+    return { t: t, Est: Est / 3.6e6, Ein: Ein / 3.6e6, Eh: Eh / 3.6e6, Pmax: Pmax, Tend: T, pts: pts, lim: lim, done: s >= CHG.s1 };
+  }
+  var CH = ['ch-hv', 'ch-pst', 'ch-ist', 'ch-T', 'ch-cool', 'ch-c'];
+  function chargeDemo() {
+    if (!$('ch-chart')) return;
+    var o = { hv: $('ch-hv').value === '800', Pst: num('ch-pst') * 1000, Ist: Math.max(num('ch-ist'), 1), T0: num('ch-T'), cool: num('ch-cool') * 1000 }, c = Math.max(num('ch-c'), 1);
+    $('ch-Tv').textContent = (o.T0 < 0 ? '−' : '') + Math.abs(o.T0);
+    var r = chargeSession(o), other = chargeSession(Object.assign({}, o, { hv: !o.hv })), mins = r.t / 60, km = r.Est * 1000 / c;
+    var ymax = Math.ceil(Math.max(o.Pst, r.Pmax) / 1000 * 1.25 / 50) * 50;
+    chart($('ch-chart'), { x: [10, 80], y: [0, ymax], xs: 10, xl: 'State of charge [%]', yl: 'Charging power [kW]',
+      series: [{ pts: r.pts.map(function (p) { return [p[0], p[1]]; }), c: css('--ink'), w: 2.6 },
+        { pts: r.pts.map(function (p) { return [p[0], o.Pst / 1000]; }), c: css('--s-grey'), w: 1.6, dash: '5 4' },
+        { pts: r.pts.map(function (p) { return [p[0], p[3]]; }), c: css('--s-coral'), w: 1.6, dash: '5 4' },
+        { pts: r.pts.map(function (p) { return [p[0], p[2]]; }), c: css('--s-mint'), w: 1.8, dash: '5 4' }] });
+    var tot = r.lim.cell + r.lim.conn + r.lim.station, names = { cell: 'cells (BMS)', conn: 'current limit', station: 'station power' };
+    var top = Object.keys(r.lim).sort(function (a, b) { return r.lim[b] - r.lim[a]; })[0];
+    $('ch-out').innerHTML = kpi('Time 10 → 80%', r.done ? f(mins, 1) + ' min' : '> 4 h', true) + kpi('Peak power', f(r.Pmax / 1000, 0) + ' kW') +
+      kpi('Average power', f(r.Ein * 60 / mins, 0) + ' kW') + kpi('Range added', f(km, 0) + ' km · ' + f(km / mins, 1) + ' km/min', true) +
+      kpi('Limited mostly by', names[top] + ' (' + f(100 * r.lim[top] / tot, 0) + '% of the time)') + kpi('Heat in the pack', f(r.Eh, 2) + ' kWh · ends at ' + f(r.Tend, 0) + ' °C') +
+      kpi('Same session at ' + (o.hv ? '400' : '800') + ' V', other.done ? f(other.t / 60, 1) + ' min' : '> 4 h') +
+      kpi('Energy to precondition to 25 °C', o.T0 < 25 ? f(CHG.Cth * (25 - o.T0) / 3.6e6, 1) + ' kWh' : 'not needed');
+  }
+
+  /* ---------- 11 oil temperature trade-off ---------- */
+  var OIL = { b: Math.log(30 / 7) / 60, n: 0.6, R: 0.03, Tref: 100 };
+  function oilTrade(o) {
+    var visc = o.Pv40 * Math.exp(-OIL.n * OIL.b * (o.Toil - 40)), k = 1 + ALPHA * (OIL.Tref - 20);
+    var a = OIL.R * o.Pcu * o.load * o.load / k, den = 1 - a * ALPHA, Tw = den > 0 ? (o.Toil + a * (1 - 20 * ALPHA)) / den : Infinity;
+    var cu = o.Pcu * o.load * o.load * (1 + ALPHA * (Tw - 20)) / k;
+    return { visc: visc, cu: cu, tot: visc + cu, Tw: Tw };
+  }
+  var OI = ['oi-load', 'oi-pv', 'oi-pcu', 'oi-max', 'oi-v'];
+  function oilDemo() {
+    if (!$('oi-chart')) return;
+    var p = { load: num('oi-load') / 100, Pv40: num('oi-pv'), Pcu: num('oi-pcu') }, Tmax = num('oi-max'), v = Math.max(num('oi-v'), 1);
+    $('oi-loadv').textContent = num('oi-load');
+    var vs = [], cs = [], ts = [], best = null, tmaxOil = null, ymax = 0;
+    for (var T = 30; T <= 110; T += 1) {
+      var r = oilTrade(Object.assign({}, p, { Toil: T }));
+      vs.push([T, r.visc]); cs.push([T, r.cu]); ts.push([T, r.tot]); ymax = Math.max(ymax, r.tot);
+      if (r.Tw <= Tmax) { tmaxOil = T; if (!best || r.tot < best.tot) best = { T: T, tot: r.tot, Tw: r.Tw }; }
+    }
+    var ref = oilTrade(Object.assign({}, p, { Toil: 60 })), vl = [];
+    if (best) vl.push({ x: best.T, c: css('--s-mint') });
+    if (tmaxOil !== null && tmaxOil < 110) vl.push({ x: tmaxOil, c: css('--s-coral') });
+    chart($('oi-chart'), { x: [30, 110], y: [0, Math.ceil(ymax * 1.1 / 200) * 200], xs: 10, xl: 'Oil temperature at the motor inlet [°C]', yl: 'Loss [W]',
+      series: [{ pts: vs, c: css('--s-blue'), w: 2 }, { pts: cs, c: css('--s-warm'), w: 2 }, { pts: ts, c: css('--ink'), w: 2.6 }], vlines: vl });
+    $('oi-out').innerHTML = best ? kpi('Best oil temperature', f(best.T, 0) + ' °C', true) + kpi('Winding hot spot there', f(best.Tw, 0) + ' °C') +
+      kpi('Total loss there', f(best.tot, 0) + ' W') + kpi('Hottest oil the winding allows', tmaxOil >= 110 ? '≥ 110 °C' : f(tmaxOil, 0) + ' °C') +
+      kpi('Saving vs fixed 60 °C oil', ref.Tw <= Tmax ? f(ref.tot - best.tot, 0) + ' W' : '60 °C exceeds the limit', true) +
+      kpi('Saving at ' + f(v, 0) + ' km/h', ref.Tw <= Tmax ? f((ref.tot - best.tot) / v, 2) + ' Wh/km' : '—')
+      : kpi('Result', 'Winding limit exceeded at every oil temperature', true);
+  }
+
+  /* ---------- 12 mass compounding ---------- */
+  function compound(o) {
+    var den = 1 - o.d * o.s / o.rho; if (den <= 0) return null;
+    var E = o.d * (o.c0 + o.s * (o.mg - o.mref)) / den, mp = E / o.rho;
+    return { E: E, mp: mp, m: o.mg + mp, c: o.c0 + o.s * (o.mg + mp - o.mref), k: 1 / den };
+  }
+  var MC = ['mc-d', 'mc-c0', 'mc-mref', 'mc-s', 'mc-mg', 'mc-rho', 'mc-dc', 'mc-dm'];
+  function compoundDemo() {
+    if (!$('mc-out')) return;
+    var o = { d: num('mc-d'), c0: num('mc-c0'), mref: num('mc-mref'), s: num('mc-s') / 100, mg: num('mc-mg'), rho: num('mc-rho') };
+    var r = compound(o);
+    if (!r) { $('mc-out').innerHTML = kpi('Result', 'No solution: the battery cannot carry its own mass for this range', true); return; }
+    var a = compound(Object.assign({}, o, { c0: o.c0 - num('mc-dc') })), b = compound(Object.assign({}, o, { mg: o.mg - num('mc-dm') }));
+    function d(x, k, u, n, sc) { return x ? sgn((x[k] - r[k]) / (sc || 1), n) + ' ' + u : '—'; }
+    $('mc-out').innerHTML = kpi('Battery energy needed', f(r.E / 1000, 1) + ' kWh', true) + kpi('Battery mass', f(r.mp, 0) + ' kg') + kpi('Vehicle mass', f(r.m, 0) + ' kg') +
+      kpi('Consumption at that mass', f(r.c, 1) + ' Wh/km') + kpi('Compounding factor', '× ' + f(r.k, 2)) +
+      kpi('Consumption −' + f(num('mc-dc'), 0) + ' Wh/km', d(a, 'E', 'kWh', 2, 1000) + ' · ' + d(a, 'mp', 'kg', 0), true) +
+      kpi('Body mass −' + f(num('mc-dm'), 0) + ' kg', d(b, 'E', 'kWh', 2, 1000) + ' · vehicle ' + d(b, 'm', 'kg', 0), true);
+  }
+
   /* ---------- table of contents ---------- */
   function toc() {
     var links = Array.prototype.slice.call(document.querySelectorAll('.notes-toc a'));
@@ -354,6 +509,11 @@
   if ($('mo-map')) $('mo-map').addEventListener('click', motorClick);
   on(['pu-qb', 'pu-qt', 'pu-em'], pump); pump();
   on(['wi-T', 'wi-v', 'wi-base', 'wi-ua', 'wi-bat'], winter); winter();
+  on(IV, inverterDemo); inverterDemo();
+  on(WDI, windDemo); windDemo();
+  on(CH, chargeDemo); chargeDemo();
+  on(OI, oilDemo); oilDemo();
+  on(MC, compoundDemo); compoundDemo();
   toc();
-  window.EVNotes = { steady: steady, simulate: simulate, motor: motor, H0: H0, E0: E0, cop: cop, quadfit: quadfit };
+  window.EVNotes = { steady: steady, simulate: simulate, motor: motor, H0: H0, E0: E0, cop: cop, quadfit: quadfit, inverter: inverter, windSteady: windSteady, windCont: windCont, windBurst: windBurst, windRth: windRth, chargeSession: chargeSession, oilTrade: oilTrade, compound: compound };
 })();
