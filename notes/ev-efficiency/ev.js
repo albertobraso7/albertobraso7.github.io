@@ -481,6 +481,122 @@
       kpi('Body mass −' + f(num('mc-dm'), 0) + ' kg', d(b, 'E', 'kWh', 2, 1000) + ' · vehicle ' + d(b, 'm', 'kg', 0), true);
   }
 
+  /* ---------- 05 cooling air: operating point, heat rejection, cooling drag ---------- */
+  var CA = { rho: 1.2, Af: 0.25, Ar: 1.25, Cram: 0.8, Kcore: 20, Ksh: 1.5, dpf: 250, uf: 6, etaF: 0.35, UAr: 1500, ur: 3, nUA: 0.6, Cc: 3745, cp: 1006, Afront: 2.3 };
+  function coolAir(o) {
+    var q = 0.5 * CA.rho * o.V * o.V, K = CA.Kcore + CA.Ksh * Math.pow(1 / o.sh - 1, 2);
+    function dpfan(u) { return o.fan > 0 ? Math.max(0, CA.dpf * o.fan * o.fan * (1 - u / (CA.uf * o.fan))) : 0; }
+    function g(u) { return CA.Cram * q + dpfan(u) - 0.5 * CA.rho * (K + CA.Ar * CA.Ar) * u * u; }
+    var u = 0;
+    if (g(0) > 0) { var lo = 0, hi = 100; for (var k = 0; k < 100; k++) { var mid = (lo + hi) / 2; if (g(mid) > 0) lo = mid; else hi = mid; } u = (lo + hi) / 2; }
+    var md = CA.rho * CA.Af * u, Ve = CA.Ar * u, D = md * (o.V - Ve), dpf = dpfan(u), Pfan = dpf * CA.Af * u / CA.etaF;
+    var Ca = md * CA.cp, Q = 0, eps = 0, ntu = 0;
+    if (u > 0) {
+      var Cmin = Math.min(Ca, CA.Cc), Cr = Cmin / Math.max(Ca, CA.Cc), UA = CA.UAr * Math.pow(u / CA.ur, CA.nUA);
+      ntu = UA / Cmin;
+      eps = Cr < 1e-9 ? 1 - Math.exp(-ntu) : 1 - Math.exp(Math.pow(ntu, 0.22) / Cr * (Math.exp(-Cr * Math.pow(ntu, 0.78)) - 1));
+      Q = eps * Cmin * o.itd;
+    }
+    return { u: u, md: md, Ve: Ve, D: D, K: K, dpf: dpf, Pfan: Pfan, Q: Q, eps: eps, ntu: ntu, counts: q > 0 ? 1000 * D / (q * CA.Afront) : NaN };
+  }
+  var CAI = ['ca-v', 'ca-sh', 'ca-fan', 'ca-itd', 'ca-q'];
+  function coolDemo() {
+    if (!$('ca-chart')) return;
+    var vk = num('ca-v'), o = { V: vk / 3.6, sh: num('ca-sh') / 100, fan: parseFloat($('ca-fan').value), itd: num('ca-itd') }, need = num('ca-q') * 1000;
+    $('ca-vv').textContent = vk; $('ca-shv').textContent = num('ca-sh');
+    var r = coolAir(o), open = coolAir(Object.assign({}, o, { sh: 1 })), best = null;
+    for (var s = 10; s <= 100; s += 1) { var x = coolAir(Object.assign({}, o, { sh: s / 100 })); if (x.Q >= need) { best = { s: s, r: x }; break; } }
+    var hq = [], hqo = [], dem = [], dc = [], dco = [];
+    for (var v = 0; v <= 160; v += 4) {
+      var a = coolAir(Object.assign({}, o, { V: v / 3.6 })), b = coolAir(Object.assign({}, o, { V: v / 3.6, sh: 1, fan: 0 }));
+      hq.push([v, a.Q / 1000]); hqo.push([v, b.Q / 1000]); dem.push([v, need / 1000]);
+      if (v >= 20) { dc.push([v, a.counts]); dco.push([v, b.counts]); }
+    }
+    var ym = Math.max.apply(null, hqo.concat(hq).map(function (p) { return p[1]; }).concat([need / 1000]));
+    chart($('ca-chart'), { x: [0, 160], y: [0, Math.ceil(ym * 1.1 / 10) * 10], xs: 20, xl: 'Vehicle speed [km/h]', yl: 'Heat rejection [kW]',
+      series: [{ pts: dem, c: css('--s-coral'), w: 1.5, dash: '5 4' }, { pts: hqo, c: css('--s-grey'), w: 1.8, dash: '4 3' }, { pts: hq, c: css('--s-mint'), w: 2.6 }], vlines: [{ x: vk, c: css('--muted') }] });
+    var dm = Math.max(10, Math.max.apply(null, dco.concat(dc).map(function (p) { return p[1]; })));
+    chart($('ca-chart2'), { x: [0, 160], y: [0, Math.ceil(dm * 1.1 / 10) * 10], xs: 20, xl: 'Vehicle speed [km/h]', yl: 'Cooling drag [counts]',
+      series: [{ pts: dco, c: css('--s-grey'), w: 1.8, dash: '4 3' }, { pts: dc, c: css('--s-warm'), w: 2.6 }], vlines: [{ x: vk, c: css('--muted') }] });
+    var bestTxt = best ? best.s + '% · ' + (isFinite(best.r.counts) ? f(best.r.counts, 0) + ' counts' : 'standstill') : 'demand not met even fully open';
+    var save = best && vk > 0 ? (open.D - best.r.D) * o.V / vk : NaN;
+    $('ca-out').innerHTML = kpi('Face velocity', f(r.u, 2) + ' m/s') + kpi('Air mass flow', f(r.md, 2) + ' kg/s') + kpi('Effectiveness · NTU', f(r.eps, 2) + ' · ' + f(r.ntu, 2)) +
+      kpi('Heat rejection', f(r.Q / 1000, 1) + ' kW · ' + (r.Q >= need ? 'meets' : 'below') + ' demand', true) +
+      kpi('Cooling drag', f(r.D, 0) + ' N · ' + (isFinite(r.counts) ? f(r.counts, 0) + ' counts' : '—')) + kpi('Fan electrical power', f(r.Pfan, 0) + ' W') +
+      kpi('Smallest shutter opening that meets the demand', bestTxt, true) + kpi('Wheel energy saved vs fully open', isFinite(save) ? f(save, 2) + ' Wh/km' : '—');
+  }
+
+  /* ---------- 07 cold plates: series versus parallel ---------- */
+  var CP = { rho: 1070, cp: 3500, kpl: 0.03, kman: 0.01, Rref: 0.004, Qref: 10, Rcond: 0.008, etaP: 0.3 };
+  function cpC(lmin) { return lmin / 60000 * CP.rho * CP.cp; }
+  function cpRc(lmin) { return CP.Rref * Math.pow(CP.Qref / lmin, 0.8); }
+  function coldPlate(o) {
+    var N = Math.max(1, Math.round(o.N)), q = o.Q * 1000 / N, T = [], dp;
+    if (!o.par) {
+      var Cs = cpC(o.flow), Rc = cpRc(o.flow);
+      for (var i = 0; i < N; i++) T.push(o.Tin + i * q / Cs + q / (2 * Cs) + q * (Rc + CP.Rcond));
+      dp = N * CP.kpl * o.flow * o.flow;
+    } else {
+      for (var j = 0; j < N; j++) {
+        var fi = o.flow / N * (1 + (N > 1 ? o.mal * (1 - 2 * j / (N - 1)) : 0)), Ci = cpC(fi);
+        T.push(o.Tin + q / (2 * Ci) + q * (cpRc(fi) + CP.Rcond));
+      }
+      dp = CP.kpl * Math.pow(o.flow / N, 2) + CP.kman * o.flow * o.flow;
+    }
+    var mx = Math.max.apply(null, T), mn = Math.min.apply(null, T);
+    return { T: T, max: mx, spread: mx - mn, dp: dp, P: dp * 1000 * o.flow / 60000 / CP.etaP };
+  }
+  var CPI = ['cp-n', 'cp-q', 'cp-f', 'cp-tin', 'cp-mal'];
+  function coldDemo() {
+    if (!$('cp-chart')) return;
+    var o = { N: Math.min(12, Math.max(2, Math.round(num('cp-n')))), Q: num('cp-q'), flow: Math.max(num('cp-f'), 0.5), Tin: num('cp-tin'), mal: Math.min(0.9, Math.max(0, num('cp-mal') / 100)) };
+    $('cp-malv').textContent = num('cp-mal');
+    var s = coldPlate(Object.assign({}, o, { par: false })), p = coldPlate(Object.assign({}, o, { par: true }));
+    var feq = o.flow * Math.cbrt(s.P / p.P), e = coldPlate(Object.assign({}, o, { par: true, flow: feq })), N = s.T.length, bars = [], extra = '';
+    s.T.forEach(function (t, i) {
+      bars.push({ x0: i + 0.12, x1: i + 0.37, y: t, c: css('--s-coral') }, { x0: i + 0.38, x1: i + 0.63, y: p.T[i], c: css('--s-mint') }, { x0: i + 0.64, x1: i + 0.89, y: e.T[i], c: css('--s-blue') });
+    });
+    var y0 = Math.floor(o.Tin / 5) * 5, y1 = Math.ceil(Math.max(s.max, p.max, e.max) / 5) * 5 + 5;
+    var oc = { x: [1e-6, N], y: [y0, y1], xs: 1000, xl: 'Module (coolant enters at module 1)', yl: 'Hottest cell [°C]', bars: bars };
+    var ax = chart($('cp-chart'), oc);
+    for (var i = 0; i < N; i++) extra += '<text x="' + ax.X(i + 0.5) + '" y="' + (ax.Y(y0) + 16) + '" text-anchor="middle">' + (i + 1) + '</text>';
+    oc.extra = extra; chart($('cp-chart'), oc);
+    function row(n, r, fl) { return '<tr><td>' + n + '</td><td>' + f(fl, 1) + ' L/min</td><td>' + f(r.max, 1) + ' °C</td><td>' + f(r.spread, 1) + ' K</td><td>' + f(r.dp, 1) + ' kPa</td><td>' + f(r.P, 1) + ' W</td></tr>'; }
+    $('cp-table').innerHTML = '<tr><th>Layout</th><th>Total flow</th><th>Hottest cell</th><th>Spread</th><th>Δp</th><th>Pump power</th></tr>' +
+      row('Series', s, o.flow) + row('Parallel, same flow', p, o.flow) + row('Parallel, same pump power as series', e, feq);
+  }
+
+  /* ---------- 06 front/rear torque split ---------- */
+  var TS = { Tpk: 350, kcu: 12000 / (350 * 350), a: 0.05, b: 4e-6, r: 0.36, G: 9 };
+  function tsIron(n) { return TS.a * n + TS.b * n * n; }
+  function torqueSplit(T, n, x, off) {
+    var Tf = x * T, Tr = (1 - x) * T;
+    if (Tf > TS.Tpk + 1e-9 || Tr > TS.Tpk + 1e-9) return NaN;
+    return TS.kcu * Tf * Tf + (off ? 0 : tsIron(n)) + TS.kcu * Tr * Tr + tsIron(n);
+  }
+  var TSI = ['ts-T', 'ts-n', 'ts-disc'];
+  function splitDemo() {
+    if (!$('ts-chart')) return;
+    var T = num('ts-T') / 100 * TS.Tpk, n = num('ts-n'), disc = $('ts-disc').value === '1';
+    $('ts-Tv').textContent = num('ts-T'); $('ts-nv').textContent = n;
+    var w = n * Math.PI / 30, P = T * w, vk = w * TS.r / TS.G * 3.6, pts = [], best = null;
+    for (var i = 0; i <= 100; i++) { var L = torqueSplit(T, n, i / 100, false); pts.push([i, L]); if (isFinite(L) && (!best || L < best.L)) best = { x: i, L: L, off: false }; }
+    var Loff = disc ? torqueSplit(T, n, 0, true) : NaN;
+    if (isFinite(Loff) && (!best || Loff < best.L)) best = { x: 0, L: Loff, off: true };
+    var L50 = torqueSplit(T, n, 0.5, false), Lr = torqueSplit(T, n, 0, false);
+    var ys = pts.map(function (p) { return p[1]; }).filter(isFinite).concat(isFinite(Loff) ? [Loff] : []);
+    var ymax = ys.length ? Math.max.apply(null, ys) : 1;
+    var dots = isFinite(Loff) ? [{ x: 0, y: Loff, c: css('--s-mint'), r: 6 }] : [];
+    if (best) dots.push({ x: best.x, y: best.L, c: css('--s-coral'), r: 4 });
+    chart($('ts-chart'), { x: [0, 100], y: [0, Math.ceil(ymax * 1.15 / 200) * 200 || 200], xs: 10, xl: 'Front share of torque [%]', yl: 'Drive-unit loss [W]',
+      series: [{ pts: pts, c: css('--ink'), w: 2.4 }], dots: dots });
+    var bestTxt = !best ? 'demand exceeds both motors' : best.off ? 'rear only, front disconnected' : best.x === 50 ? '50 / 50' : best.x + '% front';
+    $('ts-out').innerHTML = kpi('Vehicle speed', f(vk, 0) + ' km/h') + kpi('Output power', f(P / 1000, 1) + ' kW') + kpi('Iron and spin loss per motor', f(tsIron(n), 0) + ' W') +
+      kpi('Best split', bestTxt, true) + kpi('Loss at best split', best ? f(best.L, 0) + ' W' : '—') + kpi('Loss at 50 / 50', isFinite(L50) ? f(L50, 0) + ' W' : '—') +
+      kpi('Loss, rear only, front still spinning', isFinite(Lr) ? f(Lr, 0) + ' W' : 'exceeds rear motor') +
+      kpi('Saving vs 50 / 50', best && isFinite(L50) && vk > 0 ? f(L50 - best.L, 0) + ' W · ' + f((L50 - best.L) / vk, 2) + ' Wh/km' : '—', true);
+  }
+
   /* ---------- table of contents ---------- */
   function toc() {
     var links = Array.prototype.slice.call(document.querySelectorAll('.notes-toc a'));
@@ -514,6 +630,9 @@
   on(CH, chargeDemo); chargeDemo();
   on(OI, oilDemo); oilDemo();
   on(MC, compoundDemo); compoundDemo();
+  on(CAI, coolDemo); coolDemo();
+  on(CPI, coldDemo); coldDemo();
+  on(TSI, splitDemo); splitDemo();
   toc();
-  window.EVNotes = { steady: steady, simulate: simulate, motor: motor, H0: H0, E0: E0, cop: cop, quadfit: quadfit, inverter: inverter, windSteady: windSteady, windCont: windCont, windBurst: windBurst, windRth: windRth, chargeSession: chargeSession, oilTrade: oilTrade, compound: compound };
+  window.EVNotes = { steady: steady, simulate: simulate, motor: motor, H0: H0, E0: E0, cop: cop, quadfit: quadfit, inverter: inverter, windSteady: windSteady, windCont: windCont, windBurst: windBurst, windRth: windRth, chargeSession: chargeSession, oilTrade: oilTrade, compound: compound, coolAir: coolAir, coldPlate: coldPlate, torqueSplit: torqueSplit, tsIron: tsIron };
 })();

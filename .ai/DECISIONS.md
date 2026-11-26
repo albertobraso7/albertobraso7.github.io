@@ -309,3 +309,8 @@ The author asked for a public notes section built from the private interview stu
 ## Vehicle-efficiency notes revision — 2026-11-26
 
 The author asked to integrate knowledge from their private Lucid Tech Talk study guides into the public notes, with equations and calculators they can demonstrate in interviews. Rule applied: general engineering physics goes in the chapters with generic illustrative vehicles; manufacturer facts appear only in clearly labelled "Public example · manufacturer data" boxes, limited to statements on the manufacturer's own public pages, paraphrased and linked; nothing from the private guides' interview material (interviewer mapping, story bank, pitch) is published. A new chapter 11 (thermal architecture) was inserted, so "Which lever" and "From CFD to the system model" became chapters 12 and 13 (anchors c12, c13; no external links pointed to the old anchors). Every new calculator was cross-checked against an independent Python implementation, and each "What to look for" note was checked against the model output.
+
+## Calculators carry their equations — 2026-11-26
+
+At the author's request every calculator on the vehicle-efficiency notes page has a collapsible "Equations used in this calculator" panel (model steps, fixed values, "Try this" questions), so the page serves study and whiteboard-style explanation as well as display. Any new calculator on the page must include one, kept in step with the code.
+

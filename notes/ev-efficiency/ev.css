@@ -110,3 +110,19 @@ details.develop > div { padding: 4px 18px 10px; border-top: 1px solid var(--line
   .eq { font-size: 1rem; padding: 12px; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* equations-used panel inside each calculator */
+details.model { margin: 16px 0 0; border-top: 1px solid var(--line); }
+details.model > summary { cursor: pointer; padding: 12px 0 4px; list-style: none; display: flex; justify-content: space-between; gap: 12px; font-family: 'Courier New', monospace; font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--accent); }
+details.model > summary::-webkit-details-marker { display: none; }
+details.model > summary::after { content: "+"; font-size: 1.1rem; line-height: 1; }
+details.model[open] > summary::after { content: "−"; }
+details.model > div { padding: 6px 0 4px; }
+details.model ol.steps { margin: 6px 0 10px; padding-left: 22px; }
+details.model ol.steps li { margin: 0 0 10px; font-size: .9rem; line-height: 1.6; color: var(--ink); }
+details.model .m { font-family: "Cambria Math", "STIX Two Math", Georgia, "Times New Roman", serif; font-size: 1.02rem; background: var(--eq-bg); border: 1px solid var(--line); border-radius: 2px; padding: 0 5px; white-space: normal; }
+details.model .sym { font-size: .82rem; color: var(--muted); margin: 0 0 10px; }
+details.model .try-h { font-family: 'Courier New', monospace; font-size: 11px; letter-spacing: 1.2px; color: var(--warm); margin: 12px 0 4px; }
+details.model ul.try { margin: 0 0 6px; padding-left: 20px; }
+details.model ul.try li { font-size: .88rem; line-height: 1.55; margin: 0 0 6px; color: var(--muted); }
+@media print { details.model > div { display: block; } }
