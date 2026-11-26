@@ -22,7 +22,7 @@
   <h1>From forces to <em>range.</em></h1>
   <p class="lede">How aerodynamic drag, tyre losses, drive-unit losses and thermal systems decide how far an electric vehicle travels on a charge, and how a CFD result becomes a number that a vehicle-level decision can use.</p>
   <p class="lede">Each chapter starts with the essentials, develops the physics, and includes calculators you can change; every calculator lists the equations it uses and a few questions to try. Example vehicles are generic; they are not data from any manufacturer.</p>
-  <div class="notes-meta"><span>FIRST EDITION · NOVEMBER 2026 · REVISED 26 NOV</span><span>13 CHAPTERS · 16 INTERACTIVE MODELS, EACH WITH ITS EQUATIONS</span><span>SI UNITS, WITH US CONVERSIONS</span></div>
+  <div class="notes-meta"><span>FIRST EDITION · NOVEMBER 2026 · REVISED 26 NOV</span><span>14 CHAPTERS · 17 INTERACTIVE MODELS, EACH WITH ITS EQUATIONS</span><span>SI UNITS, WITH US CONVERSIONS</span></div>
 </section>
 
 <div class="notes-layout wrap">
@@ -42,6 +42,7 @@
     <li><a href="#c11"><span>11</span>Thermal architecture</a></li>
     <li><a href="#c12"><span>12</span>Which lever is worth more</a></li>
     <li><a href="#c13"><span>13</span>From CFD to the system model</a></li>
+    <li><a href="#c14"><span>14</span>One language for heat, flow and charge</a></li>
     <li><a href="#refs"><span>—</span>References</a></li>
   </ol>
 </nav>
@@ -409,6 +410,27 @@
 <h3>Series, parallel and where the heat goes</h3>
 <div class="eq">V<sub>pack</sub> = N<sub>s</sub> V<sub>cell</sub> &nbsp;&nbsp; E = N<sub>s</sub> N<sub>p</sub> E<sub>cell</sub> &nbsp;&nbsp; R<sub>pack</sub> = (N<sub>s</sub> / N<sub>p</sub>) R<sub>cell</sub> &nbsp;&nbsp; Q̇ = I<sub>pack</sub>² R<sub>pack</sub><span class="note">N<sub>s</sub> cells in series, N<sub>p</sub> in parallel.</span></div>
 <p>The same cells arranged for twice the voltage (2N<sub>s</sub>, N<sub>p</sub>/2) have four times the pack resistance and carry half the current, so the heat generated inside the cells at a given power does not change. What a higher voltage saves is the I²R <em>outside</em> the cells: busbars, contactors, fuses, cables and the charging inlet. It also keeps charging current below connector limits (chapter 10).</p>
+<div class="demo" id="demo-pack">
+  <div class="demo-head"><h3>Pack builder: what adds in series and in parallel</h3><span class="demo-tag">INTERACTIVE · DIAGRAM</span></div>
+  <div class="btn-row"><button type="button" data-pack="4,3,0.2">Module 4s3p, 0.2 kW</button><button type="button" data-pack="96,46,150">400 V class: 96s46p, 150 kW</button><button type="button" data-pack="192,23,150">800 V class: 192s23p, 150 kW</button></div>
+  <div class="controls">
+    <label for="pk-ns"><span>Cells in series N<sub>s</sub></span><input id="pk-ns" type="number" value="4" step="1" min="1" max="250"></label>
+    <label for="pk-np"><span>Cells in parallel N<sub>p</sub></span><input id="pk-np" type="number" value="3" step="1" min="1" max="100"></label>
+    <label for="pk-p"><span>Power drawn [kW]</span><input id="pk-p" type="number" value="0.2" step="0.1"></label>
+    <label for="pk-vc"><span>Cell voltage [V]</span><input id="pk-vc" type="number" value="3.7" step="0.05"></label>
+    <label for="pk-ah"><span>Cell capacity [Ah]</span><input id="pk-ah" type="number" value="5" step="0.5"></label>
+    <label for="pk-rc"><span>Cell resistance [mΩ]</span><input id="pk-rc" type="number" value="15" step="1"></label>
+    <label for="pk-rx"><span>Resistance outside the cells [mΩ]</span><input id="pk-rx" type="number" value="1" step="0.1"></label>
+  </div>
+  <svg class="chart" id="pk-svg" viewBox="0 0 640 280" role="img" aria-label="Diagram of cells in series groups and parallel rows with voltages and currents"></svg>
+  <div class="kpis" id="pk-out"></div>
+  <p class="demo-note">Each column is a parallel group: its cells share both rails, so they sit at the same voltage and share the current. The groups are chained in series by the links on top, so their voltages add; the label above each group is the voltage reached at that point. Large packs are drawn with "· · ·" and "⋮" for the groups and cells not shown. Cell values resemble a 21700-format cell; not a specific product.</p>
+  <details class="model"><summary>Equations used in this calculator</summary><div>
+    <ol class="steps"><li><b>Series adds voltage.</b> <span class="m">V<sub>pack</sub> = N<sub>s</sub> V<sub>cell</sub></span>. The same current flows through every series group, so each group adds its voltage, like pressure drops along plates in series.</li><li><b>Parallel adds capacity and current.</b> <span class="m">Q<sub>pack</sub> = N<sub>p</sub> Q<sub>cell</sub></span> [Ah]; cells in a parallel group share the same voltage and split the current: <span class="m">I<sub>cell</sub> = I / N<sub>p</sub></span>.</li><li><b>Energy counts cells.</b> <span class="m">E = V<sub>pack</sub> Q<sub>pack</sub> = N<sub>s</sub> N<sub>p</sub> V<sub>cell</sub> Q<sub>cell</sub></span>: rearranging the same cells does not change it.</li><li><b>Resistance.</b> Series resistances add and parallel ones combine as 1/R = Σ 1/R<sub>i</sub>, so <span class="m">R<sub>pack</sub> = (N<sub>s</sub> / N<sub>p</sub>) R<sub>cell</sub></span>.</li><li><b>Load.</b> <span class="m">I = P / V<sub>pack</sub></span> (nominal voltage, sag neglected in the current); C-rate = I / Q<sub>pack</sub>; sag = I R<sub>pack</sub>.</li><li><b>Heat.</b> Inside the cells <span class="m">I² R<sub>pack</sub></span>; in busbars, contactors and cables <span class="m">I² R<sub>ext</sub></span>.</li></ol>
+    <p class="try-h">TRY THIS: PREDICT FIRST, THEN CHECK</p><ul class="try"><li>Click the 400 V and the 800 V presets: the same 4,416 cells. Before looking, predict the change in current, pack resistance, heat inside the cells and heat in the cables.</li><li>Start from 4s3p and add one cell in series, then one in parallel. Which numbers change in each case?</li><li>Why does a pack with more cells in parallel tolerate one weak cell better?</li></ul>
+  </div></details>
+</div>
+<p class="demo-note"><strong>What to look for.</strong> Compare the two vehicle presets. The same cells give the same energy. The 800 V pack carries half the current, has four times the pack resistance, and generates the same heat inside the cells, but only a quarter of the heat in the external conductors. The hydraulic version of the same rule is in chapter 14.</p>
 <h3>The hottest cell decides</h3>
 <p>A battery is limited by its worst cell. Charging current, power and ageing are set by the hottest cell (or, in winter, the coldest), so a cooling design is judged by the maximum and the spread, not the mean. Wound cells are strongly anisotropic: heat flows easily along the metal current collectors and poorly across the layers of electrode and separator.</p>
 <div class="eq">ΔT<sub>radial</sub> = q‴ r² / (4 k<sub>r</sub>) &nbsp;&nbsp; ΔT<sub>axial</sub> = q‴ L² / (2 k<sub>a</sub>)<span class="note">Uniform heat generation q‴. Radial: a cylinder of radius r cooled on its side. Axial: a cell of length L cooled at one end, other end insulated. Typical wound cells: k<sub>a</sub> ≈ 20–30 W/(m·K), k<sub>r</sub> ≈ 0.2–1 W/(m·K).</span></div>
@@ -690,6 +712,96 @@
   <li><a href="../../pump/">Centrifugal pump</a>: automated performance curves, CPU/GPU comparison and pressure pulsation.</li>
   <li><a href="../../electric-motor-cooling/">Electric-motor oil cooling</a>: oil distribution in rotating hardware.</li>
 </ul>
+</section>
+
+
+<!-- 14 -->
+<section class="chapter" id="c14">
+<p class="chapter-num">CHAPTER 14</p>
+<h2>One language for heat, flow and charge</h2>
+<div class="brief"><h3>In brief</h3><ul>
+  <li>Heat, fluid and electric charge all move down the gradient of a potential: temperature, pressure and voltage. In each case, flow = potential difference / resistance.</li>
+  <li>The same series and parallel rules size a battery pack, a coolant loop and the thermal path of a motor winding.</li>
+  <li>The analogy is exact for linear laws (conduction, laminar flow, Ohm's law). Turbulent pressure drop, convection and radiation make the resistance depend on the operating point, which is where CFD earns its place.</li>
+</ul></div>
+<p>A vehicle thermal and energy model couples electrical, hydraulic and thermal networks. They are easier to build, debug and explain once one notices that they are the same mathematics with different names.</p>
+<h3>What drives what</h3>
+<div class="tablewrap"><table>
+<tr><th>What moves</th><th>Driven by a gradient of</th><th>Linear law</th><th>Resistance</th><th>Storage (capacitance)</th></tr>
+<tr><td>Electric charge</td><td>Voltage (electric potential)</td><td>Ohm: I = ΔV / R</td><td>R = ρ<sub>e</sub> L / A</td><td>Capacitor: C = q / V</td></tr>
+<tr><td>Heat</td><td>Temperature</td><td>Fourier: q = −k ∇T; Q̇ = ΔT / R<sub>th</sub></td><td>Conduction L / (k A); convection 1 / (h A)</td><td>Thermal mass m c<sub>p</sub></td></tr>
+<tr><td>Fluid volume</td><td>Pressure</td><td>Hagen–Poiseuille (laminar): Q = Δp / R<sub>h</sub></td><td>R<sub>h</sub> = 128 μ L / (π D⁴)</td><td>Compliance: expansion tank, hose stretch</td></tr>
+<tr><td>Chemical species</td><td>Concentration</td><td>Fick: J = −D ∇c</td><td>L / (D A)</td><td>Volume</td></tr>
+<tr><td>Momentum</td><td>Velocity</td><td>Newton: τ = μ ∂u/∂y</td><td>Viscous shear</td><td>Mass (inertia)</td></tr>
+<tr><td>Lithium ions in a cell</td><td>Electrochemical potential (concentration and voltage together)</td><td>Ohmic, charge-transfer and diffusion terms</td><td>Equivalent-circuit R and RC pairs</td><td>Double layer; concentration build-up</td></tr>
+</table></div>
+<div class="eq">flow = Δpotential / R &nbsp;&nbsp; R<sub>series</sub> = R<sub>1</sub> + R<sub>2</sub> &nbsp;&nbsp; 1 / R<sub>parallel</sub> = 1 / R<sub>1</sub> + 1 / R<sub>2</sub> &nbsp;&nbsp; τ = R C<span class="note">In series the flow is common and the potential drops add; in parallel the drop is common and the flows add. Power is V·I in the electrical network and Δp·Q in the hydraulic one; in the thermal network the flow Q̇ is itself a power.</span></div>
+<figure class="figure-analogy">
+<svg class="chart" viewBox="0 0 640 270" role="img" aria-label="Series and parallel resistances: potential drops add in series; flows add in parallel">
+  <text x="160" y="20" text-anchor="middle" style="fill:var(--ink);font-size:13px">Series: same flow, the drops add</text>
+  <text x="480" y="20" text-anchor="middle" style="fill:var(--ink);font-size:13px">Parallel: same drop, the flows add</text>
+  <line x1="30" y1="60" x2="70" y2="60" style="stroke:var(--ink);stroke-width:2"/>
+  <rect x="70" y="48" width="40" height="24" rx="3" style="fill:none;stroke:var(--s-mint);stroke-width:2"/><text x="90" y="64" text-anchor="middle" style="fill:var(--s-mint)">R</text>
+  <line x1="110" y1="60" x2="130" y2="60" style="stroke:var(--ink);stroke-width:2"/>
+  <rect x="130" y="48" width="60" height="24" rx="3" style="fill:none;stroke:var(--s-mint);stroke-width:2"/><text x="160" y="64" text-anchor="middle" style="fill:var(--s-mint)">2R</text>
+  <line x1="190" y1="60" x2="210" y2="60" style="stroke:var(--ink);stroke-width:2"/>
+  <rect x="210" y="48" width="40" height="24" rx="3" style="fill:none;stroke:var(--s-mint);stroke-width:2"/><text x="230" y="64" text-anchor="middle" style="fill:var(--s-mint)">R</text>
+  <line x1="250" y1="60" x2="290" y2="60" style="stroke:var(--ink);stroke-width:2"/>
+  <text x="160" y="92" text-anchor="middle" style="fill:var(--s-warm)">flow F through every element  →</text>
+  <line x1="30" y1="110" x2="30" y2="240" style="stroke:var(--line)"/>
+  <text x="24" y="114" text-anchor="end">high</text><text x="24" y="238" text-anchor="end">low</text>
+  <polyline points="30,115 70,115 110,145 130,145 190,205 210,205 250,235 290,235" style="fill:none;stroke:var(--s-blue);stroke-width:2.5"/>
+  <text x="122" y="132" text-anchor="middle" style="fill:var(--s-blue)">F·R</text>
+  <text x="210" y="168" text-anchor="middle" style="fill:var(--s-blue)">F·2R</text>
+  <text x="262" y="214" text-anchor="middle" style="fill:var(--s-blue)">F·R</text>
+  <text x="160" y="258" text-anchor="middle">potential along the path: total drop = F (R + 2R + R)</text>
+  <line x1="350" y1="120" x2="380" y2="120" style="stroke:var(--ink);stroke-width:2"/>
+  <line x1="380" y1="70" x2="380" y2="170" style="stroke:var(--ink);stroke-width:2"/>
+  <line x1="580" y1="70" x2="580" y2="170" style="stroke:var(--ink);stroke-width:2"/>
+  <line x1="580" y1="120" x2="610" y2="120" style="stroke:var(--ink);stroke-width:2"/>
+  <line x1="380" y1="70" x2="460" y2="70" style="stroke:var(--s-warm);stroke-width:6"/><rect x="460" y="58" width="40" height="24" rx="3" style="fill:none;stroke:var(--s-mint);stroke-width:2"/><text x="480" y="74" text-anchor="middle" style="fill:var(--s-mint)">R</text><line x1="500" y1="70" x2="580" y2="70" style="stroke:var(--s-warm);stroke-width:6"/>
+  <line x1="380" y1="170" x2="450" y2="170" style="stroke:var(--s-warm);stroke-width:3"/><rect x="450" y="158" width="60" height="24" rx="3" style="fill:none;stroke:var(--s-mint);stroke-width:2"/><text x="480" y="174" text-anchor="middle" style="fill:var(--s-mint)">2R</text><line x1="510" y1="170" x2="580" y2="170" style="stroke:var(--s-warm);stroke-width:3"/>
+  <text x="420" y="60" text-anchor="middle" style="fill:var(--s-warm)">⅔ F</text><text x="420" y="196" text-anchor="middle" style="fill:var(--s-warm)">⅓ F</text>
+  <text x="350" y="110" text-anchor="middle">high</text><text x="610" y="110" text-anchor="middle">low</text>
+  <text x="480" y="128" text-anchor="middle" style="fill:var(--s-blue)">same drop across both branches</text>
+  <text x="480" y="232" text-anchor="middle">flow splits in inverse proportion to resistance</text>
+  <text x="480" y="252" text-anchor="middle">1/R<tspan dy="3" style="font-size:9px">total</tspan><tspan dy="-3"> = 1/R + 1/2R  →  R</tspan><tspan dy="3" style="font-size:9px">total</tspan><tspan dy="-3"> = ⅔ R</tspan></text>
+</svg>
+<figcaption>Read "potential" as voltage, pressure or temperature, "flow" as current, volume flow or heat flow, and "R" as electrical, hydraulic or thermal resistance. The same two pictures describe cells in a pack, cold plates in a coolant loop and layers between a winding and its oil.</figcaption>
+</figure>
+<div class="tablewrap"><table>
+<tr><th>Rule</th><th>Electrical (pack)</th><th>Hydraulic (coolant loop)</th><th>Thermal (winding to oil)</th></tr>
+<tr><td>Series: same flow, drops add</td><td>Cells in series: same current, voltages add</td><td>Plates in series: same flow, pressure drops add</td><td>Copper → insulation → oil film: same heat flow, temperature drops add</td></tr>
+<tr><td>Parallel: same drop, flows add</td><td>Cells in parallel: same voltage, currents and capacity add</td><td>Plates in parallel: same Δp, flows add</td><td>End winding and slot both to oil: same ΔT, heat flows add</td></tr>
+<tr><td>Where to act</td><td>The largest resistance in the current path</td><td>The largest restriction, often a valve or a manifold</td><td>The largest thermal resistance; improving a small one does little (chapter 6)</td></tr>
+</table></div>
+
+<h3>Where the analogy bends</h3>
+<ul>
+  <li><strong>Turbulent flow.</strong> Pressure drop grows as Δp = k Q², so the "resistance" Δp / Q = k Q rises with flow. A system model uses the local slope dΔp/dQ = 2kQ, or the full curve from CFD or test (chapter 13).</li>
+  <li><strong>Convection.</strong> h grows roughly as Re<sup>0.8</sup> in turbulent flow, so the convective resistance falls as flow rises, while conduction resistances do not change. That is why doubling coolant flow never doubles heat transfer.</li>
+  <li><strong>Radiation.</strong> Q̇ = ε σ A (T<sub>1</sub>⁴ − T<sub>2</sub>⁴): strongly non-linear; it is linearized as h<sub>rad</sub> ≈ 4 ε σ T³ around the operating point.</li>
+  <li><strong>Properties that move.</strong> Copper resistance rises 0.39%/K, oil viscosity falls several-fold with temperature (chapter 11), and cell resistance rises in the cold (chapter 10).</li>
+  <li><strong>No thermal inertia.</strong> Electrical circuits have inductance and fluid lines have inertance (ρL/A, the cause of water hammer), but heat has no inertia. A thermal network is resistances and capacitances only, so on its own it never overshoots; oscillation in a thermal system comes from its control loop.</li>
+</ul>
+
+<h3>The Reynolds analogy: why more heat transfer costs pressure drop</h3>
+<p>Turbulent eddies carry momentum and heat together, so friction and heat transfer rise together. For smooth turbulent duct flow the Colburn analogy links them directly:</p>
+<div class="eq">j = St · Pr<sup>2/3</sup> ≈ f / 2<span class="note">St = h / (ρ c<sub>p</sub> u), Stanton number; f, Fanning friction factor. A surface whose j/f beats the smooth-duct value, such as dimples, louvres or offset fins, buys heat transfer at a lower pressure cost. Compact heat-exchanger design is largely the search for a high j/f.</span></div>
+
+<h3>Time constants everywhere</h3>
+<p>Every network that stores something has a time constant τ = R·C. Electrically it is the RC of a filter or of a cell's diffusion branch. Thermally it is R<sub>th</sub>·m c<sub>p</sub>: seconds for a semiconductor junction, minutes for a winding (chapter 6), tens of minutes for a battery pack (chapter 11). The equivalent-circuit battery model is this analogy used in reverse: an ohmic resistance plus RC pairs that imitate charge transfer and diffusion.</p>
+
+<details class="develop"><summary>Check yourself</summary><div>
+<ol>
+  <li><strong>What drives heat, fluid, current and lithium ions?</strong> Gradients of temperature, pressure, voltage and electrochemical potential.</li>
+  <li><strong>What is the thermal equivalent of a capacitor, and of an inductor?</strong> Thermal mass, m c<sub>p</sub>. There is no thermal inductor: heat has no inertia.</li>
+  <li><strong>Two identical cold plates carry a total flow Q. Series or parallel: what happens to the pressure drop?</strong> In series each plate sees Q and the drops add: 2kQ². In parallel each sees Q/2 and the loop drop is k(Q/2)² = kQ²/4, eight times lower, but each plate has half the flow and a lower h.</li>
+  <li><strong>Why does doubling the coolant flow not double heat transfer?</strong> Only the convective resistance falls, and only by about 2<sup>0.8</sup>; conduction resistances in series stay the same.</li>
+  <li><strong>A winding's heat path is copper → insulation → oil film → oil. Which resistance do you attack first?</strong> The largest one. In series the resistances add, so improving a small one changes little.</li>
+  <li><strong>The same cells rearranged from 400 V to 800 V: why is the heat inside the cells unchanged?</strong> Pack resistance rises four times while current halves: (I/2)² · 4R = I²R. The external conductors keep their resistance, so their heat falls to a quarter.</li>
+</ol>
+</div></details>
 </section>
 
 <section class="chapter refs" id="refs">

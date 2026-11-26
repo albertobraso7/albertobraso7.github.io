@@ -1,4 +1,4 @@
-# Vehicle-efficiency notes, revision 3
+# Vehicle-efficiency notes, revision 4
 
 Status: COMPLETE (author review pending)
 Last Agent: Claude
@@ -13,5 +13,7 @@ Done: `index.html` (16 demos, 16 panels; cooling air in chapter 5, torque split 
 Checks: Node run of page JS against independent Python (brentq for the front-end pressure balance, explicit coolant march for cold plates, direct loss sums for torque split): agreement ~1e-16; earlier models re-checked unchanged (≤3e-8, ODE tolerance). Scenario claims re-run: smallest shutter at 100 km/h 13% (32 → 18 counts); ram air alone meets 15 kW above ~48 km/h; equal-pump-power parallel 39.6 °C / 1.9 K vs series 39.7 °C / 4.0 K, advantage gone at 40% maldistribution; torque-split crossover 95 N·m at 6,000 rpm. Headless Chrome: 1366 px visual review with panels open; overflow probe at the 504 px headless minimum (none) and 13 KPI blocks populated. Not done: true 320/390 px view of the new demos (iframe anchors did not scroll); they reuse the existing demo components.
 
 Limitations: AI-assisted drafting; models illustrative; author review pending. Verification scripts kept outside the repository (session scratchpad).
+
+Revision 4 (same day): pack builder in chapter 7 (SVG diagram of series groups and parallel cells with cumulative voltage and per-cell current; presets 4s3p, 96s46p and 192s23p with the same 4,416 cells; equations panel) and new chapter 14 "One language for heat, flow and charge" (potential/flow/resistance table, series-parallel figure, cross-domain rules, where the analogy bends, Colburn analogy, RC time constants, check-yourself answers). Pack results match hand formulas exactly; diagram reviewed at 4s3p and 96s46p; figure reviewed. Earlier model checks re-run unchanged.
 
 Next: author review; phone-width check of the new demos; optional: drive-cycle points on the motor map, junction-temperature (Foster) transient.

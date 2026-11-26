@@ -126,3 +126,5 @@ details.model .try-h { font-family: 'Courier New', monospace; font-size: 11px; l
 details.model ul.try { margin: 0 0 6px; padding-left: 20px; }
 details.model ul.try li { font-size: .88rem; line-height: 1.55; margin: 0 0 6px; color: var(--muted); }
 @media print { details.model > div { display: block; } }
+figure.figure-analogy { margin: 22px 0 26px; }
+figure.figure-analogy figcaption { font-size: .85rem; color: var(--muted); line-height: 1.55; margin-top: 6px; }

@@ -597,6 +597,57 @@
       kpi('Saving vs 50 / 50', best && isFinite(L50) && vk > 0 ? f(L50 - best.L, 0) + ' W · ' + f((L50 - best.L) / vk, 2) + ' Wh/km' : '—', true);
   }
 
+  /* ---------- 07 pack builder: series and parallel ---------- */
+  function pack(o) {
+    var V = o.Ns * o.Vc, Q = o.Np * o.Ah, R = o.Ns / o.Np * o.Rc, I = V > 0 ? o.P / V : 0;
+    return { V: V, Q: Q, E: V * Q, R: R, I: I, Icell: I / o.Np, C: Q > 0 ? I / Q : 0, heat: I * I * R, ext: I * I * o.Rx, sag: I * R, n: o.Ns * o.Np };
+  }
+  function shown(n, max, keep) { var a = []; if (n <= max) { for (var i = 0; i < n; i++) a.push(i); return a; } for (var j = 0; j < keep; j++) a.push(j); a.push(-1); a.push(n - 1); return a; }
+  function packDraw(svg, o, r) {
+    var cols = shown(o.Ns, 6, 3), rows = shown(o.Np, 4, 2), W = 640, L = 64, Rm = 40, cw = (W - L - Rm) / cols.length, rh = 34, top = 78;
+    var H = top + (rows.length - 1) * rh + 92, ink = css('--ink'), mint = css('--s-mint'), warm = css('--s-warm'), mut = css('--muted'), blue = css('--s-blue');
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    var s = '', ybot = top + (rows.length - 1) * rh, lt = top - 22;
+    function T(x, y, t, c, a, sz) { return '<text x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" text-anchor="' + (a || 'middle') + '" style="fill:' + (c || mut) + (sz ? ';font-size:' + sz + 'px' : '') + '">' + t + '</text>'; }
+    function Ln(x1, y1, x2, y2, c, w, d) { return '<line x1="' + x1.toFixed(1) + '" y1="' + y1.toFixed(1) + '" x2="' + x2.toFixed(1) + '" y2="' + y2.toFixed(1) + '" stroke="' + c + '" stroke-width="' + (w || 1.5) + '"' + (d ? ' stroke-dasharray="' + d + '"' : '') + '/>'; }
+    var prevXr = null, gap = false;
+    cols.forEach(function (c, i) {
+      var cx = L + cw * (i + 0.5), xl = cx - 28, xr = cx + 28;
+      if (c < 0) { gap = true; s += T(cx, (top + ybot) / 2 + 5, '· · ·', ink, 'middle', 16) + T(cx, top + (rows.length - 1) * rh + 22, (o.Ns - 4) + ' more groups', mut, 'middle', 10); return; }
+      s += Ln(xl, top - 8, xl, ybot + 8, ink, 2) + Ln(xr, top - 8, xr, ybot + 8, ink, 2);
+      rows.forEach(function (rw, j) {
+        var y = top + j * rh;
+        if (rw < 0) { s += T(cx, y + 5, '⋮', ink, 'middle', 16); return; }
+        s += Ln(xl, y, cx - 17, y, ink, 1.2) + Ln(cx + 17, y, xr, y, ink, 1.2);
+        s += '<rect x="' + (cx - 17).toFixed(1) + '" y="' + (y - 10) + '" width="34" height="20" rx="3" fill="none" stroke="' + mint + '" stroke-width="1.6"/>';
+        s += T(cx - 10, y + 4, '−', mut, 'middle', 10) + T(cx + 10, y + 4, '+', mint, 'middle', 10);
+      });
+      s += T(cx, lt - 6, f((c + 1) * o.Vc, (c + 1) * o.Vc < 100 ? 1 : 0) + ' V', mint, 'middle', 12);
+      if (prevXr !== null) {
+        var d = gap ? '4 3' : '';
+        s += Ln(prevXr, top - 8, prevXr, lt + 4, warm, 2, d) + Ln(prevXr, lt + 4, xl, lt + 4, warm, 2, d) + Ln(xl, lt + 4, xl, top - 8, warm, 2, d);
+      }
+      prevXr = xr; gap = false;
+    });
+    var x0 = L + cw * 0.5 - 28, x1 = L + cw * (cols.length - 0.5) + 28, yb = ybot + 30;
+    s += T(x0 - 8, top + 4, '−', ink, 'end', 16) + T(x1 + 8, top + 4, '+', ink, 'start', 16);
+    s += Ln(x0, yb, x1, yb, blue, 1.5) + Ln(x0, yb - 5, x0, yb + 5, blue, 1.5) + Ln(x1, yb - 5, x1, yb + 5, blue, 1.5);
+    s += T((x0 + x1) / 2, yb + 18, 'Series: voltages add → ' + o.Ns + ' × ' + f(o.Vc, 2) + ' V = ' + f(r.V, 1) + ' V; the full current ' + f(r.I, 1) + ' A flows through every group', blue, 'middle', 11);
+    s += T((x0 + x1) / 2, yb + 36, 'Parallel: same voltage, currents add → each cell carries ' + f(r.I, 1) + ' / ' + o.Np + ' = ' + f(r.Icell, 2) + ' A; capacity ' + o.Np + ' × ' + f(o.Ah, 1) + ' Ah = ' + f(r.Q, 1) + ' Ah', mint, 'middle', 11);
+    s += T(16, (top + ybot) / 2, o.Np + ' in parallel', mut, 'middle', 10).replace('<text ', '<text transform="rotate(-90 16 ' + ((top + ybot) / 2).toFixed(1) + ')" ');
+    svg.innerHTML = s;
+  }
+  var PKI = ['pk-ns', 'pk-np', 'pk-vc', 'pk-ah', 'pk-rc', 'pk-p', 'pk-rx'];
+  function packDemo() {
+    if (!$('pk-svg')) return;
+    var o = { Ns: Math.max(1, Math.round(num('pk-ns'))), Np: Math.max(1, Math.round(num('pk-np'))), Vc: num('pk-vc'), Ah: num('pk-ah'), Rc: num('pk-rc') / 1000, P: num('pk-p') * 1000, Rx: num('pk-rx') / 1000 };
+    var r = pack(o);
+    packDraw($('pk-svg'), o, r);
+    $('pk-out').innerHTML = kpi('Cells', o.Ns + 's' + o.Np + 'p = ' + r.n) + kpi('Pack voltage', f(r.V, 1) + ' V', true) + kpi('Capacity', f(r.Q, 1) + ' Ah') + kpi('Energy', f(r.E / 1000, 2) + ' kWh', true) +
+      kpi('Pack resistance', f(r.R * 1000, 1) + ' mΩ') + kpi('Pack current', f(r.I, 1) + ' A', true) + kpi('Current per cell · C-rate', f(r.Icell, 2) + ' A · ' + f(r.C, 2) + ' C') +
+      kpi('Voltage sag I·R', f(r.sag, 1) + ' V') + kpi('Heat inside the cells', f(r.heat, 0) + ' W') + kpi('Heat in the external resistance', f(r.ext, 0) + ' W');
+  }
+
   /* ---------- table of contents ---------- */
   function toc() {
     var links = Array.prototype.slice.call(document.querySelectorAll('.notes-toc a'));
@@ -633,6 +684,13 @@
   on(CAI, coolDemo); coolDemo();
   on(CPI, coldDemo); coldDemo();
   on(TSI, splitDemo); splitDemo();
+  on(PKI, packDemo); packDemo();
+  Array.prototype.forEach.call(document.querySelectorAll('[data-pack]'), function (b) {
+    b.addEventListener('click', function () {
+      var v = b.getAttribute('data-pack').split(',');
+      $('pk-ns').value = v[0]; $('pk-np').value = v[1]; $('pk-p').value = v[2]; packDemo();
+    });
+  });
   toc();
-  window.EVNotes = { steady: steady, simulate: simulate, motor: motor, H0: H0, E0: E0, cop: cop, quadfit: quadfit, inverter: inverter, windSteady: windSteady, windCont: windCont, windBurst: windBurst, windRth: windRth, chargeSession: chargeSession, oilTrade: oilTrade, compound: compound, coolAir: coolAir, coldPlate: coldPlate, torqueSplit: torqueSplit, tsIron: tsIron };
+  window.EVNotes = { steady: steady, simulate: simulate, motor: motor, H0: H0, E0: E0, cop: cop, quadfit: quadfit, inverter: inverter, windSteady: windSteady, windCont: windCont, windBurst: windBurst, windRth: windRth, chargeSession: chargeSession, oilTrade: oilTrade, compound: compound, coolAir: coolAir, coldPlate: coldPlate, torqueSplit: torqueSplit, tsIron: tsIron, pack: pack };
 })();
