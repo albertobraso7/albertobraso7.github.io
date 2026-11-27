@@ -526,6 +526,55 @@
       kpi('Smallest shutter opening that meets the demand', bestTxt, true) + kpi('Wheel energy saved vs fully open', isFinite(save) ? f(save, 2) + ' Wh/km' : '—');
   }
 
+  /* ---------- 05 cooling air: cheapest shutter and fan setting (arbitration) ---------- */
+  // Searches the settings allowed by the usual sequencing (fan off at any shutter opening from 10 to 100% in 1% steps,
+  // or shutters fully open with the fan at 5-100% in 5% steps) for the one that meets the heat demand at the lowest
+  // battery power: drag power / drivetrain efficiency + fan power.
+  var CAB = { eta: 0.9 };
+  function coolCost(r, V) { var Pd = r.D * V / CAB.eta; return { Pd: Pd, Pf: r.Pfan, P: Pd + r.Pfan }; }
+  function coolBest(o) {
+    var best = null, open = null;
+    for (var i = 0; i <= 20; i++) {
+      var fan = i / 20;
+      for (var p = (fan > 0 ? 100 : 10); p <= 100; p++) {
+        var r = coolAir({ V: o.V, sh: p / 100, fan: fan, itd: o.itd });
+        if (r.Q < o.need) continue;
+        var c = coolCost(r, o.V), x = { sh: p, fan: fan, Pd: c.Pd, Pf: c.Pf, P: c.P, Q: r.Q, counts: r.counts };
+        if (!best || c.P < best.P - 1e-9) best = x;
+        if (p === 100 && !open) open = x;      // policy "shutters always open, lowest fan speed that meets the demand"
+      }
+    }
+    return { best: best, open: open };
+  }
+  var ARI = ['ar-v', 'ar-q', 'ar-itd'];
+  function arbDemo() {
+    if (!$('ar-chart')) return;
+    var vk = num('ar-v'), need = num('ar-q') * 1000, itd = num('ar-itd');
+    $('ar-vv').textContent = vk;
+    var pd = [], pf = [], pt = [], po = [], ps = [], pfan = [], gap = null;
+    for (var v = 0; v <= 160; v += 4) {
+      var b = coolBest({ V: v / 3.6, itd: itd, need: need });
+      if (!b.best) { gap = v; continue; }
+      if (v >= 10) { pd.push([v, b.best.Pd / v]); pf.push([v, b.best.Pf / v]); pt.push([v, b.best.P / v]); po.push([v, b.open.P / v]); }   // Wh/km
+      ps.push([v, b.best.sh]); pfan.push([v, 100 * b.best.fan]);
+    }
+    var ym = Math.max(5, Math.max.apply(null, po.concat(pt).map(function (p) { return p[1]; })));
+    chart($('ar-chart'), { x: [0, 160], y: [Math.min(0, Math.floor(Math.min.apply(null, pd.map(function (p) { return p[1]; }).concat([0])))), Math.ceil(ym * 1.1 / 5) * 5], xs: 20,
+      xl: 'Vehicle speed [km/h]', yl: 'Cooling air [Wh/km]',
+      series: [{ pts: po, c: css('--s-grey'), w: 1.8, dash: '4 3' }, { pts: pd, c: css('--s-warm'), w: 2 }, { pts: pf, c: css('--s-mint'), w: 2 }, { pts: pt, c: css('--s-blue'), w: 2.8 }],
+      vlines: [{ x: vk, c: css('--muted') }] });
+    chart($('ar-chart2'), { x: [0, 160], y: [0, 100], xs: 20, ys: 25, xl: 'Vehicle speed [km/h]', yl: 'Setting [%]',
+      series: [{ pts: ps, c: css('--s-violet'), w: 2.4 }, { pts: pfan, c: css('--s-mint'), w: 2.4 }], vlines: [{ x: vk, c: css('--muted') }] });
+    var r = coolBest({ V: vk / 3.6, itd: itd, need: need }), b = r.best, o = r.open;
+    function wh(P) { return vk > 0 ? f(P / vk, 2) + ' Wh/km' : 'standstill'; }
+    $('ar-out').innerHTML = !b ? kpi('Cheapest setting at ' + vk + ' km/h', 'demand not met even fully open with full fan', true) + (gap !== null ? kpi('Note', 'reduce the demand or raise the temperature difference') : '') :
+      kpi('Cheapest setting at ' + vk + ' km/h', 'shutter ' + b.sh + '% · fan ' + f(100 * b.fan, 0) + '%', true) +
+      kpi('Drag power (battery)', f(b.Pd, 0) + ' W') + kpi('Fan power', f(b.Pf, 0) + ' W') +
+      kpi('Total for cooling air', f(b.P, 0) + ' W · ' + wh(b.P), true) +
+      kpi('Shutters always open, fan as needed', f(o.P, 0) + ' W · fan ' + f(100 * o.fan, 0) + '%') +
+      kpi('Saved by closing the shutters', f(o.P - b.P, 0) + ' W · ' + wh(o.P - b.P));
+  }
+
   /* ---------- 07 cold plates: series versus parallel ---------- */
   var CP = { rho: 1070, cp: 3500, kpl: 0.03, kman: 0.01, Rref: 0.004, Qref: 10, Rcond: 0.008, etaP: 0.3 };
   function cpC(lmin) { return lmin / 60000 * CP.rho * CP.cp; }
@@ -907,6 +956,7 @@
   on(OI, oilDemo); oilDemo();
   on(MC, compoundDemo); compoundDemo();
   on(CAI, coolDemo); coolDemo();
+  on(ARI, arbDemo); arbDemo();
   on(CPI, coldDemo); coldDemo();
   on(TSI, splitDemo); splitDemo();
   on(PKI, packDemo); packDemo();
@@ -921,5 +971,5 @@
   on(UNI, uncDemo); uncDemo();
   on(CMI, coupledDemo); coupledDemo();
   toc();
-  window.EVNotes = { steady: steady, simulate: simulate, motor: motor, H0: H0, E0: E0, cop: cop, quadfit: quadfit, inverter: inverter, windSteady: windSteady, windCont: windCont, windBurst: windBurst, windRth: windRth, chargeSession: chargeSession, oilTrade: oilTrade, compound: compound, coolAir: coolAir, coldPlate: coldPlate, torqueSplit: torqueSplit, tsIron: tsIron, pack: pack, cellPulse: cellPulse, vehicleLog: vehicleLog, gci: gci, coupled: coupled, cmTrace: cmTrace };
+  window.EVNotes = { steady: steady, simulate: simulate, motor: motor, H0: H0, E0: E0, cop: cop, quadfit: quadfit, inverter: inverter, windSteady: windSteady, windCont: windCont, windBurst: windBurst, windRth: windRth, chargeSession: chargeSession, oilTrade: oilTrade, compound: compound, coolAir: coolAir, coolBest: coolBest, coldPlate: coldPlate, torqueSplit: torqueSplit, tsIron: tsIron, pack: pack, cellPulse: cellPulse, vehicleLog: vehicleLog, gci: gci, coupled: coupled, cmTrace: cmTrace };
 })();

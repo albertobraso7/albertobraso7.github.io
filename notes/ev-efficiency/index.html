@@ -22,7 +22,7 @@
   <h1>From forces to <em>range.</em></h1>
   <p class="lede">How aerodynamic drag, tyre losses, drive-unit losses and thermal systems decide how far an electric vehicle travels on a charge, and how a CFD result becomes a number that a vehicle-level decision can use.</p>
   <p class="lede">Each chapter starts with the essentials, develops the physics, and includes calculators you can change; every calculator lists the equations it uses and a few questions to try. Example vehicles are generic; they are not data from any manufacturer.</p>
-  <div class="notes-meta"><span>FIRST EDITION · NOVEMBER 2026 · REVISED 26 NOV</span><span>16 CHAPTERS · 21 INTERACTIVE MODELS, EACH WITH ITS EQUATIONS</span><span>SI UNITS, WITH US CONVERSIONS</span></div>
+  <div class="notes-meta"><span>FIRST EDITION · NOVEMBER 2026 · REVISED 27 NOV</span><span>16 CHAPTERS · 22 INTERACTIVE MODELS, EACH WITH ITS EQUATIONS</span><span>SI UNITS, WITH US CONVERSIONS</span></div>
 </section>
 
 <div class="notes-layout wrap">
@@ -248,6 +248,7 @@
   <li>Air that passes through the heat exchangers loses momentum; that momentum deficit is drag.</li>
   <li>More cooling air means more heat rejection and more drag. Active shutters let the thermal system take only the air it needs.</li>
   <li>The cooling demand peaks when ram air is weakest: fast charging and slow, high-load driving.</li>
+  <li>Cooling drag costs energy per kilometre in proportion to V², a fan at constant power in proportion to 1/V. At low speed the shutters open and the fan works; at high speed the shutters close as far as the heat load allows.</li>
 </ul></div>
 <div class="eq">D<sub>cooling</sub> ≈ ṁ<sub>air</sub> (V<sub>∞</sub> − V<sub>exit</sub>)<span class="note">The momentum lost by the cooling air between the grille and its exit into the underbody or wheel arches.</span></div>
 <p>Electric vehicles need less cooling air at cruise than combustion vehicles, but they still reject heat from the air-conditioning condenser or heat-pump outdoor exchanger, the power electronics and the battery during fast charging. Sealing the front end so that no air bypasses the cores, and guiding the exit flow cleanly, are classic gains. The fan is a pure auxiliary load, often several hundred watts at full speed.</p>
@@ -278,6 +279,70 @@
   </div></details>
 </div>
 <p class="demo-note"><strong>What to look for.</strong> At highway speed, ram pressure supplies more air than the heat load needs, so the shutters can close until the rejection just meets the demand; the drag saved is free. Below about 50 km/h ram air alone no longer meets the demand, and at standstill only the fan moves air: that is why hot-day fast charging sizes the fan and the condenser. Heat rejection grows more slowly than air flow because the effectiveness falls as the air capacity rate rises.</p>
+
+<h3>Two ways to pay for cooling air</h3>
+<p>Air reaches the heat exchangers in two ways, and each has its own price. Ram air is free to move but costs drag, paid at the wheels. The fan costs electrical power directly. The two prices scale in opposite directions with speed, which is why the right answer in the city is the wrong one on the highway.</p>
+<div class="eq">P<sub>drag</sub> = ½ ρ ΔC<sub>d</sub> A V³ / η<sub>drive</sub> &nbsp;&nbsp; E<sub>drag</sub> = P<sub>drag</sub> / V ∝ V² &nbsp;&nbsp; E<sub>fan</sub> = P<sub>fan</sub> / V<span class="note">Cooling drag behaves like the rest of the aerodynamic drag: its power grows with V³ and its energy per kilometre with V². A fan running at constant power costs more per kilometre the slower the car moves, and without limit at standstill.</span></div>
+<div class="tablewrap"><table>
+<tr><th>Speed</th><th>10 drag counts of open cooling air</th><th>A 300 W fan</th><th>Ram pressure, 0.8 · ½ ρ V²</th></tr>
+<tr><td>20 km/h</td><td>3 W · 0.13 Wh/km</td><td>15 Wh/km</td><td>15 Pa</td></tr>
+<tr><td>50 km/h</td><td>41 W · 0.8 Wh/km</td><td>6 Wh/km</td><td>93 Pa</td></tr>
+<tr><td>120 km/h</td><td>570 W · 4.7 Wh/km</td><td>2.5 Wh/km</td><td>530 Pa</td></tr>
+</table></div>
+<p class="demo-note">Illustrative: 2.3 m² frontal area, ρ = 1.2 kg/m³, drag power taken from the battery through a 90% efficient drive. A drag count is 0.001 of C<sub>d</sub>.</p>
+<p>Two conclusions follow. In the city, opening the shutters costs almost nothing, but there is little ram pressure to push air through the cores, so the fan does the work and its energy per kilometre is large. On the highway, every count of cooling drag is expensive, and the fan cannot help: ram pressure is already about twice the shut-off pressure of the fan in the calculator above, so a running fan adds little flow. The fan in the last row looks cheaper per kilometre only on paper.</p>
+
+<h3>When the front end needs the most air</h3>
+<p>The heat to reject depends on losses and ambient temperature, not on speed. Air supply depends on speed. The difficult cases are the ones where the two do not match.</p>
+<div class="tablewrap"><table>
+<tr><th>Case</th><th>Heat to reject</th><th>Ram air available</th><th>Strategy</th></tr>
+<tr><td>Mild highway cruise</td><td>Moderate: drive-unit and electronics losses</td><td>Plenty</td><td>Shutters as closed as the heat load allows; the largest energy saving</td></tr>
+<tr><td>Hot day in city traffic with air conditioning</td><td>Condenser load dominates; small temperature difference to ambient</td><td>Little</td><td>Shutters open, which costs almost nothing at low speed; fan as needed</td></tr>
+<tr><td>Hot-day DC fast charge</td><td>Highest: battery heat through the chiller plus cabin cooling, rejected at the condenser</td><td>None</td><td>Fully open, fan at high speed; usually the case that sizes the fan and the condenser</td></tr>
+<tr><td>Long grade, towing or track at moderate speed</td><td>High and sustained</td><td>Limited</td><td>Open, fan on, coolant and oil as cold as possible (chapter 11)</td></tr>
+<tr><td>Cold weather, heat pump running</td><td>The front exchanger absorbs heat from the air instead of rejecting it</td><td>Needed too</td><td>Open as heating demand requires; watch for frost and defrost cycles</td></tr>
+<tr><td>Cold weather, no heat-pump demand</td><td>Warm-up is wanted</td><td>Not needed</td><td>Closed: faster warm-up and lower drag</td></tr>
+</table></div>
+<p>In short, the front end needs the most air at high thermal load and low speed, and opening it costs the most at high speed and low thermal load. Components are sized on the first; most of the energy is won or lost on the second.</p>
+
+<h3>Choosing the cheapest actuator</h3>
+<p>The thermal controller does not ask for a shutter position or a fan speed. It asks for heat rejection: a coolant temperature, or a refrigerant high-side pressure, held at its target by a PI loop like the one in chapter 16. A second layer, the arbitration, decides which actuator delivers that rejection at the lowest total power:</p>
+<ul>
+  <li><strong>Inputs:</strong> coolant temperatures in each loop, refrigerant high-side pressure, vehicle speed, ambient temperature, cabin demand and charging state.</li>
+  <li><strong>Objective:</strong> minimize drag power plus fan power plus pump power, subject to every temperature and pressure staying on target.</li>
+  <li><strong>Usual sequencing:</strong> open the shutters first, then start the fan. Running the fan against partly closed shutters wastes fan power on the shutter loss.</li>
+  <li><strong>Practical rules:</strong> hysteresis or rate limits so the actuators do not hunt; discrete fan steps and a noise limit at low speed; shutters fail open; frost detection; a position calibration at start-up.</li>
+</ul>
+<p>The calculator below performs the arbitration by brute force. For each speed it tries every allowed shutter opening and fan speed on the front-end model above and keeps the cheapest setting that meets the heat demand.</p>
+<div class="demo" id="demo-arb">
+  <div class="demo-head"><h3>The cheapest way to reject the heat at each speed</h3><span class="demo-tag">INTERACTIVE · ACTUATOR ARBITRATION</span></div>
+  <div class="controls">
+    <label for="ar-v"><span>Vehicle speed for the readout [km/h] <output id="ar-vv">30</output></span><input id="ar-v" type="range" min="0" max="160" step="5" value="30"></label>
+    <label for="ar-q"><span>Heat to reject [kW]</span><input id="ar-q" type="number" value="9" step="1" min="1"></label>
+    <label for="ar-itd"><span>Coolant or refrigerant inlet − ambient [K]</span><input id="ar-itd" type="number" value="15" step="5" min="5"></label>
+  </div>
+  <svg class="chart" id="ar-chart" viewBox="0 0 640 250" role="img" aria-label="Battery energy per kilometre spent on cooling air against vehicle speed"></svg>
+  <div class="legend"><span><i style="background:var(--s-blue)"></i>Cheapest setting, total</span><span><i style="background:var(--s-warm)"></i>Its drag part</span><span><i style="background:var(--s-mint)"></i>Its fan part</span><span><i style="background:var(--s-grey)"></i>Shutters always open, fan as needed</span></div>
+  <svg class="chart" id="ar-chart2" viewBox="0 0 640 200" role="img" aria-label="Cheapest shutter opening and fan speed against vehicle speed"></svg>
+  <div class="legend"><span><i style="background:var(--s-violet)"></i>Shutter opening</span><span><i style="background:var(--s-mint)"></i>Fan speed</span></div>
+  <div class="kpis" id="ar-out"></div>
+  <p class="demo-note">Same front-end model and illustrative values as the calculator above. A shutter opening of 10% stands for closed shutters with their leakage. Gaps in the curves mark speeds where the demand cannot be met even fully open with the fan at full speed.</p>
+  <details class="model"><summary>Equations used in this calculator</summary><div>
+    <ol class="steps"><li><b>Front end.</b> For each candidate setting, face velocity, heat rejection Q̇, cooling drag D and fan power P<sub>fan</sub> from the calculator above.</li><li><b>Allowed settings.</b> Fan off with the shutters at 10–100% in 1% steps, or shutters fully open with the fan at 5–100% in 5% steps (open first, then fan).</li><li><b>Cost.</b> <span class="m">P = D V / η<sub>drive</sub> + P<sub>fan</sub></span>, η<sub>drive</sub> = 0.9, so that drag and fan are both counted at the battery.</li><li><b>Choice.</b> The setting with the lowest P among those with <span class="m">Q̇ ≥ Q̇<sub>demand</sub></span>. Reference policy: shutters always fully open, with the lowest fan speed that meets the demand.</li><li><b>Per kilometre.</b> <span class="m">E = P / V</span>, plotted from 10 km/h because a fan at standstill costs energy without covering distance.</li></ol>
+    <p class="try-h">TRY THIS: PREDICT FIRST, THEN CHECK</p><ul class="try"><li>With the defaults (a hot day, condenser and chiller loaded), find the speed where the fan switches off and the shutters start to close. Why there?</li><li>Read the saving at 120 km/h, then at 30 km/h. Explain the ratio with V³.</li><li>Set a mild highway case: 4 kW with 35 K. What does the controller do above 20 km/h, and what is left of the cost?</li><li>Set the speed to 0 and raise the demand until it can no longer be met. That is the fast-charging sizing case: what hardware would you change?</li></ul>
+  </div></details>
+</div>
+<p class="demo-note"><strong>What to look for.</strong> The energy per kilometre has a minimum near 50 km/h: below it the fan dominates, above it the drag. With the defaults, up to about 45 km/h ram air is too weak: the shutters stay fully open and the fan runs at 50–85% of its speed; at 30 km/h the cooling air costs about 150 W, or 5 Wh/km. From about 48 km/h ram air alone meets the demand and the fan switches off; from there the shutters close progressively, to about 11% at 120 km/h. At 120 km/h the cheapest setting needs about 0.9 kW against 1.8 kW with the shutters always open: a saving of 7.5 Wh/km, more than the whole cost of cooling air in the city. Even closed shutters still cost drag through leakage and the rest of the duct, which is why sealing the front end matters.</p>
+<div class="cfd-link"><p>PUBLIC EXAMPLE · MANUFACTURER DATA</p><p>Lucid describes a patented vortex-generating intake behind the front bumper of the Lucid Air. It distributes air uniformly over the heat-exchange surfaces while keeping the intake aperture small. The engineering logic: a core with uniform face velocity transfers more heat per unit of area than one with maldistributed flow (the same effect as uneven flow between cold plates, chapter 7), so the same heat rejection needs less air and less cooling drag. Lucid reported a drag coefficient of 0.21 for the Air in 2020. Source: <a href="https://lucidmotors.com/media-room/lucid-air-achieves-industry-best-drag-coefficient" target="_blank" rel="noopener noreferrer">Lucid media room</a>, accessed November 2026.</p></div>
+<details class="develop"><summary>Check yourself</summary><div>
+<ol>
+  <li><strong>Why do shutters save more on the highway than in the city?</strong> Cooling drag power grows with V³ and its energy per kilometre with V². The same opening costs about 36 times more per kilometre at 120 km/h than at 20 km/h, (120/20)².</li>
+  <li><strong>When does the front end need the most air?</strong> High thermal load at low speed: hot-day fast charging at standstill, city traffic with air conditioning on a hot day, a long grade or towing. Those cases size the fan and the condenser.</li>
+  <li><strong>Why not run the fan on the highway instead of opening the shutters?</strong> Ram pressure at highway speed is already larger than the fan's shut-off pressure, so the fan adds little flow. At speed the only way to get more air is to open the shutters.</li>
+  <li><strong>How would you control the shutters and the fan?</strong> A PI loop asks for heat rejection, on coolant temperature or refrigerant pressure. An arbitration layer delivers it at the lowest drag plus fan power: shutters first, then the fan, with hysteresis, fail-open shutters and frost detection.</li>
+  <li><strong>Why do shutters matter in winter?</strong> Closed, they speed up warm-up and cut drag. With a heat pump, the front exchanger becomes the evaporator and needs air again, so the shutters open for heating demand and must handle frost.</li>
+</ol>
+</div></details>
 <div class="cfd-link"><p>WHERE CFD FITS</p><p>A front-end airflow model gives radiator airflow against vehicle speed, with the fan on and off, as the boundary condition for the 1D thermal model. The same model gives the drag cost of each shutter position, so heat rejection and drag can be traded in one place.</p></div>
 </section>
 
