@@ -314,3 +314,11 @@ The author asked to integrate knowledge from their private Lucid Tech Talk study
 
 At the author's request every calculator on the vehicle-efficiency notes page has a collapsible "Equations used in this calculator" panel (model steps, fixed values, "Try this" questions), so the page serves study and whiteboard-style explanation as well as display. Any new calculator on the page must include one, kept in step with the code.
 
+
+## Regression test for the notes calculators — 2026-11-26
+
+`tests/ev-notes/regression.js` re-runs every model exported on `window.EVNotes` on fixed cases and compares with `tests/ev-notes/reference.json` (relative tolerance 1e-9); `.github/workflows/notes-regression.yml` runs it, plus `can_log_demo.py --check`, on every change under `notes/ev-efficiency/`. Regenerate the reference (`--update`) only after a deliberate model change has been re-checked against an independent Python implementation, and say so in the commit. The disclosure on the page links the workflow.
+
+## Interview-gap topics in the notes are self-study — 2026-11-26
+
+The cell equivalent-circuit demo (chapter 7) and chapter 15 (CAN log to correlated model, with `can_log_demo.py`) were added to help the author study vacancy gaps (battery-cell modelling, test data and CAN, regression workflows). They are generic, synthetic and labelled as such; they must never be presented as employer work or as professional experience with those tools.

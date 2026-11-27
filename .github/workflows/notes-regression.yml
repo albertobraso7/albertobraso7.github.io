@@ -1,0 +1,36 @@
+name: Notes regression
+
+# Re-runs the calculators of the vehicle-efficiency notes on fixed cases and
+# compares them with stored reference values, plus the Python CAN-log example.
+on:
+  push:
+    paths:
+      - "notes/ev-efficiency/**"
+      - "tests/ev-notes/**"
+      - ".github/workflows/notes-regression.yml"
+  pull_request:
+    paths:
+      - "notes/ev-efficiency/**"
+      - "tests/ev-notes/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Browser models against reference values
+        run: node tests/ev-notes/regression.js
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install NumPy
+        run: python -m pip install --disable-pip-version-check numpy
+      - name: CAN-log example against the page values
+        run: python notes/ev-efficiency/can_log_demo.py --check

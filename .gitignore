@@ -7,3 +7,6 @@ fluent-*.trn
 fluent-*-error.log
 pyfluent_watchdog.err
 cleanup-fluent-*.bat
+
+# Python bytecode from running notes scripts locally
+__pycache__/

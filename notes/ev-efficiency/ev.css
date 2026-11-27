@@ -43,6 +43,8 @@
 .brief li { color: var(--ink); }
 
 .eq { background: var(--eq-bg); border: 1px solid var(--line); border-radius: 2px; padding: 14px 18px; margin: 14px 0 18px; font-family: "Cambria Math", "STIX Two Math", Georgia, "Times New Roman", serif; font-size: 1.12rem; line-height: 1.8; color: var(--ink); overflow-x: auto; }
+pre.code { background: var(--eq-bg); border: 1px solid var(--line); border-radius: 2px; padding: 12px 16px; margin: 14px 0 18px; font-family: 'Courier New', monospace; font-size: .85rem; line-height: 1.6; color: var(--ink); overflow-x: auto; white-space: pre; }
+pre.code .c { color: var(--muted); }
 .eq .note { display: block; font-family: Arial, Helvetica, sans-serif; font-size: .85rem; color: var(--muted); line-height: 1.55; margin-top: 4px; }
 .num { color: var(--warm); white-space: nowrap; }
 

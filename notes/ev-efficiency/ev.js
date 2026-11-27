@@ -648,6 +648,124 @@
       kpi('Voltage sag I·R', f(r.sag, 1) + ' V') + kpi('Heat inside the cells', f(r.heat, 0) + ' W') + kpi('Heat in the external resistance', f(r.ext, 0) + ' W');
   }
 
+  /* ---------- 07 one cell: equivalent circuit and pulse test ---------- */
+  var CELL = { Q: 5, R0: 0.015, R1: 0.005, t1: 1, R2: 0.008, t2: 30, B: 2985, Vmin: 2.5, pre: 5, post: 60 };
+  function ocv(s) { return 3.0 + 1.5 * s - 1.2 * s * s + 0.9 * s * s * s; }
+  function cellK(T) { return Math.exp(CELL.B * (1 / (T + 273.15) - 1 / 298.15)); }
+  function cellPulse(o) {
+    var k = cellK(o.T), R0 = CELL.R0 * k, R1 = CELL.R1 * k, R2 = CELL.R2 * k, ta = CELL.pre, tb = CELL.pre + o.tp, tend = tb + CELL.post;
+    function at(t) {
+      var I = t >= ta && t < tb ? o.I : 0, v1 = 0, v2 = 0, q = 0, d, e;
+      if (t >= ta && t < tb) { d = t - ta; v1 = o.I * R1 * (1 - Math.exp(-d / CELL.t1)); v2 = o.I * R2 * (1 - Math.exp(-d / CELL.t2)); q = o.I * d; }
+      else if (t >= tb) { d = o.tp; e = t - tb; v1 = o.I * R1 * (1 - Math.exp(-d / CELL.t1)) * Math.exp(-e / CELL.t1); v2 = o.I * R2 * (1 - Math.exp(-d / CELL.t2)) * Math.exp(-e / CELL.t2); q = o.I * d; }
+      var U = ocv(o.soc - q / 3600 / CELL.Q);
+      return { V: U - I * R0 - v1 - v2, U: U, I: I };
+    }
+    var samples = [], j, t;
+    for (j = 0; (t = (j + 0.5) / o.fs) < tend; j++) samples.push([t, at(t).V]);
+    var before = null, after = null, end = null;
+    samples.forEach(function (p) { if (p[0] < ta) before = p; if (!after && p[0] >= ta) after = p; if (p[0] < tb) end = p; });
+    var last = at(tb - 1e-9), K = o.T + 273.15, R10 = R0 + R1 * (1 - Math.exp(-10 / CELL.t1)) + R2 * (1 - Math.exp(-10 / CELL.t2));
+    var U0 = ocv(o.soc), Imax = Math.max(0, (U0 - CELL.Vmin) / R10), vmin = Infinity;
+    for (t = 0; t <= tend; t += 0.01) vmin = Math.min(vmin, at(t).V);
+    return {
+      at: at, samples: samples, ta: ta, tb: tb, tend: tend, R0: R0, R1: R1, R2: R2, U0: U0,
+      R0est: o.I ? (before[1] - after[1]) / o.I : NaN, Rpulse: o.I ? (before[1] - end[1]) / o.I : NaN,
+      Rtrue: R0 + R1 * (1 - Math.exp(-o.tp / CELL.t1)) + R2 * (1 - Math.exp(-o.tp / CELL.t2)),
+      qirr: o.I * (last.U - last.V), qrev: -o.I * K * o.dudt, Imax: Imax, Pmax: CELL.Vmin * Imax, vmin: vmin
+    };
+  }
+  var CEI = ['ce-soc', 'ce-T', 'ce-I', 'ce-tp', 'ce-fs', 'ce-du', 'ce-view'];
+  function cellDemo() {
+    if (!$('ce-chart')) return;
+    var o = { soc: num('ce-soc') / 100, T: num('ce-T'), I: num('ce-I'), tp: Math.max(1, num('ce-tp')), fs: num('ce-fs') || 10, dudt: num('ce-du') / 1000 };
+    $('ce-socv').textContent = num('ce-soc'); $('ce-Tv').textContent = o.T;
+    var r = cellPulse(o), zoom = $('ce-view').value === 'zoom', x0 = zoom ? r.ta - 1 : 0, x1 = zoom ? r.ta + 3 : r.tend, dt = zoom ? 0.004 : 0.05, pts = [], t;
+    for (t = x0; t <= x1 + 1e-9; t += dt) pts.push([t, r.at(t).V]);
+    var vs = pts.map(function (p) { return p[1]; }), lo = Math.min.apply(null, vs), hi = Math.max.apply(null, vs), pad = Math.max(0.01, (hi - lo) * 0.15);
+    var dots = r.samples.filter(function (p) { return p[0] >= x0 && p[0] <= x1; });
+    chart($('ce-chart'), { x: [x0, x1], y: [lo - pad, hi + pad], xs: zoom ? 0.5 : 10, xl: 'Time [s]', yl: 'Cell terminal voltage [V]',
+      vlines: [{ x: r.ta, c: css('--s-warm') }, { x: r.tb, c: css('--s-warm') }],
+      series: [{ pts: pts, c: css('--ink'), w: 2.2 }],
+      dots: dots.length <= 150 ? dots.map(function (p) { return { x: p[0], y: p[1], c: css('--s-coral'), r: zoom ? 4 : 2.2 }; }) : [] });
+    var tot = r.qirr + r.qrev;
+    $('ce-out').innerHTML = kpi('Open-circuit voltage', f(r.U0, 3) + ' V') + kpi('R<sub>0</sub> in the model', f(r.R0 * 1000, 1) + ' mΩ') +
+      kpi('R<sub>0</sub> read from the logged step', f(r.R0est * 1000, 1) + ' mΩ · ' + sgn(100 * (r.R0est / r.R0 - 1), 0) + '%', true) +
+      kpi('Pulse resistance read at the end of the pulse', f(r.Rpulse * 1000, 1) + ' mΩ') + kpi('Lowest voltage in the test', f(r.vmin, 3) + ' V' + (r.vmin < CELL.Vmin ? ' · below the 2.5 V limit' : '')) +
+      kpi('Irreversible heat I(U − V), end of pulse', f(r.qirr, 2) + ' W') + kpi('Reversible heat −I T dU/dT', f(r.qrev, 2) + ' W') +
+      kpi('Reversible share of the heat', isFinite(tot) && Math.abs(tot) > 1e-9 ? f(100 * r.qrev / tot, 0) + '%' : '—', true) +
+      kpi('10 s discharge power to 2.5 V, per cell', f(r.Pmax, 0) + ' W · ' + f(r.Imax, 0) + ' A', true);
+  }
+
+  /* ---------- 15 vehicle log: from bytes to a correlated model ---------- */
+  var LG = { m: 2200, cda: 0.62, crr: 0.008, rho: 1.2, eta: 0.9, aux: 400, V0: 760, R: 0.08, N: 30001,
+    wp: [[0, 0], [5, 0], [25, 50], [60, 50], [75, 0], [90, 0], [115, 90], [200, 110], [230, 60], [260, 60], [285, 0], [300, 0]] };
+  function lgSeg(t) { var w = LG.wp; for (var i = 1; i < w.length; i++) if (t < w[i][0]) return i; return -1; }
+  function lgSpeed(t) {
+    var w = LG.wp, i; if (t <= 0) return 0; i = lgSeg(t); if (i < 0) return w[w.length - 1][1] / 3.6;
+    return (w[i - 1][1] + (w[i][1] - w[i - 1][1]) * (t - w[i - 1][0]) / (w[i][0] - w[i - 1][0])) / 3.6;
+  }
+  function lgAcc(t) { var w = LG.wp, i; if (t < 0) return 0; i = lgSeg(t); return i < 0 ? 0 : (w[i][1] - w[i - 1][1]) / 3.6 / (w[i][0] - w[i - 1][0]); }
+  function lgPower(v, a) { var Pw = (0.5 * LG.rho * LG.cda * v * v + LG.crr * LG.m * G + LG.m * a) * v; return (Pw >= 0 ? Pw / LG.eta : Pw * LG.eta) + LG.aux; }
+  function grad(y, h) { var n = y.length, g = new Array(n); g[0] = (y[1] - y[0]) / h; g[n - 1] = (y[n - 1] - y[n - 2]) / h; for (var i = 1; i < n - 1; i++) g[i] = (y[i + 1] - y[i - 1]) / (2 * h); return g; }
+  function vehicleLog(o) {
+    var N = LG.N, k, t, P = new Array(N), Ptrue = new Array(N), Vt = new Array(N);
+    var I = new Array(N);
+    for (k = 0; k < N; k++) {
+      t = k / 100; var Pb = lgPower(lgSpeed(t), lgAcc(t)) + o.extra;
+      I[k] = (LG.V0 - Math.sqrt(LG.V0 * LG.V0 - 4 * LG.R * Pb)) / (2 * LG.R); Vt[k] = LG.V0 - LG.R * I[k]; Ptrue[k] = Vt[k] * I[k];
+    }
+    var Vm = [], j; for (j = 0; j <= 3000; j++) Vm.push(Vt[10 * j] + 0.3 * Math.sin(2 * Math.PI * 0.9 * j / 10));
+    var vs = [], i; for (i = 0; i <= 6000; i++) vs.push(lgSpeed(i / 20 - o.lag));
+    var as = grad(vs, 0.05);
+    for (k = 0; k < N; k++) {
+      t = k / 100; j = Math.floor(k / 10); var fr = (k % 10) / 10, Vi = j < 3000 ? Vm[j] + fr * (Vm[j + 1] - Vm[j]) : Vm[3000];
+      var Im = I[k] * (1 + o.gain / 100) + o.off + 0.6 * Math.sin(2 * Math.PI * 7.3 * t) + 0.3 * Math.sin(2 * Math.PI * 13.7 * t + 1);
+      P[k] = Vi * Im;
+    }
+    function model(n) {
+      var M = new Array(N);
+      for (var k = 0; k < N; k++) {
+        var ii = Math.floor(k / 5), fr = (k % 5) / 5, a = Math.max(0, Math.min(6000, ii + n)), b = Math.max(0, Math.min(6000, ii + 1 + n));
+        M[k] = lgPower(vs[a] + fr * (vs[b] - vs[a]), as[a] + fr * (as[b] - as[a]));
+      }
+      return M;
+    }
+    function trapz(y, h) { var s = 0; for (var q = 0; q < y.length - 1; q++) s += (y[q] + y[q + 1]) / 2 * h; return s; }
+    function stats(M) {
+      var sd = 0, s2 = 0, ma = 0, mb = 0, n = N, q; for (q = 0; q < n; q++) { var d = P[q] - M[q]; sd += d; s2 += d * d; ma += P[q]; mb += M[q]; }
+      ma /= n; mb /= n; var c = 0, va = 0, vb = 0; for (q = 0; q < n; q++) { var x = P[q] - ma, y = M[q] - mb; c += x * y; va += x * x; vb += y * y; }
+      return { bias: sd / n, rmse: Math.sqrt(s2 / n), r: c / Math.sqrt(va * vb) };
+    }
+    var M0 = model(0), raw = stats(M0), best = { n: 0, r: -2 };
+    for (var n = -40; n <= 40; n++) { var st = n === 0 ? raw : stats(model(n)); if (st.r > best.r) best = { n: n, r: st.r }; }
+    var Mb = model(best.n), al = stats(Mb), dist = trapz(vs, 0.05) / 1000;
+    var g0 = 0, g1 = 0, c0 = 0; for (k = 7800; k <= 8800; k++) { g0 += P[k]; g1 += M0[k]; c0++; }
+    var Eraw = trapz(P, 0.01) / 3600, Etrue = trapz(Ptrue, 0.01) / 3600;
+    return { P: P, M0: M0, Mb: Mb, dist: dist, Elog: Eraw, Etrue: Etrue, raw: raw, al: al, lag: best.n * 0.05, still: (g0 - g1) / c0 };
+  }
+  var LGI = ['lg-off', 'lg-gain', 'lg-lag', 'lg-extra', 'lg-align', 'lg-view'];
+  function logDemo() {
+    if (!$('lg-chart')) return;
+    var o = { off: num('lg-off'), gain: num('lg-gain'), lag: num('lg-lag'), extra: num('lg-extra') };
+    $('lg-lagv').textContent = f(o.lag, 1);
+    var r = vehicleLog(o), align = $('lg-align').value === '1', zoom = $('lg-view').value === 'zoom';
+    var k0 = zoom ? 10000 : 0, k1 = zoom ? 13000 : LG.N - 1, step = zoom ? 2 : 20, a = [], b = [], c = [];
+    for (var k = k0; k <= k1; k += step) { a.push([k / 100, r.P[k] / 1000]); b.push([k / 100, r.M0[k] / 1000]); c.push([k / 100, r.Mb[k] / 1000]); }
+    var ys = a.concat(b).map(function (p) { return p[1]; }), lo = Math.min.apply(null, ys), hi = Math.max.apply(null, ys);
+    var se = [{ pts: a, c: css('--s-grey'), w: 1.3 }, { pts: b, c: css('--s-coral'), w: 2 }];
+    if (align) se.push({ pts: c, c: css('--s-mint'), w: 2 });
+    chart($('lg-chart'), { x: [k0 / 100, k1 / 100], y: [Math.floor(lo / 10) * 10, Math.ceil(hi / 10) * 10], xs: zoom ? 5 : 30, xl: 'Time [s]', yl: 'Battery power [kW]', series: se });
+    $('lg-out').innerHTML = kpi('Distance from the logged speed', f(r.dist, 2) + ' km') +
+      kpi('Battery energy, truth (synthetic)', f(r.Etrue, 0) + ' Wh · ' + f(r.Etrue / r.dist, 0) + ' Wh/km') +
+      kpi('Battery energy from the log', f(r.Elog, 0) + ' Wh · ' + f(r.Elog / r.dist, 0) + ' Wh/km', true) +
+      kpi('Error of the logged energy', sgn(100 * (r.Elog / r.Etrue - 1), 1) + '%') +
+      kpi('Model vs log, as logged: mean gap · RMSE', sgn(r.raw.bias, 0) + ' W · ' + f(r.raw.rmse / 1000, 2) + ' kW') +
+      kpi('Time shift found by cross-correlation', f(r.lag, 2) + ' s', true) +
+      kpi('After alignment: mean gap · RMSE', sgn(r.al.bias, 0) + ' W · ' + f(r.al.rmse / 1000, 2) + ' kW') +
+      kpi('Standstill check, 78–88 s: log − model', sgn(r.still, 0) + ' W', true);
+  }
+
   /* ---------- table of contents ---------- */
   function toc() {
     var links = Array.prototype.slice.call(document.querySelectorAll('.notes-toc a'));
@@ -691,6 +809,8 @@
       $('pk-ns').value = v[0]; $('pk-np').value = v[1]; $('pk-p').value = v[2]; packDemo();
     });
   });
+  on(CEI, cellDemo); cellDemo();
+  on(LGI, logDemo); logDemo();
   toc();
-  window.EVNotes = { steady: steady, simulate: simulate, motor: motor, H0: H0, E0: E0, cop: cop, quadfit: quadfit, inverter: inverter, windSteady: windSteady, windCont: windCont, windBurst: windBurst, windRth: windRth, chargeSession: chargeSession, oilTrade: oilTrade, compound: compound, coolAir: coolAir, coldPlate: coldPlate, torqueSplit: torqueSplit, tsIron: tsIron, pack: pack };
+  window.EVNotes = { steady: steady, simulate: simulate, motor: motor, H0: H0, E0: E0, cop: cop, quadfit: quadfit, inverter: inverter, windSteady: windSteady, windCont: windCont, windBurst: windBurst, windRth: windRth, chargeSession: chargeSession, oilTrade: oilTrade, compound: compound, coolAir: coolAir, coldPlate: coldPlate, torqueSplit: torqueSplit, tsIron: tsIron, pack: pack, cellPulse: cellPulse, vehicleLog: vehicleLog };
 })();

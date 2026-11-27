@@ -22,7 +22,7 @@
   <h1>From forces to <em>range.</em></h1>
   <p class="lede">How aerodynamic drag, tyre losses, drive-unit losses and thermal systems decide how far an electric vehicle travels on a charge, and how a CFD result becomes a number that a vehicle-level decision can use.</p>
   <p class="lede">Each chapter starts with the essentials, develops the physics, and includes calculators you can change; every calculator lists the equations it uses and a few questions to try. Example vehicles are generic; they are not data from any manufacturer.</p>
-  <div class="notes-meta"><span>FIRST EDITION · NOVEMBER 2026 · REVISED 26 NOV</span><span>14 CHAPTERS · 17 INTERACTIVE MODELS, EACH WITH ITS EQUATIONS</span><span>SI UNITS, WITH US CONVERSIONS</span></div>
+  <div class="notes-meta"><span>FIRST EDITION · NOVEMBER 2026 · REVISED 26 NOV</span><span>15 CHAPTERS · 19 INTERACTIVE MODELS, EACH WITH ITS EQUATIONS</span><span>SI UNITS, WITH US CONVERSIONS</span></div>
 </section>
 
 <div class="notes-layout wrap">
@@ -43,6 +43,7 @@
     <li><a href="#c12"><span>12</span>Which lever is worth more</a></li>
     <li><a href="#c13"><span>13</span>From CFD to the system model</a></li>
     <li><a href="#c14"><span>14</span>One language for heat, flow and charge</a></li>
+    <li><a href="#c15"><span>15</span>From a vehicle log to a correlated model</a></li>
     <li><a href="#refs"><span>—</span>References</a></li>
   </ol>
 </nav>
@@ -403,10 +404,36 @@
   <li>Range uses usable energy; a buffer at both ends of the state of charge protects cell life.</li>
   <li>Internal loss is I²R<sub>int</sub>. Resistance rises sharply in the cold.</li>
   <li>Doubling pack voltage halves current for the same power and divides resistive losses by four in the same conductors.</li>
+  <li>A cell is modelled as an open-circuit voltage plus a resistance and RC pairs, fitted from a pulse test. How fast the test is logged changes what the test shows.</li>
 </ul></div>
 <p>Cells prefer a narrow temperature window. Cold cells have high resistance and risk lithium plating while charging; hot cells age faster. Uniformity matters as much as the mean: cells at different temperatures age at different rates, so a cold plate must remove heat <em>evenly</em>, which makes battery cooling a flow-distribution problem.</p>
 <div class="eq">P = V I &nbsp;→&nbsp; P<sub>loss</sub> = I² R = (P / V)² R<span class="note">250 kW at 800 V is 312 A; at 400 V it is 625 A and four times the resistive heat in the same conductors.</span></div>
 <p>A dimpled or ribbed cold plate can be reduced the same way as any compact heat-exchanger surface: simulate one periodic cell of the pattern, extract the Fanning friction factor and the Colburn j factor against Reynolds number, and use those correlations in a plate-level or pack-level model. The trade-off is explicit: more heat transfer costs pressure drop, and pressure drop costs pump power (chapter 8).</p>
+<h3>Inside one cell: the equivalent-circuit model</h3>
+<p>System models rarely solve the electrochemistry. They use an equivalent circuit: the open-circuit voltage U, which depends on the state of charge and temperature, in series with an ohmic resistance R<sub>0</sub> and one or two RC pairs. R<sub>0</sub> (electrolyte, current collectors, contacts) responds instantly. A fast RC pair, about a second, stands for charge transfer at the electrodes; a slow pair, tens of seconds, for diffusion of lithium in the active material. The parameters come from a pulse test (HPPC, hybrid pulse power characterization): a current step from rest, held for about 10 s, then rest again.</p>
+<div class="eq">V = U(SOC, T) − I R<sub>0</sub> − V<sub>1</sub> − V<sub>2</sub> &nbsp;&nbsp; dV<sub>k</sub>/dt = I / C<sub>k</sub> − V<sub>k</sub> / (R<sub>k</sub> C<sub>k</sub>) &nbsp;&nbsp; Q̇ = I (U − V) − I T ∂U/∂T<span class="note">I positive in discharge; τ<sub>k</sub> = R<sub>k</sub> C<sub>k</sub>. The heat expression (Bernardi) has an irreversible part, ohmic and polarization losses that grow with I², and a reversible, entropic part proportional to I whose sign flips between charge and discharge.</span></div>
+<p>The same model runs inside the battery management system. An extended Kalman filter compares the measured terminal voltage with the model's prediction to estimate the state of charge: a virtual sensor for a quantity no instrument measures directly.</p>
+<div class="demo" id="demo-cell">
+  <div class="demo-head"><h3>One cell: the pulse test and what the log shows</h3><span class="demo-tag">INTERACTIVE · EQUIVALENT CIRCUIT</span></div>
+  <div class="controls">
+    <label for="ce-soc"><span>State of charge [%] <output id="ce-socv">50</output></span><input id="ce-soc" type="range" min="10" max="90" step="5" value="50"></label>
+    <label for="ce-T"><span>Cell temperature [°C] <output id="ce-Tv">25</output></span><input id="ce-T" type="range" min="-10" max="45" step="5" value="25"></label>
+    <label for="ce-I"><span>Pulse current [A], + discharge</span><input id="ce-I" type="number" value="20" step="5"></label>
+    <label for="ce-tp"><span>Pulse duration [s]</span><input id="ce-tp" type="number" value="10" step="1" min="1"></label>
+    <label for="ce-fs"><span>Logger rate</span><select id="ce-fs"><option value="10">10 Hz</option><option value="100">100 Hz</option><option value="1">1 Hz</option></select></label>
+    <label for="ce-du"><span>Entropic coefficient dU/dT [mV/K]</span><input id="ce-du" type="number" value="-0.2" step="0.05"></label>
+    <label for="ce-view"><span>View</span><select id="ce-view"><option value="all">Whole test</option><option value="zoom">Zoom on the step</option></select></label>
+  </div>
+  <svg class="chart" id="ce-chart" viewBox="0 0 640 260" role="img" aria-label="Cell terminal voltage during a current pulse and the logged samples"></svg>
+  <div class="legend"><span><i style="background:var(--ink)"></i>Model voltage</span><span><i style="background:var(--s-coral)"></i>Logged samples</span><span><i style="background:var(--s-warm)"></i>Pulse start and end</span></div>
+  <div class="kpis" id="ce-out"></div>
+  <p class="demo-note">Illustrative cell resembling a 5 Ah cylindrical cell, not a specific product: R<sub>0</sub> 15 mΩ, R<sub>1</sub> 5 mΩ with τ<sub>1</sub> = 1 s, R<sub>2</sub> 8 mΩ with τ<sub>2</sub> = 30 s at 25 °C. Every resistance is multiplied by 2.5 at 0 °C; the time constants are held fixed. The logger is not synchronized with the step, so its first sample after the step arrives half a sampling period late. Logged samples are drawn when there are few enough to see: at 1 Hz, or in the zoomed view.</p>
+  <details class="model"><summary>Equations used in this calculator</summary><div>
+    <ol class="steps"><li><b>Circuit.</b> <span class="m">V = U − I R<sub>0</sub> − V<sub>1</sub> − V<sub>2</sub></span>.</li><li><b>RC pairs under constant current.</b> During the pulse <span class="m">V<sub>k</sub> = I R<sub>k</sub> (1 − e<sup>−t/τ<sub>k</sub></sup>)</span>; after it, each decays as <span class="m">V<sub>k</sub>(t<sub>p</sub>) e<sup>−(t − t<sub>p</sub>)/τ<sub>k</sub></sup></span>. That decay is the slow voltage recovery seen at rest.</li><li><b>State of charge and open-circuit voltage.</b> <span class="m">SOC = SOC<sub>0</sub> − ∫ I dt / (3600 Q)</span>, Q = 5 Ah; <span class="m">U = 3.0 + 1.5 s − 1.2 s² + 0.9 s³</span> V, an illustrative curve.</li><li><b>Temperature.</b> <span class="m">R(T) = R<sub>25</sub> exp[B (1/T − 1/298 K)]</span>, B = 2,985 K: an Arrhenius law that gives ×2.5 at 0 °C.</li><li><b>Reading the test.</b> <span class="m">R<sub>0</sub> ≈ (V<sub>before</sub> − V<sub>first sample after</sub>) / I</span>. The pulse resistance <span class="m">(V<sub>before</sub> − V<sub>end</sub>) / I</span> also contains both RC pairs and the small drop of U as charge leaves the cell.</li><li><b>Heat at the end of the pulse.</b> Irreversible <span class="m">I (U − V)</span>; reversible <span class="m">−I T dU/dT</span>, T in kelvin.</li><li><b>Power capability.</b> <span class="m">R<sub>10 s</sub> = R<sub>0</sub> + R<sub>1</sub>(1 − e<sup>−10/τ<sub>1</sub></sup>) + R<sub>2</sub>(1 − e<sup>−10/τ<sub>2</sub></sup>)</span>, <span class="m">I<sub>max</sub> = (U − 2.5 V) / R<sub>10 s</sub></span>, <span class="m">P = 2.5 V · I<sub>max</sub></span>.</li></ol>
+    <p class="try-h">TRY THIS: PREDICT FIRST, THEN CHECK</p><ul class="try"><li>Zoom on the step and change the logger from 100 Hz to 1 Hz. Why does R<sub>0</sub> read high? What rate would you ask the test team for?</li><li>Compare 5 A and 20 A. Which heat term grows with I² and which with I? When is the entropic term worth modelling?</li><li>Make it a charge pulse, −20 A. What happens to the reversible heat?</li><li>Lower the temperature to 0 °C. How much 10 s power is left? Link it to cold-weather charging limits and preconditioning (chapter 10).</li></ul>
+  </div></details>
+</div>
+<p class="demo-note"><strong>What to look for.</strong> At 10 Hz the logged step reads R<sub>0</sub> about 2% high; at 1 Hz about 14% high, because the first sample already contains half a second of the fast RC pair. At 20 A the reversible term is about 12% of the heat; at 5 A about a third. At 0 °C the 10 s power per cell falls from about 119 W to 48 W.</p>
 <h3>Series, parallel and where the heat goes</h3>
 <div class="eq">V<sub>pack</sub> = N<sub>s</sub> V<sub>cell</sub> &nbsp;&nbsp; E = N<sub>s</sub> N<sub>p</sub> E<sub>cell</sub> &nbsp;&nbsp; R<sub>pack</sub> = (N<sub>s</sub> / N<sub>p</sub>) R<sub>cell</sub> &nbsp;&nbsp; Q̇ = I<sub>pack</sub>² R<sub>pack</sub><span class="note">N<sub>s</sub> cells in series, N<sub>p</sub> in parallel.</span></div>
 <p>The same cells arranged for twice the voltage (2N<sub>s</sub>, N<sub>p</sub>/2) have four times the pack resistance and carry half the current, so the heat generated inside the cells at a given power does not change. What a higher voltage saves is the I²R <em>outside</em> the cells: busbars, contactors, fuses, cables and the charging inlet. It also keeps charging current below connector limits (chapter 10).</p>
@@ -804,6 +831,78 @@
 </div></details>
 </section>
 
+<!-- 15 -->
+<section class="chapter" id="c15">
+<p class="chapter-num">CHAPTER 15</p>
+<h2>From a vehicle log to a correlated model</h2>
+<div class="brief"><h3>In brief</h3><ul>
+  <li>Vehicle signals travel as CAN messages. A DBC file says where each signal sits in a message and how to scale it to physical units.</li>
+  <li>Signals arrive at different rates and with different delays. Put them on one time base and align them before comparing with a model.</li>
+  <li>When a model and a test disagree, check the comparison first: energy boundary, inputs, timing, sensor offset and gain. Change the physics only after that.</li>
+</ul></div>
+<h3>From bytes to a signal</h3>
+<p>A CAN frame carries an identifier and up to 8 data bytes (64 in CAN FD). The DBC file is the network's dictionary: for each signal it gives the start bit, length, byte order, sign, scale factor, offset and unit, and the physical value is raw × factor + offset.</p>
+<pre class="code"><span class="c">DBC: message 0x1A0 (416), 8 bytes, sent by the BMS</span>
+BO_ 416 BMS_Current: 8 BMS
+ SG_ PackCurrent : 0|16@1- (0.05,0) [-1600|1600] "A" VCU
+<span class="c">start bit 0 · 16 bits · @1 little-endian · - signed · 0.05 A per bit · offset 0</span>
+
+<span class="c">Two logged frames, ID and data bytes</span>
+1A0  40 1F 00 00 00 00 00 00   0x1F40 = 8,000             →  400.0 A, discharge
+1A0  30 F8 00 00 00 00 00 00   0xF830 = 63,536 − 65,536   → −100.0 A, regeneration</pre>
+<p>Little-endian means the first byte is the least significant, so <code>40 1F</code> reads as 0x1F40. The factor is also the resolution: this signal cannot show changes smaller than 0.05 A. In practice python-can reads the log formats (BLF, ASC, candump) and cantools decodes them with the DBC; MATLAB's Vehicle Network Toolbox does the same.</p>
+<h3>Rates, delays and one time base</h3>
+<ul>
+  <li><strong>Different rates.</strong> A typical log might carry pack current at 100 Hz, pack voltage at 10 Hz, vehicle speed at 20 Hz and cabin signals at 1 Hz or only on change.</li>
+  <li><strong>One time base.</strong> Interpolate continuous signals onto the fastest relevant rate. Hold the last value for states such as mode, gear or valve position: interpolating a gear number is meaningless.</li>
+  <li><strong>Multiply, then average.</strong> Compute power V × I at the high rate before any averaging. When voltage sags with current, the mean of the product is not the product of the means.</li>
+  <li><strong>Differentiate with care.</strong> Acceleration taken from a speed signal with 0.01 km/h resolution at 20 Hz carries steps of up to about 0.03 m/s², which become kilowatts of false inertial power at highway speed. Filter before differentiating, or use a wheel-speed or accelerometer signal.</li>
+  <li><strong>Delays.</strong> Each control unit and gateway adds latency, tens to hundreds of milliseconds. Find a constant shift by cross-correlating two signals that should move together, such as logged and modelled power.</li>
+</ul>
+<div class="eq">E = ∫ V I dt &nbsp;&nbsp; d = ∫ v dt &nbsp;&nbsp; consumption = E / d &nbsp;&nbsp; τ* = the shift that maximizes corr[P<sub>log</sub>, P<sub>model</sub>]<span class="note">Integrate with the trapezoidal rule on the common time base. A correlation coefficient ignores a constant gap, so the shift it finds is not biased by an offset.</span></div>
+<h3>Check the comparison before the physics</h3>
+<div class="tablewrap"><table>
+<tr><th>Shape of the gap</th><th>Likely cause</th><th>Check</th></tr>
+<tr><td>Constant, also when parked</td><td>Auxiliary load missing from the model, or a current-sensor offset</td><td>Contactors open: the current must read zero (offset). Parked with contactors closed: compare with the known auxiliary loads</td></tr>
+<tr><td>Proportional to power</td><td>Gain error of the current or voltage sensor</td><td>Reference meter or calibrated shunt</td></tr>
+<tr><td>Large during transients, small on average</td><td>Time shift between signals</td><td>Cross-correlation; timestamp source of each message</td></tr>
+<tr><td>Grows with v²</td><td>Aerodynamic input: drag area, wind, air density</td><td>Road-load coefficients from a coast-down (chapter 2)</td></tr>
+<tr><td>During acceleration and braking</td><td>Mass, rotating inertia or regeneration limits</td><td>Compare constant-speed and transient segments separately</td></tr>
+<tr><td>Large at the start, shrinking</td><td>Thermal state: cold oil, cold battery, cabin warm-up</td><td>Initial temperatures and soak (chapters 9 and 11)</td></tr>
+</table></div>
+<p>Before any of this, make sure both sides use the same energy boundary. DC energy out of the battery, AC energy from the wall and energy at the wheels differ by the charger, battery and drivetrain losses.</p>
+<div class="demo" id="demo-log">
+  <div class="demo-head"><h3>A synthetic vehicle log against its model</h3><span class="demo-tag">INTERACTIVE · TEST CORRELATION</span></div>
+  <div class="controls">
+    <label for="lg-off"><span>Current-sensor offset [A]</span><input id="lg-off" type="number" value="0.5" step="0.1"></label>
+    <label for="lg-gain"><span>Current-sensor gain error [%]</span><input id="lg-gain" type="number" value="0" step="0.5"></label>
+    <label for="lg-lag"><span>Delay of the speed signal [s] <output id="lg-lagv">0.6</output></span><input id="lg-lag" type="range" min="0" max="1.5" step="0.1" value="0.6"></label>
+    <label for="lg-extra"><span>Auxiliary load missing from the model [W]</span><input id="lg-extra" type="number" value="600" step="100"></label>
+    <label for="lg-align"><span>Model shown</span><select id="lg-align"><option value="0">As logged</option><option value="1">Also after alignment</option></select></label>
+    <label for="lg-view"><span>View</span><select id="lg-view"><option value="all">Whole log</option><option value="zoom">Zoom, 100–130 s</option></select></label>
+  </div>
+  <svg class="chart" id="lg-chart" viewBox="0 0 640 260" role="img" aria-label="Logged battery power and model power over a five-minute drive"></svg>
+  <div class="legend"><span><i style="background:var(--s-grey)"></i>Battery power from the log, V × I</span><span><i style="background:var(--s-coral)"></i>Model, fed with the logged speed</span><span><i style="background:var(--s-mint)"></i>Model after alignment</span></div>
+  <div class="kpis" id="lg-out"></div>
+  <p class="demo-note">A five-minute synthetic drive of a generic 2,200 kg vehicle: drag area 0.62 m², rolling resistance 0.008, drivetrain 90% in both directions, 400 W of auxiliaries in the model. Pack: 760 V open-circuit, 80 mΩ. The "log" is made from the truth with the errors chosen above: current at 100 Hz with a little sensor noise, voltage at 10 Hz and speed at 20 Hz. The truth is known only because the data are synthetic. The same pipeline in Python, starting from raw CAN frames and a small DBC: <a href="can_log_demo.py">can_log_demo.py</a> (needs only NumPy).</p>
+  <details class="model"><summary>Equations used in this calculator</summary><div>
+    <ol class="steps"><li><b>Truth.</b> Wheel power <span class="m">P<sub>w</sub> = (½ ρ C<sub>d</sub>A v² + C<sub>rr</sub> m g + m a) v</span>; battery power P<sub>w</sub> / 0.9 when driving, P<sub>w</sub> × 0.9 when regenerating, plus 400 W plus the missing load. Pack current from <span class="m">P = (V<sub>0</sub> − R I) I</span>: <span class="m">I = [V<sub>0</sub> − √(V<sub>0</sub>² − 4 R P)] / (2R)</span>.</li><li><b>The log.</b> <span class="m">I<sub>log</sub> = I (1 + gain) + offset + noise</span> at 100 Hz; V at 10 Hz; <span class="m">v<sub>log</sub>(t) = v(t − delay)</span> at 20 Hz.</li><li><b>One time base.</b> V and v interpolated linearly onto the 100 Hz current samples; acceleration from central differences of v<sub>log</sub>.</li><li><b>Energy and distance.</b> Trapezoidal rule: <span class="m">E = ∫ V<sub>log</sub> I<sub>log</sub> dt</span>, <span class="m">d = ∫ v<sub>log</sub> dt</span>.</li><li><b>Model.</b> The same road-load equation fed with the logged speed, with 400 W of auxiliaries only.</li><li><b>Comparison.</b> Mean gap = mean(P<sub>log</sub> − P<sub>model</sub>); <span class="m">RMSE = √mean[(P<sub>log</sub> − P<sub>model</sub>)²]</span>. Alignment: shift the logged speed from −2 to +2 s in 0.05 s steps and keep the shift with the highest correlation coefficient.</li><li><b>Standstill check.</b> Mean of P<sub>log</sub> − P<sub>model</sub> between 78 and 88 s, when the vehicle is parked.</li></ol>
+    <p class="try-h">TRY THIS: PREDICT FIRST, THEN CHECK</p><ul class="try"><li>Set every error to zero. The log matches the truth; what is the remaining RMSE made of?</li><li>Raise the speed delay to 1.5 s. The RMSE rises but the energy does not change. Why? Then show the model after alignment.</li><li>Set a 1 A offset and nothing else. How many Wh/km is that? Compare it with an air-conditioning load.</li><li>Set a 2% gain error and nothing else. The standstill check barely moves. How do you tell gain from offset?</li><li>With the defaults the standstill gap is about 980 W. Which part is the sensor and which is the missing load? What measurement separates them?</li></ul>
+  </div></details>
+</div>
+<p class="demo-note"><strong>What to look for.</strong> With the defaults the log overstates the battery energy by about 4.5%, and the model sits about 980 W below the log everywhere, also when parked: 600 W of auxiliary load that the model omits plus 0.5 A × 760 V ≈ 380 W of sensor offset. The log alone cannot split the two; a zero-current reading with the contactors open can. The 0.6 s delay of the speed signal changes no energy, but it raises the RMSE from about 1.1 kW to 3.7 kW. Align the signals before judging a model by its transient error.</p>
+<details class="develop"><summary>Check yourself</summary><div>
+<ol>
+  <li><strong>A DBC signal is defined as 0|16@1- (0.05,0). The first two bytes are 30 F8. What is the value?</strong> Little-endian: 0xF830 = 63,536; signed 16-bit: 63,536 − 65,536 = −2,000; × 0.05 = −100 A.</li>
+  <li><strong>Why multiply voltage and current before averaging?</strong> Voltage sags when current rises, so the two are correlated and the mean of the product differs from the product of the means.</li>
+  <li><strong>Model and test differ by a constant 1 kW, also when parked. Two causes, and how do you tell them apart?</strong> A load missing from the model, or a current-sensor offset. With the contactors open the current must read zero; whatever remains is offset.</li>
+  <li><strong>The energy matches but the transient error is large. What do you check first?</strong> A time shift between the signals, by cross-correlation, before touching any model parameter.</li>
+  <li><strong>What logging rate do you ask for in a cell pulse test, and why?</strong> 100 Hz, or at least 10 Hz. R<sub>0</sub> is read from the first sample after the current step; at 1 Hz that sample already contains half a second of the fast RC pair and R<sub>0</sub> reads about 14% high (chapter 7).</li>
+  <li><strong>A range test uses 8% more energy than the model. In what order do you look?</strong> Same energy boundary (DC or wall), same inputs (speed trace, ambient, soak, initial temperatures), timing, sensor offset and gain, then segment by segment: constant, ∝ v², transient or start-up. Only then the physics.</li>
+</ol>
+</div></details>
+</section>
+
 <section class="chapter refs" id="refs">
 <p class="chapter-num">REFERENCES</p>
 <h2>Further reading</h2>
@@ -820,7 +919,7 @@
   <li>US EPA, <a href="https://www.epa.gov/vehicle-and-fuel-emissions-testing/dynamometer-drive-schedules" target="_blank" rel="noopener noreferrer">Dynamometer drive schedules</a> (UDDS and HWFET speed traces used in chapters 3 and 12); fuel economy labeling, 40 CFR Part 600.</li>
   <li>Lucid Motors, <a href="https://lucidmotors.com/technologies" target="_blank" rel="noopener noreferrer">Technologies</a> and <a href="https://lucidmotors.com/tech-talks" target="_blank" rel="noopener noreferrer">Tech Talks</a> video series (battery pack, space concept, Wunderbox, motor, inverter): public manufacturer material, cited in chapters 6 and 10.</li>
 </ol>
-<p class="disclosure">Notes by Alberto Brambila, drafted with AI assistance. Example vehicles and coefficients are generic and illustrative; manufacturer figures appear only in the boxes marked "Public example", from the cited public pages. Each calculator was checked against an independent Python implementation of the same equations. The EPA speed traces are public domain. Corrections are welcome through the <a href="../../#contact">contact page</a>.</p>
+<p class="disclosure">Notes by Alberto Brambila, drafted with AI assistance. Example vehicles and coefficients are generic and illustrative; manufacturer figures appear only in the boxes marked "Public example", from the cited public pages. Each calculator was checked against an independent Python implementation of the same equations, and a <a href="https://github.com/albertobraso7/albertobraso7.github.io/actions/workflows/notes-regression.yml" target="_blank" rel="noopener noreferrer">regression test</a> re-runs every calculator against stored reference values on each change. The EPA speed traces are public domain. Corrections are welcome through the <a href="../../#contact">contact page</a>.</p>
 </section>
 
 </article>
