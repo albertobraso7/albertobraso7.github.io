@@ -22,7 +22,7 @@
   <h1>From forces to <em>range.</em></h1>
   <p class="lede">How aerodynamic drag, tyre losses, drive-unit losses and thermal systems decide how far an electric vehicle travels on a charge, and how a CFD result becomes a number that a vehicle-level decision can use.</p>
   <p class="lede">Each chapter starts with the essentials, develops the physics, and includes calculators you can change; every calculator lists the equations it uses and a few questions to try. Example vehicles are generic; they are not data from any manufacturer.</p>
-  <div class="notes-meta"><span>FIRST EDITION · NOVEMBER 2026 · REVISED 27 NOV</span><span>16 CHAPTERS · 22 INTERACTIVE MODELS, EACH WITH ITS EQUATIONS</span><span>SI UNITS, WITH US CONVERSIONS</span></div>
+  <div class="notes-meta"><span>FIRST EDITION · NOVEMBER 2026 · REVISED 27 NOV</span><span>16 CHAPTERS · 24 INTERACTIVE MODELS, EACH WITH ITS EQUATIONS</span><span>SI UNITS, WITH US CONVERSIONS</span></div>
 </section>
 
 <div class="notes-layout wrap">
@@ -353,6 +353,7 @@
 <div class="brief"><h3>In brief</h3><ul>
   <li>Copper loss grows with torque squared; iron loss grows with speed. Peak efficiency is high, but cruising sits at low torque where iron loss is a large share.</li>
   <li>Copper resistance rises about 0.39% per kelvin, and permanent magnets lose flux as they heat. Cooling is an efficiency topic as well as a durability one.</li>
+  <li>The inverter is limited by its junction temperature. The thermal path from die to coolant sets how much current the silicon can carry, and the temperature swing in every acceleration sets its life.</li>
   <li>The number that matters is efficiency weighted over the drive cycle, not the peak.</li>
 </ul></div>
 <div class="tablewrap"><table>
@@ -409,6 +410,37 @@
   </div></details>
 </div>
 <p class="demo-note"><strong>What to look for.</strong> Compare the losses, not the efficiencies. At full current the IGBT loses about 1.7 times as much as the SiC device; at 10% current about three times as much, because its knee voltage and switching energy do not shrink with load. At very low current both curves fall, because fixed losses such as gate drive dominate. At this light-load cruise point the difference is about 1.3 Wh/km, close to 1% of consumption, and a drive cycle spends most of its time near such points.</p>
+
+<h3>Cooling the inverter: from junction to coolant</h3>
+<p>The inverter's losses are generated in a few square centimetres of semiconductor die. What limits the inverter is the junction temperature, not the coolant: about 175 °C for silicon-carbide MOSFETs and 150–175 °C for silicon IGBTs. Heat leaves the die through the die attach, a ceramic substrate with copper on both sides, a baseplate and the coolant channels of a cold plate. Each layer adds a thermal resistance and a heat capacity. A pulse of a fraction of a second therefore heats mainly the die, while a pulse of several seconds reaches the coolant.</p>
+<div class="eq">T<sub>j</sub>(t) = T<sub>coolant</sub> + P · Z<sub>th</sub>(t) &nbsp;&nbsp; Z<sub>th</sub>(t) = Σ R<sub>i</sub> (1 − e<sup>−t/τ<sub>i</sub></sup>)<span class="note">Z<sub>th</sub> is the transient thermal impedance, measured by the module maker and fitted with a Foster network: a sum of RC terms. The fit reproduces the curve but its terms are not the physical layers; a Cauer network, a ladder of the real layers, is needed when another layer such as a different cold plate is added.</span></div>
+<ul>
+  <li><strong>Indirect cooling:</strong> a flat baseplate bolted to a cold plate with thermal grease between them. The grease layer is often the largest single resistance in the path.</li>
+  <li><strong>Direct cooling:</strong> a baseplate with pin fins sits in the coolant itself, or the channels are cast into the housing that also carries the motor. There is no grease layer, and the wetted area is larger.</li>
+  <li><strong>Efficiency:</strong> the on-resistance of a SiC MOSFET rises with temperature, about 0.6% per kelvin in the calculator above, so a cooler junction also loses less. A lower thermal resistance lets the same die carry more current, or lets a design use less silicon, which is the most expensive part of the inverter.</li>
+  <li><strong>Life:</strong> every acceleration heats and cools the junction, and the swing ΔT<sub>j</sub> fatigues bond wires and solder layers. Power-cycling life follows roughly N<sub>f</sub> ∝ ΔT<sub>j</sub><sup>−5</sup>, a Coffin–Manson relation, so a 15% smaller swing is worth about twice the life.</li>
+  <li><strong>Place in the loop:</strong> the inverter is often first in the coolant loop it shares with the motor's oil-to-coolant heat exchanger, because its junction limit leaves the least margin above the coolant temperature.</li>
+</ul>
+<div class="demo" id="demo-ij">
+  <div class="demo-head"><h3>Junction temperature during a full-power pulse</h3><span class="demo-tag">INTERACTIVE · FOSTER THERMAL NETWORK</span></div>
+  <div class="controls">
+    <label for="ij-cool"><span>Cooling</span><select id="ij-cool"><option value="ind">Indirect: baseplate, grease, cold plate</option><option value="dir">Direct: pin-fin baseplate in the coolant</option></select></label>
+    <label for="ij-tin"><span>Coolant inlet [°C]</span><input id="ij-tin" type="number" value="65" step="5"></label>
+    <label for="ij-flow"><span>Coolant flow [L/min]</span><input id="ij-flow" type="number" value="8" step="1" min="1"></label>
+    <label for="ij-p0"><span>Loss per switch before and after [W]</span><input id="ij-p0" type="number" value="12" step="5" min="0"></label>
+    <label for="ij-p1"><span>Loss per switch during the pulse [W]</span><input id="ij-p1" type="number" value="246" step="10" min="0"></label>
+    <label for="ij-tp"><span>Pulse length [s]</span><input id="ij-tp" type="number" value="10" step="1" min="0.1"></label>
+  </div>
+  <svg class="chart" id="ij-chart" viewBox="0 0 640 260" role="img" aria-label="Junction temperature against time during a power pulse"></svg>
+  <div class="legend"><span><i style="background:var(--s-blue)"></i>Selected cooling</span><span><i style="background:var(--s-grey)"></i>The other cooling</span><span><i style="background:var(--s-coral)"></i>Junction limit, 175 °C</span></div>
+  <div class="kpis" id="ij-out"></div>
+  <p class="demo-note">One switch position of a six-switch SiC module. The default losses, 12 W and 246 W, are the SiC losses from the calculator above at about 5% and 100% of rated power, shared over six switch positions. Foster terms per switch, junction to coolant: R = 0.015, 0.03, 0.045 and 0.06 K/W (indirect) or 0.015, 0.03, 0.035 and 0.02 K/W (direct), with τ = 0.002, 0.02, 0.15 and 1.5 s; the last term is the convective one and scales with flow<sup>−0.8</sup> from 8 L/min. Water-glycol coolant, 1,050 kg/m³ and 3.5 kJ/(kg·K). Illustrative values, not a specific module.</p>
+  <details class="model"><summary>Equations used in this calculator</summary><div>
+    <ol class="steps"><li><b>Network.</b> <span class="m">R<sub>4</sub> = R<sub>4,ref</sub> (8 L/min / Q)<sup>0.8</sup></span>; <span class="m">R<sub>th</sub> = Σ R<sub>i</sub></span>.</li><li><b>Reference temperature.</b> Mean coolant temperature along the cold plate, <span class="m">T<sub>ref</sub> = T<sub>in</sub> + 6 P / (2 ṁ c<sub>p</sub>)</span>, six switches sharing the coolant.</li><li><b>Each RC term.</b> <span class="m">τ<sub>i</sub> dθ<sub>i</sub>/dt = P R<sub>i</sub> − θ<sub>i</sub></span>, updated exactly over 10 ms steps: <span class="m">θ<sub>i</sub> ← P R<sub>i</sub> + (θ<sub>i</sub> − P R<sub>i</sub>) e<sup>−Δt/τ<sub>i</sub></sup></span>. Starts in steady state at the base loss.</li><li><b>Junction.</b> <span class="m">T<sub>j</sub> = T<sub>ref</sub>(P) + Σ θ<sub>i</sub></span>. The pulse starts at 2 s; the plot runs 10 s past its end.</li><li><b>Life.</b> Power-cycling life of direct relative to indirect cooling: <span class="m">(ΔT<sub>j,indirect</sub> / ΔT<sub>j,direct</sub>)<sup>5</sup></span>.</li></ol>
+    <p class="try-h">TRY THIS: PREDICT FIRST, THEN CHECK</p><ul class="try"><li>Shorten the pulse to 0.1 s, then 1 s. Which layers have time to heat?</li><li>Halve the coolant flow. Which cooling suffers more, and why?</li><li>Find the pulse loss at which indirect cooling reaches 175 °C. How much more current is that, knowing conduction loss grows with I²?</li><li>Raise the coolant inlet to 85 °C. What does the motor-side choice of a warmer coolant cost the inverter?</li></ul>
+  </div></details>
+</div>
+<p class="demo-note"><strong>What to look for.</strong> With the defaults, indirect cooling takes the junction from 67 to 103 °C during a 10 s full-power pulse; direct cooling stops at 91 °C. The swing falls from 36.5 to 24.8 K, which by the ΔT<sub>j</sub><sup>−5</sup> rule is about seven times the power-cycling life. A 0.1 s pulse only heats the die and its attach and stops at 85 °C; after about 5 s the junction is close to its steady value, because the slowest term has a 1.5 s time constant. The coolant itself warms by only 3 K across the module: the temperature rise is in the layers, not in the coolant.</p>
 
 <h3>Temperature limits: copper, insulation and magnets</h3>
 <ul>
@@ -635,6 +667,7 @@
   <li>Charging power tapers as cell voltage approaches its limit; 10–80% time is the usual metric.</li>
   <li>Heat generation scales with current squared, and the vehicle is standing still: the chiller and the front-end fan carry the entire load.</li>
   <li>Better heat-exchanger models let a design charge closer to the cell limit without oversizing the cooling.</li>
+  <li>Charging power is V × I. A higher pack voltage carries the same power with less current, so the connector limit binds later and the conductors heat less; the heat inside the same cells does not change.</li>
 </ul></div>
 <div class="eq">Q<sub>heat</sub> ≈ (1 − η<sub>charge</sub>) P<sub>charge</sub><span class="note">A 3% loss at 250 kW is 7.5 kW of heat in cells, busbars, cables and power electronics.</span></div>
 <p>The limits are the charger, the connector current, the cell voltage and temperature. Cold cells risk lithium plating and must be heated first; hot cells are derated to protect life. The chiller, a refrigerant-to-coolant heat exchanger, links the battery loop to the refrigerant cycle, so its pressure drop and conductance enter both the coolant pump and the compressor power.</p>
@@ -664,7 +697,112 @@
   </div></details>
 </div>
 <p class="demo-note"><strong>What to look for.</strong> Switch to 400 V: the curve flattens at the current limit and the session gets longer, although the cells are the same. Set the plug-in temperature to 0 °C: the cells limit everything until the pack warms, which is the case for preconditioning. Start at 45 °C with the pack cooling set to zero: the pack drifts into its derating range and the session takes about four minutes longer, which is the case for chiller capacity.</p>
-<div class="cfd-link"><p>PUBLIC EXAMPLE · MANUFACTURER DATA</p><p>Lucid lists a pack peak voltage of up to 926 V, DC fast charging of up to 400 kW, and an on-board charging unit (the Wunderbox) that charges at up to 50 kW from 400 V stations and provides a 10 kW, 400 V DC-DC output for other loads. The engineering logic is the one in the calculator: high pack voltage keeps current below connector limits at high power, a boost stage covers the older 400 V chargers, and a lower-voltage bus serves the loads designed for it. Source: <a href="https://lucidmotors.com/technologies" target="_blank" rel="noopener noreferrer">Lucid technologies page</a>, accessed November 2026.</p></div>
+<h3>Reading a charging curve</h3>
+<p>A charging curve is usually drawn as several lines against state of charge on one sheet, and each line answers a different question. P = V · I ties them together:</p>
+<ul>
+  <li>the cells and the battery management system set the current they accept;</li>
+  <li>the pack voltage at that state of charge turns the current into power;</li>
+  <li>every conductor between the station and the cells turns part of that power into I²R heat.</li>
+</ul>
+<div class="tablewrap"><table>
+<tr><th>Line</th><th>What it is</th><th>Shape and why</th></tr>
+<tr><td>Open-circuit pack voltage</td><td>Cell voltage at rest × cells in series</td><td>A steep rise in the first few percent, a long gentle slope, then a rise toward full. For nickel-rich cells, about 3.2 V per cell empty and 4.2 V full.</td></tr>
+<tr><td>Pack voltage while charging</td><td>Open-circuit voltage + I R<sub>pack</sub></td><td>Sits above the open-circuit line by the resistive rise; the gap closes as the current tapers.</td></tr>
+<tr><td>Current</td><td>The lowest of three limits: the cells (BMS), the connector or station current, and station power ÷ voltage</td><td>Flat while one limit holds. It then tapers as the BMS keeps the anode away from lithium plating at high state of charge.</td></tr>
+<tr><td>Charging power</td><td>V × I</td><td>Grows with voltage while the current is flat, peaks, then falls with the taper to a few kilowatts near full.</td></tr>
+<tr><td>Heat</td><td>I² R in the cells and in every conductor</td><td>Follows the current squared, so it is concentrated in the first part of the session.</td></tr>
+</table></div>
+<p>To read a sketch of this kind, go to the power peak and read the voltage beneath it. Power divided by that voltage gives the current: 300 kW at 840 V is about 360 A. Then ask what would change with half the voltage. With the same cells connected as half as many in series and twice as many in parallel, the same power needs twice the current:</p>
+<ul>
+  <li><strong>The cells:</strong> the heat inside them does not change. The current doubles, but the pack resistance falls by four.</li>
+  <li><strong>Everything outside the cells:</strong> cable, connector, busbars, contactors and fuses heat four times as much.</li>
+  <li><strong>The connector:</strong> a 500 A limit, which the higher-voltage pack never reaches, starts to bind.</li>
+</ul>
+<div class="eq">I = P / V &nbsp;&nbsp; P<sub>conductors</sub> = I² R<sub>path</sub> = P² R<sub>path</sub> / V² &nbsp;&nbsp; P<sub>cells</sub> = I² R<sub>pack</sub>, &nbsp;R<sub>pack</sub> = N<sub>s</sub> R<sub>cell</sub> / N<sub>p</sub><span class="note">Halving N<sub>s</sub> and doubling N<sub>p</sub> divides R<sub>pack</sub> by four, which cancels the doubled current inside the pack. R<sub>path</sub> belongs to the conductors and does not change, so their loss rises with the current squared.</span></div>
+<div class="demo" id="demo-cc">
+  <div class="demo-head"><h3>One charging curve, two pack voltages</h3><span class="demo-tag">INTERACTIVE · P = V · I</span></div>
+  <div class="controls">
+    <label for="cc-soc"><span>Read at state of charge [%] <output id="cc-socv">20</output></span><input id="cc-soc" type="range" min="1" max="99" step="1" value="20"></label>
+    <label for="cc-pst"><span>Station maximum power [kW]</span><input id="cc-pst" type="number" value="350" step="10"></label>
+    <label for="cc-imax"><span>Connector and station current limit [A]</span><input id="cc-imax" type="number" value="500" step="50"></label>
+    <label for="cc-rp"><span>Conductor resistance, station to cells [mΩ]</span><input id="cc-rp" type="number" value="3" step="0.5" min="0"></label>
+  </div>
+  <svg class="chart" id="cc-v" viewBox="0 0 640 220" role="img" aria-label="Pack voltage against state of charge for two pack voltages"></svg>
+  <div class="legend"><span><i style="background:var(--s-blue)"></i>~900 V pack, 220 cells in series</span><span><i style="background:var(--s-violet)"></i>~450 V pack, 110 in series</span><span>dashed: open-circuit voltage</span></div>
+  <svg class="chart" id="cc-p" viewBox="0 0 640 220" role="img" aria-label="Charging power against state of charge"></svg>
+  <div class="legend"><span><i style="background:var(--s-blue)"></i>~900 V power</span><span><i style="background:var(--s-violet)"></i>~450 V power</span><span><i style="background:var(--s-grey)"></i>Station maximum power</span></div>
+  <svg class="chart" id="cc-i" viewBox="0 0 640 220" role="img" aria-label="Charging current against state of charge"></svg>
+  <div class="legend"><span><i style="background:var(--s-blue)"></i>~900 V current</span><span><i style="background:var(--s-violet)"></i>~450 V current</span><span><i style="background:var(--s-coral)"></i>Connector and station current limit</span></div>
+  <div class="kpis" id="cc-out"></div>
+  <p class="demo-note">The same 6,600 cells of 5 Ah and 12 mΩ, connected as 220 in series × 30 in parallel or 110 × 60, about 124 kWh. Cell open-circuit voltage 3.18–4.20 V. BMS current limit 2.4 C up to 20% state of charge, falling linearly to 0.1 C at 100%. Conductor resistance covers the cable, connector, busbars, contactors and fuses. Illustrative values, not a specific vehicle.</p>
+  <details class="model"><summary>Equations used in this calculator</summary><div>
+    <ol class="steps"><li><b>Cell.</b> <span class="m">OCV(s) = 3.18 + 0.42 (1 − e<sup>−s/0.04</sup>) + 0.6 s<sup>1.6</sup></span> V. BMS limit <span class="m">c(s) = 2.4</span> C for s ≤ 0.2, then <span class="m">0.1 + 2.3 (1 − s)/0.8</span>.</li><li><b>Pack.</b> <span class="m">N<sub>p</sub> = 6600 / N<sub>s</sub></span>; <span class="m">R<sub>pack</sub> = N<sub>s</sub> · 12 mΩ / N<sub>p</sub></span>; capacity <span class="m">N<sub>p</sub> · 5 Ah</span>.</li><li><b>Current.</b> <span class="m">I = min(c · N<sub>p</sub> · 5 Ah, I<sub>max</sub>, I<sub>station</sub>)</span>, where I<sub>station</sub> solves <span class="m">(OCV + I (R<sub>pack</sub> + R<sub>path</sub>)) I = P<sub>station</sub></span>.</li><li><b>Voltage and power at the pack.</b> <span class="m">V = OCV + I R<sub>pack</sub></span>; <span class="m">P = V I</span>.</li><li><b>Heat.</b> Cells <span class="m">I² R<sub>pack</sub></span>; conductors <span class="m">I² R<sub>path</sub></span>.</li><li><b>Session, 10 → 80%.</b> <span class="m">dt = 3600 Q ds / I</span>, summed in steps of 0.1% of state of charge; heat integrated over the same steps.</li></ol>
+    <p class="try-h">TRY THIS: PREDICT FIRST, THEN CHECK</p><ul class="try"><li>At 20%, read the voltage and current of the ~900 V pack and check P = V · I by hand.</li><li>Raise the current limit to 800 A. Does the ~450 V pack now match the power? Compare the heat in the cells and in the conductors.</li><li>Move the readout to 60%. Which limit is active for each pack, and why are the two power curves now the same?</li><li>Double the conductor resistance. Which pack notices it more?</li></ul>
+  </div></details>
+</div>
+<p class="demo-note"><strong>What to look for.</strong> With the defaults, the ~900 V pack peaks at 300 kW at 20% state of charge, 833 V × 360 A: its own cells are the limit. The ~450 V pack hits the 500 A limit and climbs only from about 190 to 213 kW until its cells take over at about 45%. Beyond that, both are limited by the same cells and the two curves coincide, so the 10 → 80% session differs by less than three minutes (29.0 against 31.7 min). The higher voltage buys the first part of the session. The conductors heat 389 W against 750 W at the peak, and three and a half times as much over the session (79 against 269 Wh), although the lower-voltage pack charges at lower power. With the limit raised to 800 A, both packs reach the same power with the same heat in their cells, and the conductors of the ~450 V pack heat four times as much.</p>
+
+<h3>One box, five power paths</h3>
+<p>Between the inlets, the battery and the loads sit a set of power stages: an on-board charger for AC, a path for DC fast charging, a boost converter for stations whose voltage is below the pack's, a DC-DC converter for the lower-voltage loads, and the contactors and fuses that connect them. Integrating them in one housing brings several gains:</p>
+<ul>
+  <li>short busbars, with low resistance and low mass;</li>
+  <li>one set of contactors and one cold plate;</li>
+  <li>a housing that can also be part of the body structure.</li>
+</ul>
+<p>Each operating mode then takes a different path through the same box.</p>
+<figure class="figure-analogy">
+<svg class="chart" viewBox="0 0 640 290" role="img" aria-label="Block diagram of an integrated charging hub: AC and DC inlets, on-board charger, boost converter, junction box, auxiliary DC-DC, battery, drive units and auxiliary loads">
+  <defs><marker id="hub-arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--ink)"/></marker><marker id="hub-arw2" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--s-warm)"/></marker></defs>
+  <rect x="138" y="8" width="324" height="274" rx="6" style="fill:none;stroke:var(--muted);stroke-dasharray:5 4"/>
+  <text x="150" y="26" style="fill:var(--muted);font-size:10px">INTEGRATED CHARGING HUB · one housing, one cold plate</text>
+  <g style="fill:none;stroke:var(--s-mint);stroke-width:1.6">
+    <rect x="8" y="44" width="104" height="44" rx="3"/><rect x="8" y="150" width="104" height="44" rx="3"/>
+    <rect x="156" y="40" width="150" height="52" rx="3"/><rect x="156" y="132" width="150" height="44" rx="3"/><rect x="156" y="218" width="150" height="44" rx="3"/>
+    <rect x="330" y="96" width="116" height="104" rx="3"/>
+    <rect x="490" y="30" width="140" height="44" rx="3"/><rect x="490" y="126" width="140" height="44" rx="3"/><rect x="490" y="218" width="140" height="44" rx="3"/>
+  </g>
+  <g style="fill:var(--ink);font-size:12px" text-anchor="middle">
+    <text x="60" y="63">AC inlet</text><text x="60" y="169">DC inlet</text>
+    <text x="231" y="59">On-board charger</text><text x="231" y="151">Boost DC-DC</text><text x="231" y="237">Auxiliary DC-DC</text>
+    <text x="388" y="125">Junction box</text>
+    <text x="560" y="49">Drive units</text><text x="560" y="145">Battery</text><text x="560" y="237">Heater, compressor</text>
+  </g>
+  <g style="fill:var(--muted);font-size:10px" text-anchor="middle">
+    <text x="60" y="78">home, work</text><text x="60" y="184">fast-charging station</text>
+    <text x="231" y="73">AC → DC in two stages</text><text x="231" y="86">bidirectional</text>
+    <text x="231" y="166">low-voltage station → pack</text><text x="231" y="252">pack → lower-voltage bus</text>
+    <text x="388" y="141">contactors · fuses</text><text x="388" y="155">short busbars</text>
+    <text x="560" y="64">inverters + motors</text><text x="560" y="160">high-voltage pack</text><text x="560" y="252">and other loads</text>
+  </g>
+  <g style="stroke:var(--ink);stroke-width:1.3;fill:none" marker-end="url(#hub-arw)">
+    <line x1="112" y1="66" x2="154" y2="66"/>
+    <polyline points="306,66 318,66 318,112 328,112"/>
+    <polyline points="112,180 132,180 132,154 154,154"/>
+    <polyline points="306,154 328,154"/>
+    <polyline points="446,112 470,112 470,52 488,52"/>
+    <polyline points="388,200 388,240 308,240"/>
+    <line x1="306" y1="248" x2="488" y2="248"/>
+  </g>
+  <polyline points="112,166 122,166 122,192 318,192 318,186 328,186" style="stroke:var(--s-warm);stroke-width:3;fill:none" marker-end="url(#hub-arw2)"/>
+  <line x1="446" y1="148" x2="488" y2="148" style="stroke:var(--s-warm);stroke-width:3" marker-start="url(#hub-arw2)" marker-end="url(#hub-arw2)"/>
+  <text x="146" y="207" style="fill:var(--s-warm);font-size:10px">direct DC: station at or above pack voltage</text>
+</svg>
+<figcaption>The thick path is DC fast charging from a high-voltage station: no conversion, only contactors, fuses and busbars between the inlet and the cells, so its loss is I²R alone. A lower-voltage station goes through the boost converter. AC charging goes through the two-stage on-board charger, which can also run in reverse to export power. While driving, the junction box feeds the drive units and the auxiliary DC-DC converter. Generic architecture, not a specific vehicle.</figcaption>
+</figure>
+<div class="tablewrap"><table>
+<tr><th>Mode</th><th>Path</th><th>Conversion stages</th><th>Where the loss goes</th></tr>
+<tr><td>DC fast charge, station at or above pack voltage</td><td>DC inlet → contactors → battery</td><td>None</td><td>I²R in cable, connector, busbars and cells (calculator above)</td></tr>
+<tr><td>DC charge, lower-voltage station</td><td>DC inlet → boost DC-DC → battery</td><td>One</td><td>Converter switching and conduction loss; power limited by the converter rating</td></tr>
+<tr><td>AC charging</td><td>AC inlet → active rectifier with power-factor correction → isolated DC-DC → battery</td><td>Two</td><td>A few percent in the charger, plus pumps and electronics that stay on for hours</td></tr>
+<tr><td>Export: vehicle to load, home or vehicle</td><td>Battery → the same charger in reverse → AC or DC out</td><td>Two</td><td>The same stages in reverse; needs active switches in place of the rectifier diodes</td></tr>
+<tr><td>Driving</td><td>Battery → junction box → drive inverters; auxiliary DC-DC → heater and compressor; a separate 12 V DC-DC</td><td>Inverter and DC-DC</td><td>Inverter losses (chapter 6) and DC-DC losses, all into the coolant</td></tr>
+</table></div>
+<p>Two modelling points follow:</p>
+<ul>
+  <li><strong>Every stage's loss goes into a coolant loop.</strong> The model of a charging session must therefore include the charger or converter heat as well as the cells' heat, and the pump and fan energy as well.</li>
+  <li><strong>The boost path is a power limit as much as an efficiency one.</strong> A boost converter rated well below the pack's direct-charging power makes old 400 V stations usable, not fast.</li>
+</ul>
+<div class="cfd-link"><p>PUBLIC EXAMPLE · MANUFACTURER DATA</p><p>Lucid lists:</p><ul><li>a pack peak voltage of up to 926 V and DC fast charging of up to 400 kW;</li><li>an integrated charging unit, the Wunderbox, rated at up to 50 kW from 400 V stations and up to 21 kW AC, with a 10 kW, 400 V DC-DC output;</li><li>charging and high-voltage management systems based on silicon carbide, with bidirectional capability.</li></ul><p>InsideEVs, reporting Lucid's Tech Talk, describes the Wunderbox as an integral part of the chassis that also acts as a crossmember. The whiteboard in that Tech Talk, "Charging and the Wunderbox", sketches the curves of the calculator above:</p><ul><li>pack voltage from about 700 V empty to 924 V, 4.2 V per cell, full;</li><li>charging power peaking near 300 kW;</li><li>a pack voltage near 840 V at that peak, which by P = V · I is about 360 A.</li></ul><p>Sources: <a href="https://lucidmotors.com/technologies" target="_blank" rel="noopener noreferrer">Lucid technologies page</a>; <a href="https://insideevs.com/news/597712/lucid-air-wunderbox-charger-explained-video/" target="_blank" rel="noopener noreferrer">InsideEVs, July 2022</a>; <a href="https://www.youtube.com/watch?v=Ga0qMqUG2X4" target="_blank" rel="noopener noreferrer">Lucid Tech Talks, "Charging and the Wunderbox"</a>; accessed November 2026.</p></div>
 <div class="cfd-link"><p>WHERE CFD FITS</p><p>A plate-fin chiller can be reduced in three steps: a periodic fin cell gives friction and Colburn j factors against Reynolds number and flow angle; the correlations are frozen and versioned; the full stack replaces the fins with a porous medium that uses them, with heat sources for the heat transfer. The same f and j curves are what a 1D heat-exchanger model needs.</p></div>
 </section>
 

@@ -55,6 +55,8 @@ const cases = {
   oil: [[0.2, 30], [0.6, 60], [1, 110]].map(([load, Toil]) => E.oilTrade({ load, Pv40: 600, Pcu: 3000, Toil })),
   compound: [E.compound({ d: 600, c0: 150, mref: 2300, s: 0.04, mg: 1700, rho: 160 })],
   coolAir: [[120, 1, 0, 30], [0, 1, 1, 30], [60, 0.5, 1, 40]].map(([v, sh, fan, itd]) => E.coolAir({ V: v / 3.6, sh, fan, itd })),
+  junction: [['ind', 65, 8, 12, 246, 10], ['dir', 65, 8, 12, 246, 10], ['ind', 65, 4, 12, 246, 0.1], ['dir', 40, 12, 50, 600, 3]].map(([cool, Tin, flow, P0, P1, tp]) => { const r = E.junction({ cool, Tin, flow, P0, P1, tp }); return { Rt: r.Rt, T0: r.T0, Tmax: r.Tmax, dT: r.dT, Tss: r.Tss, dTc: r.dTc, n: r.pts.length, last: r.pts[r.pts.length - 1] }; }),
+  chgCurve: [[350, 500, 3], [350, 800, 3], [200, 300, 0]].map(([P, I, R]) => { const c = E.chgCurve({ Pst: P * 1000, Imax: I, Rpath: R / 1000 }); return [220, 110].map((Ns) => ({ peak: c[Ns].peak, t: c[Ns].t, Ecell: c[Ns].Ecell, Epath: c[Ns].Epath, p60: c[Ns].pts[60][1] })); }),
   coolBest: [[30, 9, 15], [120, 9, 15], [0, 9, 15], [120, 4, 35], [20, 20, 15]].map(([v, q, itd]) => E.coolBest({ V: v / 3.6, need: q * 1000, itd })),
   coldPlate: [[6, 6, 20, 25, 0.2, false], [6, 6, 20, 25, 0.2, true], [10, 5, 25, 20, 0.4, true]].map(([N, Q, flow, Tin, mal, par]) => E.coldPlate({ N, Q, flow, Tin, mal, par })),
   torqueSplit: [[17.5, 6000, 0.5, false], [17.5, 6000, 0, true], [200, 8000, 0.3, false]].map((a) => ({ L: E.torqueSplit(...a), iron: E.tsIron(a[1]) })),

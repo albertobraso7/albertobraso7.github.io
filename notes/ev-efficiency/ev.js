@@ -357,6 +357,42 @@
       kpi('Extra IGBT loss at ' + f(v, 0) + ' km/h', sgn((r.ig - r.sic) / v, 2) + ' Wh/km', true);
   }
 
+  /* ---------- 06 inverter cooling: junction temperature with a Foster network ---------- */
+  // Per switch position: four RC terms from die to coolant (die, die attach, substrate, baseplate and cold plate).
+  // The last term is the convective one and scales with coolant flow^-0.8. Six switch positions share the coolant.
+  var IJ = { R: { ind: [0.015, 0.03, 0.045, 0.06], dir: [0.015, 0.03, 0.035, 0.02] }, tau: [0.002, 0.02, 0.15, 1.5], Qref: 8, n: 6, rho: 1050, cp: 3500, t0: 2, after: 10, dt: 0.01 };
+  function junction(o) {
+    var R = IJ.R[o.cool].slice(); R[3] *= Math.pow(IJ.Qref / o.flow, 0.8);
+    var Rt = R[0] + R[1] + R[2] + R[3], mcp = o.flow / 60000 * IJ.rho * IJ.cp;
+    function Tref(P) { return o.Tin + IJ.n * P / (2 * mcp); }               // mean coolant temperature along the cold plate
+    var Ti = R.map(function (r) { return o.P0 * r; }), T0 = Tref(o.P0) + Rt * o.P0, pts = [], Tmax = T0, tend = IJ.t0 + o.tp + IJ.after;
+    var N = Math.round(tend / IJ.dt);
+    pts.push([0, T0]);
+    for (var k = 1; k <= N; k++) {
+      var t = k * IJ.dt, tm = t - IJ.dt / 2, P = tm > IJ.t0 && tm < IJ.t0 + o.tp ? o.P1 : o.P0;
+      for (var i = 0; i < 4; i++) { var a = Math.exp(-IJ.dt / IJ.tau[i]); Ti[i] = P * R[i] + (Ti[i] - P * R[i]) * a; }
+      var Tj = Tref(P) + Ti[0] + Ti[1] + Ti[2] + Ti[3];
+      Tmax = Math.max(Tmax, Tj); pts.push([t, Tj]);
+    }
+    return { R: R, Rt: Rt, T0: T0, Tmax: Tmax, dT: Tmax - T0, Tss: Tref(o.P1) + Rt * o.P1, dTc: IJ.n * o.P1 / mcp, pts: pts };
+  }
+  var IJI = ['ij-cool', 'ij-tin', 'ij-flow', 'ij-p0', 'ij-p1', 'ij-tp'];
+  function junctionDemo() {
+    if (!$('ij-chart')) return;
+    var o = { cool: $('ij-cool').value === 'dir' ? 'dir' : 'ind', Tin: num('ij-tin'), flow: Math.max(num('ij-flow'), 0.5), P0: num('ij-p0'), P1: num('ij-p1'), tp: Math.max(num('ij-tp'), 0.1) };
+    var r = junction(o), oth = junction(Object.assign({}, o, { cool: o.cool === 'dir' ? 'ind' : 'dir' })), lim = 175;
+    function thin(p) { var s = Math.max(1, Math.floor(p.length / 400)); return p.filter(function (_, i) { return i % s === 0 || i === p.length - 1; }); }
+    var tend = r.pts[r.pts.length - 1][0], ymax = Math.ceil(Math.max(lim + 10, r.Tmax, oth.Tmax) / 20) * 20, ymin = Math.floor(o.Tin / 20) * 20;
+    chart($('ij-chart'), { x: [0, tend], y: [ymin, ymax], xl: 'Time [s]', yl: 'Junction temperature [°C]',
+      series: [{ pts: [[0, lim], [tend, lim]], c: css('--s-coral'), w: 1.5, dash: '5 4' }, { pts: thin(oth.pts), c: css('--s-grey'), w: 1.8, dash: '4 3' }, { pts: thin(r.pts), c: css('--s-blue'), w: 2.6 }] });
+    var dI = o.cool === 'ind' ? r.dT : oth.dT, dD = o.cool === 'ind' ? oth.dT : r.dT, life = Math.pow(dI / dD, 5);
+    $('ij-out').innerHTML = kpi('Thermal resistance, junction to coolant', f(r.Rt, 3) + ' K/W') + kpi('Before the pulse', f(r.T0, 1) + ' °C') +
+      kpi('Peak junction temperature', f(r.Tmax, 1) + ' °C · margin ' + f(lim - r.Tmax, 0) + ' K', true) + kpi('Swing ΔT<sub>j</sub>', f(r.dT, 1) + ' K') +
+      kpi('Other cooling: peak · swing', f(oth.Tmax, 1) + ' °C · ' + f(oth.dT, 1) + ' K') +
+      kpi('Power-cycling life, direct vs indirect', '× ' + (life >= 10 ? f(life, 0) : f(life, 1)) + ' (ΔT<sub>j</sub><sup>−5</sup>)', true) +
+      kpi('If the pulse lasted for ever', f(r.Tss, 0) + ' °C') + kpi('Coolant rise across the module', f(r.dTc, 1) + ' K');
+  }
+
   /* ---------- 06 winding: peak versus continuous ---------- */
   var WD = { Pref: 1500, Tref: 100, Pother: 300, Rcond: 0.02, Rconv: 0.03, C: 4000 };
   function rT(T, Tref) { return (1 + ALPHA * (T - 20)) / (1 + ALPHA * (Tref - 20)); }
@@ -428,6 +464,54 @@
       kpi('Limited mostly by', names[top] + ' (' + f(100 * r.lim[top] / tot, 0) + '% of the time)') + kpi('Heat in the pack', f(r.Eh, 2) + ' kWh · ends at ' + f(r.Tend, 0) + ' °C') +
       kpi('Same session at ' + (o.hv ? '400' : '800') + ' V', other.done ? f(other.t / 60, 1) + ' min' : '> 4 h') +
       kpi('Energy to precondition to 25 °C', o.T0 < 25 ? f(CHG.Cth * (25 - o.T0) / 3.6e6, 1) + ' kWh' : 'not needed');
+  }
+
+  /* ---------- 10 reading a charging curve: voltage, current, power and loss against state of charge ---------- */
+  // The same 6,600 cells as 220 in series x 30 in parallel (~900 V class) or 110 x 60 (~450 V class).
+  var CCV = { cells: 6600, Ah: 5, Rc: 0.012, c0: 2.4, cEnd: 0.1, sK: 0.2, ex: 1 };
+  function ccOcv(s) { return 3.18 + 0.42 * (1 - Math.exp(-s / 0.04)) + 0.6 * Math.pow(s, 1.6); }     // cell open-circuit voltage, 3.18-4.20 V
+  function ccRate(s) { return s <= CCV.sK ? CCV.c0 : CCV.cEnd + (CCV.c0 - CCV.cEnd) * Math.pow((1 - s) / (1 - CCV.sK), CCV.ex); }   // BMS limit [C]
+  function chgPoint(Ns, s, o) {
+    var Np = CCV.cells / Ns, Rp = Ns * CCV.Rc / Np, ocv = Ns * ccOcv(s), Rt = Rp + o.Rpath;
+    var Icell = ccRate(s) * Np * CCV.Ah, Ist = (-ocv + Math.sqrt(ocv * ocv + 4 * Rt * o.Pst)) / (2 * Rt), I = Math.min(Icell, o.Imax, Ist);
+    var V = ocv + I * Rp, who = I === Icell ? 'cells' : I === Ist ? 'station' : 'current';
+    return { ocv: ocv, V: V, I: I, P: V * I, Pcell: I * I * Rp, Ppath: I * I * o.Rpath, Pst: V * I + I * I * o.Rpath, who: who, Rp: Rp, Q: Np * CCV.Ah };
+  }
+  function chgCurve(o) {
+    var out = {};
+    [220, 110].forEach(function (Ns) {
+      var pts = [], best = null, t = 0, Ecell = 0, Epath = 0, ds = 0.001;
+      for (var k = 0; k <= 100; k++) { var s = Math.max(0.005, Math.min(0.995, k / 100)), p = chgPoint(Ns, s, o); pts.push([100 * s, p]); if (!best || p.P > best.P) best = Object.assign({ soc: 100 * s }, p); }
+      for (var s2 = 0.1 + ds / 2; s2 < 0.8; s2 += ds) {          // 10 -> 80 %: dt = Q ds / I
+        var q = chgPoint(Ns, s2, o), dt = q.Q * 3600 * ds / q.I; t += dt; Ecell += q.Pcell * dt; Epath += q.Ppath * dt;
+      }
+      out[Ns] = { pts: pts, peak: best, t: t, Ecell: Ecell / 3.6e6, Epath: Epath / 3.6e6 };
+    });
+    return out;
+  }
+  var CCI = ['cc-soc', 'cc-pst', 'cc-imax', 'cc-rp'];
+  function chgCurveDemo() {
+    if (!$('cc-v')) return;
+    var o = { Pst: num('cc-pst') * 1000, Imax: Math.max(num('cc-imax'), 1), Rpath: num('cc-rp') / 1000 }, sv = num('cc-soc');
+    $('cc-socv').textContent = sv;
+    var r = chgCurve(o), A = r[220], B = r[110], cA = css('--s-blue'), cB = css('--s-violet');
+    function ser(d, key, k) { return d.pts.map(function (p) { return [p[0], p[1][key] / (k || 1)]; }); }
+    var vl = [{ x: sv, c: css('--muted') }];
+    chart($('cc-v'), { x: [0, 100], y: [300, 1000], xs: 10, xl: 'State of charge [%]', yl: 'Pack voltage [V]', vlines: vl,
+      series: [{ pts: ser(A, 'ocv'), c: cA, w: 1.4, dash: '4 3' }, { pts: ser(A, 'V'), c: cA, w: 2.6 }, { pts: ser(B, 'ocv'), c: cB, w: 1.4, dash: '4 3' }, { pts: ser(B, 'V'), c: cB, w: 2.6 }] });
+    var pm = Math.ceil(Math.max(o.Pst / 1000, A.peak.P / 1000, B.peak.P / 1000) * 1.1 / 50) * 50;
+    chart($('cc-p'), { x: [0, 100], y: [0, pm], xs: 10, xl: 'State of charge [%]', yl: 'Charging power [kW]', vlines: vl,
+      series: [{ pts: [[0, o.Pst / 1000], [100, o.Pst / 1000]], c: css('--s-grey'), w: 1.5, dash: '5 4' }, { pts: ser(A, 'P', 1000), c: cA, w: 2.6 }, { pts: ser(B, 'P', 1000), c: cB, w: 2.6 }] });
+    var im = Math.ceil(Math.max(o.Imax, A.peak.I, B.peak.I) * 1.1 / 100) * 100;
+    chart($('cc-i'), { x: [0, 100], y: [0, im], xs: 10, xl: 'State of charge [%]', yl: 'Current [A]', vlines: vl,
+      series: [{ pts: [[0, o.Imax], [100, o.Imax]], c: css('--s-coral'), w: 1.5, dash: '5 4' }, { pts: ser(A, 'I'), c: cA, w: 2.6 }, { pts: ser(B, 'I'), c: cB, w: 2.6 }] });
+    var s = Math.max(0.005, Math.min(0.995, sv / 100)), a = chgPoint(220, s, o), b = chgPoint(110, s, o);
+    var names = { cells: 'cells (BMS)', current: 'current limit', station: 'station power' };
+    function row(lbl, p) { return kpi(lbl + ' at ' + sv + '%', f(p.V, 0) + ' V × ' + f(p.I, 0) + ' A = ' + f(p.P / 1000, 0) + ' kW', true) +
+      kpi('Limited by · heat in cells · in conductors', names[p.who] + ' · ' + f(p.Pcell / 1000, 1) + ' kW · ' + f(p.Ppath, 0) + ' W'); }
+    $('cc-out').innerHTML = row('~900 V (220s30p)', a) + row('~450 V (110s60p)', b) +
+      kpi('Peak power · at', f(A.peak.P / 1000, 0) + ' kW at ' + f(A.peak.soc, 0) + '%, ' + f(A.peak.V, 0) + ' V, ' + f(A.peak.I, 0) + ' A · ' + f(B.peak.P / 1000, 0) + ' kW at ' + f(B.peak.V, 0) + ' V, ' + f(B.peak.I, 0) + ' A') +
+      kpi('10 → 80%: time · cell heat · conductor heat', f(A.t / 60, 1) + ' min · ' + f(A.Ecell, 2) + ' kWh · ' + f(A.Epath * 1000, 0) + ' Wh  vs  ' + f(B.t / 60, 1) + ' min · ' + f(B.Ecell, 2) + ' kWh · ' + f(B.Epath * 1000, 0) + ' Wh');
   }
 
   /* ---------- 11 oil temperature trade-off ---------- */
@@ -956,6 +1040,8 @@
   on(OI, oilDemo); oilDemo();
   on(MC, compoundDemo); compoundDemo();
   on(CAI, coolDemo); coolDemo();
+  on(IJI, junctionDemo); junctionDemo();
+  on(CCI, chgCurveDemo); chgCurveDemo();
   on(ARI, arbDemo); arbDemo();
   on(CPI, coldDemo); coldDemo();
   on(TSI, splitDemo); splitDemo();
@@ -971,5 +1057,5 @@
   on(UNI, uncDemo); uncDemo();
   on(CMI, coupledDemo); coupledDemo();
   toc();
-  window.EVNotes = { steady: steady, simulate: simulate, motor: motor, H0: H0, E0: E0, cop: cop, quadfit: quadfit, inverter: inverter, windSteady: windSteady, windCont: windCont, windBurst: windBurst, windRth: windRth, chargeSession: chargeSession, oilTrade: oilTrade, compound: compound, coolAir: coolAir, coolBest: coolBest, coldPlate: coldPlate, torqueSplit: torqueSplit, tsIron: tsIron, pack: pack, cellPulse: cellPulse, vehicleLog: vehicleLog, gci: gci, coupled: coupled, cmTrace: cmTrace };
+  window.EVNotes = { steady: steady, simulate: simulate, motor: motor, H0: H0, E0: E0, cop: cop, quadfit: quadfit, inverter: inverter, windSteady: windSteady, windCont: windCont, windBurst: windBurst, windRth: windRth, chargeSession: chargeSession, oilTrade: oilTrade, compound: compound, coolAir: coolAir, coolBest: coolBest, junction: junction, chgPoint: chgPoint, chgCurve: chgCurve, coldPlate: coldPlate, torqueSplit: torqueSplit, tsIron: tsIron, pack: pack, cellPulse: cellPulse, vehicleLog: vehicleLog, gci: gci, coupled: coupled, cmTrace: cmTrace };
 })();
