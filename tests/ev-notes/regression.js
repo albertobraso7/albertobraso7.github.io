@@ -66,6 +66,11 @@ const cases = {
     const r = E.vehicleLog({ off, gain, lag, extra });
     return { dist: r.dist, Elog: r.Elog, Etrue: r.Etrue, raw: r.raw, al: r.al, lag: r.lag, still: r.still };
   }),
+  gci: [[10.2, 10.45, 11.05, 1.5, 10.6, 3, 2], [10.2, 10.45, 11.05, 1.5, 10.6, 1, 2], [0.81, 0.84, 0.9, 2, 0.8, 2, 5]].map(([f1, f2, f3, r, D, uin, uD]) => E.gci({ f1, f2, f3, r, D, uin, uD })),
+  coupled: [['hwfet', 35, 'full'], ['hwfet', 35, 'onoff'], ['hwfet', 35, 'pi'], ['udds', 0, 'pi']].map(([cyc, Tamb, ctrl]) => {
+    const r = E.coupled({ trace: E.cmTrace(cyc), Tamb, ctrl, Tset: 65, hyst: 4, kp: 6, ti: 150 });
+    return { d: r.d, E: r.E, Ep: r.Ep, Ecu: r.Ecu, Efe: r.Efe, Twmax: r.Twmax, Tcm: r.Tcm, Tcs: r.Tcs, sw: r.sw, vs: r.vs, vo: r.vo, last: r.rows[r.rows.length - 1] };
+  }),
 };
 const got = numbers(cases);
 

@@ -766,6 +766,113 @@
       kpi('Standstill check, 78–88 s: log − model', sgn(r.still, 0) + ' W', true);
   }
 
+  /* ---------- 15 numerical and validation uncertainty (GCI, ASME V&V 20) ---------- */
+  function gci(o) { // o: f1 fine, f2 medium, f3 coarse, r refinement ratio, D measured, uin [%], uD [%]
+    var e21 = o.f2 - o.f1, e32 = o.f3 - o.f2, s = e32 / e21, mono = isFinite(s) && s > 0;
+    var p = mono ? Math.log(s) / Math.log(o.r) : NaN, rp = Math.pow(o.r, p);
+    var fext = mono ? o.f1 + (o.f1 - o.f2) / (rp - 1) : NaN, ea = Math.abs(e21 / o.f1), g = mono ? 1.25 * ea / (rp - 1) : NaN;
+    var unum = g * Math.abs(o.f1), uin = o.uin / 100 * Math.abs(o.f1), uD = o.uD / 100 * Math.abs(o.D);
+    var uval = Math.sqrt(unum * unum + uin * uin + uD * uD), E = o.f1 - o.D;
+    return { p: p, fext: fext, gci: g, unum: unum, uin: uin, uD: uD, uval: uval, E: E, within: Math.abs(E) <= uval, mono: mono };
+  }
+  var UNI = ['un-f1', 'un-f2', 'un-f3', 'un-r', 'un-D', 'un-uin', 'un-uD'];
+  function uncDemo() {
+    if (!$('un-chart')) return;
+    var o = { f1: num('un-f1'), f2: num('un-f2'), f3: num('un-f3'), r: num('un-r'), D: num('un-D'), uin: num('un-uin'), uD: num('un-uD') };
+    var r = gci(o), h = [1, o.r, o.r * o.r], fs = [o.f1, o.f2, o.f3], pts = [], hmax = o.r * o.r * 1.1;
+    if (r.mono) for (var i = 0; i <= 60; i++) { var x = hmax * i / 60; pts.push([x, r.fext + (o.f1 - r.fext) * Math.pow(x, r.p)]); }
+    var ys = fs.concat([o.D + r.uD, o.D - r.uD]).concat(r.mono ? [r.fext, pts[pts.length - 1][1]] : []), lo = Math.min.apply(null, ys), hi = Math.max.apply(null, ys), pad = (hi - lo) * 0.15 || 0.1;
+    var y0 = lo - pad, y1 = hi + pad;
+    var ax = chart($('un-chart'), { x: [0, hmax], y: [y0, y1], xs: niceStep(hmax, 6), ys: niceStep(y1 - y0, 5), xl: 'Grid spacing relative to the fine mesh, h / h₁', yl: 'Result [same unit as the inputs]',
+      series: [{ pts: [[0, o.D], [hmax, o.D]], c: css('--s-warm'), w: 1.6, dash: '6 4' }].concat(pts.length ? [{ pts: pts, c: css('--s-blue'), w: 1.6 }] : []),
+      dots: h.map(function (x, i) { return { x: x, y: fs[i], c: css('--ink'), r: 5 }; }).concat(r.mono ? [{ x: 0, y: r.fext, c: css('--s-blue'), r: 5 }] : []) });
+    var band = '<rect x="' + ax.X(0) + '" width="' + (ax.X(hmax) - ax.X(0)) + '" y="' + ax.Y(o.D + r.uD) + '" height="' + Math.max(1, ax.Y(o.D - r.uD) - ax.Y(o.D + r.uD)) + '" fill="' + css('--s-warm') + '" fill-opacity="0.12"/>';
+    $('un-chart').innerHTML = band + $('un-chart').innerHTML;
+    var pc = function (x) { return f(100 * x / Math.abs(o.f1), 1) + '%'; };
+    $('un-out').innerHTML = kpi('Observed order of accuracy p', r.mono ? f(r.p, 2) : 'oscillatory') + kpi('Extrapolated value (zero spacing)', r.mono ? f(r.fext, 3) : '—') +
+      kpi('Numerical uncertainty, GCI of the fine mesh', r.mono ? f(r.unum, 3) + ' · ' + pc(r.unum) : '—', true) + kpi('Input uncertainty', f(r.uin, 3) + ' · ' + pc(r.uin)) +
+      kpi('Test uncertainty', f(r.uD, 3)) + kpi('Validation uncertainty u<sub>val</sub>', r.mono ? f(r.uval, 3) + ' · ' + pc(r.uval) : '—', true) +
+      kpi('Comparison error E = S − D', sgn(r.E, 3) + ' · ' + sgn(100 * r.E / Math.abs(o.D), 1) + '%') +
+      kpi('Verdict', !r.mono ? 'grid study not monotonic' : r.within ? '|E| ≤ u<sub>val</sub>: no model error can be resolved' : '|E| > u<sub>val</sub>: model error ≈ ' + sgn(r.E, 3) + ' ± ' + f(r.uval, 3), true);
+  }
+
+  /* ---------- 16 coupled vehicle model with a thermal controller ---------- */
+  var CM = { m: 2200, cda: 0.6, crr: 0.008, rho: 1.2, r: 0.36, G: 9, V0: 750, Rb: 0.08, aux: 300,
+    Cw: 3000, Cs: 12000, Cc: 17500, Gws: 60, Gsc: 120, G0: 10, UAr: 90, Qmax: 20, Qmin: 2, Ppump: 120 };
+  function cmTrace(name) {
+    var t = name === 'udds' ? window.EPA_UDDS : window.EPA_HWFET, n = name === 'udds' ? 2 : 3, out = [];
+    for (var k = 0; k < n; k++) out = out.concat(k ? t.slice(1) : t);
+    return out;
+  }
+  function coupled(o) {
+    var tr = o.trace, Tw = o.Tamb, Ts = o.Tamb, Tc = o.Tamb, Q = CM.Qmin, on = false, integ = 0, sw = 0, Hw = o.Tamb, Hs = o.Tamb, gh = o.obsErr || 1.15;
+    var E = 0, Ep = 0, Ecu = 0, Efe = 0, d = 0, Twmax = Tw, vs = 0, vo = 0, rows = [], half = Math.floor((tr.length - 1) / 2), sc = 0, sc2 = 0, nc = 0;
+    for (var i = 0; i < tr.length - 1; i++) {
+      // controller: reads the coolant temperature at the start of the step
+      if (o.ctrl === 'full') Q = CM.Qmax;
+      else if (o.ctrl === 'onoff') {
+        var was = on; if (Tc > o.Tset + o.hyst / 2) on = true; else if (Tc < o.Tset - o.hyst / 2) on = false;
+        if (on !== was) sw++; Q = on ? CM.Qmax : CM.Qmin;
+      } else {
+        var e = Tc - o.Tset, u = CM.Qmin + o.kp * (e + integ / o.ti);
+        if (!((u >= CM.Qmax && e > 0) || (u <= CM.Qmin && e < 0))) integ += e;
+        Q = Math.max(CM.Qmin, Math.min(CM.Qmax, CM.Qmin + o.kp * (e + integ / o.ti)));
+      }
+      // vehicle and drive unit (backward-facing, 1 s steps)
+      var v0 = tr[i] * 0.44704, v1 = tr[i + 1] * 0.44704, va = (v0 + v1) / 2, a = v1 - v0;
+      var F = 0.5 * CM.rho * CM.cda * va * va + (va > 0.01 ? CM.crr * CM.m * G : 0) + 1.04 * CM.m * a;
+      var w = va / CM.r * CM.G, lim = tmax(w), tq = Math.max(-lim, Math.min(lim, F * CM.r / CM.G));
+      var ml = motor(tq, w, Tw, 1), me = ml.me + 0.012 * Math.max(0, -ml.P), loss = ml.cu + ml.fe + me;
+      var Pp = CM.Ppump * Math.pow(Q / CM.Qmax, 3), Pb = ml.P + loss + CM.aux + Pp;
+      var I = (CM.V0 - Math.sqrt(CM.V0 * CM.V0 - 4 * CM.Rb * Pb)) / (2 * CM.Rb);
+      E += CM.V0 * I; Ep += Pp; Ecu += ml.cu; Efe += ml.fe + me; d += va;
+      // virtual sensor: steady-state network from measured coolant temperature and estimated losses
+      var Gsc = CM.G0 + CM.Gsc * Math.pow(Q / CM.Qmax, 0.8), UA = CM.UAr * Math.sqrt(Q / CM.Qmax) * (0.35 + 0.65 * Math.min(1, va / 30));
+      var Test = Tc + (ml.cu + ml.fe) / Gsc + ml.cu / CM.Gws;
+      vs = Math.max(vs, Math.abs(Test - Tw));
+      // virtual sensor: dynamic observer, the same RC network run on measured coolant temperature, with its
+      // stator-to-coolant conductance calibrated 15% high; losses from the loss map at the observer's own temperature
+      var mh = motor(tq, w, Hw, 1), qwh = CM.Gws * (Hw - Hs), qsh = gh * Gsc * (Hs - Tc);
+      vo = Math.max(vo, Math.abs(Hw - Tw));
+      rows.push([i / 60, Tw, Ts, Tc, Q, Hw]);
+      Hw += (mh.cu - qwh) / CM.Cw; Hs += (mh.fe + qwh - qsh) / CM.Cs;
+      // thermal network, explicit Euler, 1 s
+      var qws = CM.Gws * (Tw - Ts), qsc = Gsc * (Ts - Tc), qr = UA * (Tc - o.Tamb);
+      Tw += (ml.cu - qws) / CM.Cw; Ts += (ml.fe + qws - qsc) / CM.Cs; Tc += (qsc + me - qr) / CM.Cc;
+      Twmax = Math.max(Twmax, Tw);
+      if (i >= half) { sc += Tc; sc2 += Tc * Tc; nc++; }
+    }
+    var mc = sc / nc;
+    return { d: d, wh: E / 3.6 / d, Ep: Ep / 3600, Ecu: Ecu / 3600, Efe: Efe / 3600, E: E / 3600, Twmax: Twmax, Tcm: mc, Tcs: Math.sqrt(Math.max(0, sc2 / nc - mc * mc)), sw: sw, vs: vs, vo: vo, rows: rows };
+  }
+  var CMI = ['cm-cyc', 'cm-amb', 'cm-ctrl', 'cm-set', 'cm-hys', 'cm-kp', 'cm-ti'];
+  function coupledDemo() {
+    if (!$('cm-chart') || !window.EPA_HWFET) return;
+    var base = { trace: cmTrace($('cm-cyc').value), Tamb: num('cm-amb'), Tset: num('cm-set'), hyst: Math.max(0.5, num('cm-hys')), kp: num('cm-kp'), ti: Math.max(1, num('cm-ti')) };
+    var sel = $('cm-ctrl').value, res = {};
+    ['full', 'onoff', 'pi'].forEach(function (c) { res[c] = coupled(Object.assign({ ctrl: c }, base)); });
+    if (!res[sel]) sel = 'pi';
+    var r = res[sel], rows = r.rows.filter(function (x, i) { return i % 5 === 0; }), tmaxm = r.rows[r.rows.length - 1][0];
+    var ys = []; rows.forEach(function (x) { ys.push(x[1], x[3], x[5]); });
+    var lo = Math.floor(Math.min.apply(null, ys.concat([base.Tamb])) / 10) * 10, hi = Math.ceil(Math.max.apply(null, ys.concat([base.Tset + 5])) / 10) * 10;
+    chart($('cm-chart'), { x: [0, tmaxm], y: [lo, hi], xs: 5, xl: 'Time [min]', yl: 'Temperature [°C]',
+      series: [{ pts: rows.map(function (x) { return [x[0], x[5]]; }), c: css('--s-grey'), w: 1.4, dash: '4 3' },
+        { pts: rows.map(function (x) { return [x[0], x[1]]; }), c: css('--s-coral'), w: 2.2 },
+        { pts: rows.map(function (x) { return [x[0], x[2]]; }), c: css('--s-warm'), w: 1.6 },
+        { pts: rows.map(function (x) { return [x[0], x[3]]; }), c: css('--s-blue'), w: 2.2 },
+        { pts: [[0, base.Tset], [tmaxm, base.Tset]], c: css('--s-mint'), w: 1.2, dash: '6 4' }] });
+    chart($('cm-flow'), { x: [0, tmaxm], y: [0, CM.Qmax * 1.1], xs: 5, ys: 5, xl: 'Time [min]', yl: 'Pump flow [L/min]',
+      series: [{ pts: rows.map(function (x) { return [x[0], x[4]]; }), c: css('--s-mint'), w: 1.8 }] });
+    var name = { full: 'Full flow, no control', onoff: 'On/off thermostat', pi: 'PI controller' };
+    function row(c) { var x = res[c]; return '<tr' + (c === sel ? ' class="hl"' : '') + '><td>' + name[c] + '</td><td>' + f(x.wh, 1) + ' Wh/km</td><td>' + f(x.Ep, 1) + ' Wh</td><td>' + f(x.Ecu, 0) + ' Wh</td><td>' + f(x.Twmax, 0) + ' °C</td><td>' + f(x.Tcm, 1) + ' ± ' + f(x.Tcs, 1) + ' °C</td><td>' + (c === 'onoff' ? x.sw : '—') + '</td></tr>'; }
+    $('cm-table').innerHTML = '<tr><th>Strategy</th><th>Energy use</th><th>Pump energy</th><th>Copper loss</th><th>Hottest winding</th><th>Coolant, 2nd half</th><th>Pump switchings</th></tr>' + row('full') + row('onoff') + row('pi');
+    $('cm-out').innerHTML = kpi('Distance', f(r.d / 1000, 1) + ' km') + kpi('Battery energy', f(r.E, 0) + ' Wh · ' + f(r.wh, 1) + ' Wh/km', true) +
+      kpi('Motor losses: copper · iron and mechanical', f(r.Ecu, 0) + ' · ' + f(r.Efe, 0) + ' Wh') + kpi('Pump energy', f(r.Ep, 1) + ' Wh · ' + f(100 * r.Ep / r.E, 2) + '%') +
+      kpi('Pump energy saved vs full flow', f(res.full.Ep - r.Ep, 1) + ' Wh', true) + kpi('Hottest winding', f(r.Twmax, 0) + ' °C') +
+      kpi('Virtual sensor, largest error: steady-state formula', f(r.vs, 0) + ' K') +
+      kpi('Virtual sensor, largest error: dynamic observer', f(r.vo, 1) + ' K', true);
+  }
+
   /* ---------- table of contents ---------- */
   function toc() {
     var links = Array.prototype.slice.call(document.querySelectorAll('.notes-toc a'));
@@ -811,6 +918,8 @@
   });
   on(CEI, cellDemo); cellDemo();
   on(LGI, logDemo); logDemo();
+  on(UNI, uncDemo); uncDemo();
+  on(CMI, coupledDemo); coupledDemo();
   toc();
-  window.EVNotes = { steady: steady, simulate: simulate, motor: motor, H0: H0, E0: E0, cop: cop, quadfit: quadfit, inverter: inverter, windSteady: windSteady, windCont: windCont, windBurst: windBurst, windRth: windRth, chargeSession: chargeSession, oilTrade: oilTrade, compound: compound, coolAir: coolAir, coldPlate: coldPlate, torqueSplit: torqueSplit, tsIron: tsIron, pack: pack, cellPulse: cellPulse, vehicleLog: vehicleLog };
+  window.EVNotes = { steady: steady, simulate: simulate, motor: motor, H0: H0, E0: E0, cop: cop, quadfit: quadfit, inverter: inverter, windSteady: windSteady, windCont: windCont, windBurst: windBurst, windRth: windRth, chargeSession: chargeSession, oilTrade: oilTrade, compound: compound, coolAir: coolAir, coldPlate: coldPlate, torqueSplit: torqueSplit, tsIron: tsIron, pack: pack, cellPulse: cellPulse, vehicleLog: vehicleLog, gci: gci, coupled: coupled, cmTrace: cmTrace };
 })();

@@ -22,7 +22,7 @@
   <h1>From forces to <em>range.</em></h1>
   <p class="lede">How aerodynamic drag, tyre losses, drive-unit losses and thermal systems decide how far an electric vehicle travels on a charge, and how a CFD result becomes a number that a vehicle-level decision can use.</p>
   <p class="lede">Each chapter starts with the essentials, develops the physics, and includes calculators you can change; every calculator lists the equations it uses and a few questions to try. Example vehicles are generic; they are not data from any manufacturer.</p>
-  <div class="notes-meta"><span>FIRST EDITION · NOVEMBER 2026 · REVISED 26 NOV</span><span>15 CHAPTERS · 19 INTERACTIVE MODELS, EACH WITH ITS EQUATIONS</span><span>SI UNITS, WITH US CONVERSIONS</span></div>
+  <div class="notes-meta"><span>FIRST EDITION · NOVEMBER 2026 · REVISED 26 NOV</span><span>16 CHAPTERS · 21 INTERACTIVE MODELS, EACH WITH ITS EQUATIONS</span><span>SI UNITS, WITH US CONVERSIONS</span></div>
 </section>
 
 <div class="notes-layout wrap">
@@ -44,6 +44,7 @@
     <li><a href="#c13"><span>13</span>From CFD to the system model</a></li>
     <li><a href="#c14"><span>14</span>One language for heat, flow and charge</a></li>
     <li><a href="#c15"><span>15</span>From a vehicle log to a correlated model</a></li>
+    <li><a href="#c16"><span>16</span>A coupled model with a controller</a></li>
     <li><a href="#refs"><span>—</span>References</a></li>
   </ol>
 </nav>
@@ -891,6 +892,30 @@ BO_ 416 BMS_Current: 8 BMS
   </div></details>
 </div>
 <p class="demo-note"><strong>What to look for.</strong> With the defaults the log overstates the battery energy by about 4.5%, and the model sits about 980 W below the log everywhere, also when parked: 600 W of auxiliary load that the model omits plus 0.5 A × 760 V ≈ 380 W of sensor offset. The log alone cannot split the two; a zero-current reading with the contactors open can. The 0.6 s delay of the speed signal changes no energy, but it raises the RMSE from about 1.1 kW to 3.7 kW. Align the signals before judging a model by its transient error.</p>
+<h3>How certain is the comparison?</h3>
+<p>A model and a test can only be said to disagree by more than their combined uncertainty. ASME V&amp;V 20 frames it simply: the comparison error E = S − D (simulation minus data) contains the model's own error plus numerical, input and measurement errors. Estimate those three, combine them, and only a difference larger than the result says something about the model.</p>
+<div class="eq">p = ln[(f<sub>3</sub> − f<sub>2</sub>) / (f<sub>2</sub> − f<sub>1</sub>)] / ln r &nbsp;&nbsp; GCI = 1.25 |(f<sub>1</sub> − f<sub>2</sub>) / f<sub>1</sub>| / (r<sup>p</sup> − 1) &nbsp;&nbsp; u<sub>val</sub> = √(u<sub>num</sub>² + u<sub>input</sub>² + u<sub>D</sub>²)<span class="note">f<sub>1</sub>, f<sub>2</sub>, f<sub>3</sub>: results on the fine, medium and coarse mesh, refined by a constant ratio r. p is the observed order of accuracy, the grid convergence index (GCI) the numerical uncertainty of the fine-mesh result with a safety factor of 1.25 (Roache; Celik et al., 2008). Independent sources combine as a root sum of squares.</span></div>
+<div class="demo" id="demo-unc">
+  <div class="demo-head"><h3>Grid convergence and validation uncertainty</h3><span class="demo-tag">INTERACTIVE · VERIFICATION AND VALIDATION</span></div>
+  <div class="controls">
+    <label for="un-f1"><span>Fine mesh result f<sub>1</sub></span><input id="un-f1" type="number" value="10.20" step="0.05"></label>
+    <label for="un-f2"><span>Medium mesh f<sub>2</sub></span><input id="un-f2" type="number" value="10.45" step="0.05"></label>
+    <label for="un-f3"><span>Coarse mesh f<sub>3</sub></span><input id="un-f3" type="number" value="11.05" step="0.05"></label>
+    <label for="un-r"><span>Refinement ratio r</span><input id="un-r" type="number" value="1.5" step="0.1" min="1.1"></label>
+    <label for="un-D"><span>Measured value D</span><input id="un-D" type="number" value="10.60" step="0.05"></label>
+    <label for="un-uin"><span>Input uncertainty [% of S]</span><input id="un-uin" type="number" value="3" step="0.5"></label>
+    <label for="un-uD"><span>Test uncertainty [% of D]</span><input id="un-uD" type="number" value="2" step="0.5"></label>
+  </div>
+  <svg class="chart" id="un-chart" viewBox="0 0 640 260" role="img" aria-label="Results on three meshes, Richardson extrapolation and the measured value with its uncertainty band"></svg>
+  <div class="legend"><span><i style="background:var(--ink)"></i>Mesh results</span><span><i style="background:var(--s-blue)"></i>Richardson extrapolation to zero spacing</span><span><i style="background:var(--s-warm)"></i>Measured value and its uncertainty band</span></div>
+  <div class="kpis" id="un-out"></div>
+  <p class="demo-note">Default values imitate a pressure-drop study in kPa: three meshes refined by 1.5 in each direction, a bench measurement with 2% uncertainty, and 3% uncertainty from the inputs (flow rate, fluid properties, as-built geometry). Uncertainties are taken at the same confidence level; GCI is applied to the fine mesh.</p>
+  <details class="model"><summary>Equations used in this calculator</summary><div>
+    <ol class="steps"><li><b>Observed order.</b> <span class="m">p = ln[(f<sub>3</sub> − f<sub>2</sub>) / (f<sub>2</sub> − f<sub>1</sub>)] / ln r</span>. It needs monotonic convergence: the two differences must have the same sign; otherwise the study is oscillatory and GCI does not apply.</li><li><b>Richardson extrapolation.</b> <span class="m">f<sub>ext</sub> = f<sub>1</sub> + (f<sub>1</sub> − f<sub>2</sub>) / (r<sup>p</sup> − 1)</span>, the estimate at zero grid spacing; the curve drawn is f<sub>ext</sub> + (f<sub>1</sub> − f<sub>ext</sub>) (h/h<sub>1</sub>)<sup>p</sup>.</li><li><b>Numerical uncertainty.</b> <span class="m">GCI = 1.25 |(f<sub>1</sub> − f<sub>2</sub>) / f<sub>1</sub>| / (r<sup>p</sup> − 1)</span>; <span class="m">u<sub>num</sub> = GCI · |f<sub>1</sub>|</span>.</li><li><b>Validation uncertainty.</b> <span class="m">u<sub>val</sub> = √(u<sub>num</sub>² + u<sub>input</sub>² + u<sub>D</sub>²)</span>, ASME V&amp;V 20.</li><li><b>Verdict.</b> <span class="m">E = S − D</span> with S = f<sub>1</sub>. If |E| ≤ u<sub>val</sub>, the model error is hidden in the noise of the comparison. If |E| > u<sub>val</sub>, the model error is about E ± u<sub>val</sub>.</li></ol>
+    <p class="try-h">TRY THIS: PREDICT FIRST, THEN CHECK</p><ul class="try"><li>With the defaults, does the comparison show a model error? Now reduce the input uncertainty to 1%. What changes, and why is that good news for the model team?</li><li>Set the coarse mesh to 10.30, so the results oscillate. What can you still say about the mesh?</li><li>A low-flow test point has a small pressure drop, so the sensor's full-scale accuracy becomes 8% of the reading. What happens to u<sub>val</sub>, and to your ability to judge the model there?</li></ul>
+  </div></details>
+</div>
+<p class="demo-note"><strong>What to look for.</strong> With the defaults the observed order is about 2.2, the fine mesh carries a GCI of about 2.2%, and the validation uncertainty is about 4.3%. The model sits 3.8% below the test, inside that band, so no model error can be claimed. With better-controlled inputs (1%) the band shrinks to about 3.2% and the same 3.8% gap becomes a real model error. Better tests and inputs do not make a model look better; they make its errors visible.</p>
 <details class="develop"><summary>Check yourself</summary><div>
 <ol>
   <li><strong>A DBC signal is defined as 0|16@1- (0.05,0). The first two bytes are 30 F8. What is the value?</strong> Little-endian: 0xF830 = 63,536; signed 16-bit: 63,536 − 65,536 = −2,000; × 0.05 = −100 A.</li>
@@ -899,6 +924,98 @@ BO_ 416 BMS_Current: 8 BMS
   <li><strong>The energy matches but the transient error is large. What do you check first?</strong> A time shift between the signals, by cross-correlation, before touching any model parameter.</li>
   <li><strong>What logging rate do you ask for in a cell pulse test, and why?</strong> 100 Hz, or at least 10 Hz. R<sub>0</sub> is read from the first sample after the current step; at 1 Hz that sample already contains half a second of the fast RC pair and R<sub>0</sub> reads about 14% high (chapter 7).</li>
   <li><strong>A range test uses 8% more energy than the model. In what order do you look?</strong> Same energy boundary (DC or wall), same inputs (speed trace, ambient, soak, initial temperatures), timing, sensor offset and gain, then segment by segment: constant, ∝ v², transient or start-up. Only then the physics.</li>
+  <li><strong>Model and test differ by 4%. Is the model wrong?</strong> Only if 4% is larger than the validation uncertainty √(u<sub>num</sub>² + u<sub>input</sub>² + u<sub>D</sub>²). Estimate the mesh uncertainty with three grids (GCI), the input uncertainty by sensitivity, and take the test uncertainty from the instrumentation.</li>
+</ol>
+</div></details>
+</section>
+
+<!-- 16 -->
+<section class="chapter" id="c16">
+<p class="chapter-num">CHAPTER 16</p>
+<h2>A coupled model with a controller</h2>
+<div class="brief"><h3>In brief</h3><ul>
+  <li>A vehicle energy model couples mechanical, electrical and thermal blocks. Each block can be simple; the value is in the connections.</li>
+  <li>Thermal states carry the coupling in time: losses heat the machine, its temperature changes the losses, and a controller decides how much the cooling costs.</li>
+  <li>A controller is part of the efficiency: the same hardware uses less pump energy with a better strategy, and a virtual sensor gives it the temperatures no instrument measures.</li>
+</ul></div>
+<p>This chapter connects models from earlier chapters into one system: the road-load equation (chapter 2) and an EPA speed trace (chapter 3) set the demand, the loss map of chapter 6 turns it into heat and electrical power, a battery with internal resistance (chapter 7) supplies it, and a three-node thermal network with a pump and radiator (chapters 8 and 14) carries the heat away. A controller sets the pump flow.</p>
+<figure class="figure-analogy">
+<svg class="chart" viewBox="0 0 640 250" role="img" aria-label="Block diagram of the coupled model: drive cycle, vehicle, drive unit and battery in a signal chain; thermal network, pump, controller and virtual sensor below">
+  <defs><marker id="cm-arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--ink)"/></marker><marker id="cm-arw2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--s-warm)"/></marker></defs>
+  <g style="fill:none;stroke:var(--s-mint);stroke-width:1.6">
+    <rect x="8" y="28" width="100" height="44" rx="3"/><rect x="138" y="28" width="112" height="44" rx="3"/><rect x="280" y="28" width="130" height="44" rx="3"/><rect x="450" y="28" width="110" height="44" rx="3"/>
+    <rect x="8" y="148" width="112" height="44" rx="3"/><rect x="150" y="148" width="100" height="44" rx="3"/><rect x="280" y="148" width="170" height="44" rx="3"/><rect x="480" y="148" width="150" height="44" rx="3"/>
+  </g>
+  <g style="fill:var(--ink);font-size:12px" text-anchor="middle">
+    <text x="58" y="47">Drive cycle</text><text x="194" y="47">Vehicle</text><text x="345" y="47">Drive unit</text><text x="505" y="47">Battery</text>
+    <text x="64" y="167">Controller</text><text x="200" y="167">Pump</text><text x="365" y="167">Thermal network</text><text x="555" y="167">Virtual sensor</text>
+  </g>
+  <g style="fill:var(--muted);font-size:10px" text-anchor="middle">
+    <text x="58" y="62">speed trace v(t)</text><text x="194" y="62">road load, F → τ, n</text><text x="345" y="62">loss map (τ, n, T)</text><text x="505" y="62">P = (V₀ − R I) I</text>
+    <text x="64" y="182">PI or on/off</text><text x="200" y="182">P ∝ Q³</text><text x="365" y="182">3 nodes + radiator</text><text x="555" y="182">observer: T winding</text>
+  </g>
+  <g style="stroke:var(--ink);stroke-width:1.3;fill:none" marker-end="url(#cm-arw)">
+    <line x1="108" y1="50" x2="136" y2="50"/><line x1="250" y1="50" x2="278" y2="50"/><line x1="410" y1="50" x2="448" y2="50"/>
+    <line x1="120" y1="170" x2="148" y2="170"/><line x1="250" y1="170" x2="278" y2="170"/><line x1="450" y1="170" x2="478" y2="170"/>
+    <polyline points="200,148 200,112 520,112 520,74"/>
+    <polyline points="330,192 330,226 64,226 64,194"/>
+    <line x1="230" y1="72" x2="300" y2="146"/>
+    <line x1="405" y1="72" x2="520" y2="146"/>
+  </g>
+  <line x1="340" y1="72" x2="340" y2="146" style="stroke:var(--s-warm);stroke-width:3" marker-end="url(#cm-arw2)"/>
+  <line x1="372" y1="146" x2="372" y2="74" style="stroke:var(--s-blue);stroke-width:1.5;stroke-dasharray:4 3" marker-end="url(#cm-arw)"/>
+  <g style="fill:var(--muted);font-size:10px">
+    <text x="122" y="44">v</text><text x="256" y="44">τ, n</text><text x="414" y="44">P<tspan dy="2" style="font-size:8px">el</tspan></text>
+    <text x="334" y="134" text-anchor="end" style="fill:var(--s-warm)">losses</text><text x="378" y="134" style="fill:var(--s-blue)">T winding</text>
+    <text x="236" y="106" text-anchor="end">air speed</text><text x="252" y="106">pump power</text><text x="472" y="136" text-anchor="end">τ, n</text>
+    <text x="124" y="164">Q</text><text x="254" y="164">Q</text><text x="452" y="164">T<tspan dy="2" style="font-size:8px">c</tspan></text>
+    <text x="200" y="240" text-anchor="middle">measured coolant temperature T<tspan dy="2" style="font-size:8px">c</tspan></text>
+  </g>
+</svg>
+<figcaption>Thin arrows are signals: each has one direction, as in a causal (Simulink-style) model. The thick arrow is the physical heat path, where temperature and heat flow travel together; an acausal tool (Modelica, Simcenter Amesim, GT-SUITE, Simscape) represents it as a port and writes the conservation equations itself. The dashed arrow closes the loop: winding temperature changes copper resistance and magnet flux, so the losses depend on the state they create.</figcaption>
+</figure>
+<h3>Causal and acausal, backward and forward</h3>
+<ul>
+  <li><strong>Causal (signal-flow) models</strong> fix every block's inputs and outputs. They suit controllers and quasi-static energy chains; the modeller decides the causality.</li>
+  <li><strong>Acausal (physical-port) models</strong> connect components through pairs of variables, an across variable such as temperature, pressure or voltage and a through variable such as heat flow, volume flow or current, as in chapter 14. The tool assembles and orders the equations, so a component library can be reused in any circuit.</li>
+  <li><strong>Backward-facing</strong> models start from the speed trace and ask what power it needs, as here. They are fast and suit energy and thermal studies. <strong>Forward-facing</strong> models add a driver controller that requests torque to follow the trace; they are needed when actuator limits, drivability or a controller's response matter.</li>
+  <li><strong>Time scales</strong> span seconds for the vehicle, minutes for the machine and coolant, and hours for the battery's state of charge. Stiff systems call for implicit, variable-step solvers. Coupling between tools runs through the FMI standard (an FMU per model), and the same model travels from model-in-the-loop to software- and hardware-in-the-loop testing of the controller.</li>
+</ul>
+<div class="eq">C<sub>w</sub> dT<sub>w</sub>/dt = P<sub>cu</sub>(T<sub>w</sub>) − G<sub>ws</sub>(T<sub>w</sub> − T<sub>s</sub>) &nbsp;&nbsp; C<sub>s</sub> dT<sub>s</sub>/dt = P<sub>fe</sub> + G<sub>ws</sub>(T<sub>w</sub> − T<sub>s</sub>) − G<sub>sc</sub>(Q)(T<sub>s</sub> − T<sub>c</sub>) &nbsp;&nbsp; C<sub>c</sub> dT<sub>c</sub>/dt = G<sub>sc</sub>(Q)(T<sub>s</sub> − T<sub>c</sub>) + P<sub>mech</sub> − UA(Q, v)(T<sub>c</sub> − T<sub>amb</sub>)<span class="note">Winding w, stator s, coolant c. Conductances depend on the pump flow Q, the radiator also on vehicle speed. The loss P<sub>cu</sub>(T<sub>w</sub>) depends on the state it heats: an algebraic loop that the thermal capacitance breaks, because temperature is a state integrated in time.</span></div>
+<h3>The controller and the virtual sensor</h3>
+<p>A thermostat switches the pump fully on above the set point plus half a hysteresis band and to minimum flow below it. A PI controller sets the flow continuously from the error and its integral, with anti-windup so the integral stops growing while the pump is saturated. Because pump power rises with the cube of flow (chapter 8), a steady partial flow removes the same heat for less energy than switching between minimum and full.</p>
+<p>The winding temperature is the one that limits the machine, but it is rarely measured in a production vehicle. A virtual sensor estimates it. The naive version applies the steady-state network to the instantaneous losses; the working version runs the thermal network in real time, fed by the measured coolant temperature and the estimated losses, and a production version would also correct it with any available measurement (a Kalman filter, as for the battery in chapter 7).</p>
+<div class="demo" id="demo-cm">
+  <div class="demo-head"><h3>Drive cycle, drive unit, coolant loop and pump control</h3><span class="demo-tag">INTERACTIVE · COUPLED SYSTEM MODEL</span></div>
+  <div class="controls">
+    <label for="cm-cyc"><span>Drive cycle</span><select id="cm-cyc"><option value="hwfet">HWFET × 3, highway</option><option value="udds">UDDS × 2, city</option></select></label>
+    <label for="cm-amb"><span>Ambient [°C]</span><input id="cm-amb" type="number" value="35" step="5"></label>
+    <label for="cm-ctrl"><span>Pump control shown</span><select id="cm-ctrl"><option value="pi">PI controller</option><option value="onoff">On/off thermostat</option><option value="full">Full flow, no control</option></select></label>
+    <label for="cm-set"><span>Coolant set point [°C]</span><input id="cm-set" type="number" value="65" step="5"></label>
+    <label for="cm-hys"><span>Thermostat hysteresis [K]</span><input id="cm-hys" type="number" value="4" step="1" min="0.5"></label>
+    <label for="cm-kp"><span>PI gain K<sub>p</sub> [(L/min)/K]</span><input id="cm-kp" type="number" value="6" step="1"></label>
+    <label for="cm-ti"><span>PI integral time T<sub>i</sub> [s]</span><input id="cm-ti" type="number" value="150" step="25" min="1"></label>
+  </div>
+  <svg class="chart" id="cm-chart" viewBox="0 0 640 260" role="img" aria-label="Winding, stator and coolant temperatures over the drive, with the virtual-sensor estimate and the set point"></svg>
+  <div class="legend"><span><i style="background:var(--s-coral)"></i>Winding</span><span><i style="background:var(--s-warm)"></i>Stator</span><span><i style="background:var(--s-blue)"></i>Coolant</span><span><i style="background:var(--s-mint)"></i>Set point</span><span><i style="background:var(--s-grey)"></i>Virtual sensor (observer)</span></div>
+  <svg class="chart" id="cm-flow" viewBox="0 0 640 170" role="img" aria-label="Pump flow over the drive"></svg>
+  <div class="kpis" id="cm-out"></div>
+  <div class="tablewrap"><table id="cm-table"></table></div>
+  <p class="demo-note">Generic 2,200 kg vehicle, drag area 0.6 m², C<sub>rr</sub> 0.008, wheel radius 0.36 m, gear ratio 9, one drive unit with the loss map of chapter 6; 300 W of other auxiliaries; pack 750 V, 80 mΩ. Thermal network: C<sub>w</sub> 3 kJ/K, C<sub>s</sub> 12 kJ/K, C<sub>c</sub> 17.5 kJ/K; G<sub>ws</sub> 60 W/K; G<sub>sc</sub> = 10 + 120 (Q/Q<sub>max</sub>)<sup>0.8</sup> W/K; radiator UA = 90 (Q/Q<sub>max</sub>)<sup>0.5</sup> (0.35 + 0.65 min(1, v / 30 m/s)) W/K, the constant part standing for a fan at low speed. Pump: 2 to 20 L/min, 120 W at full flow, power ∝ Q³. Everything starts at ambient temperature. Illustrative values.</p>
+  <details class="model"><summary>Equations used in this calculator</summary><div>
+    <ol class="steps"><li><b>Vehicle, 1 s steps.</b> <span class="m">F = ½ ρ C<sub>d</sub>A v̄² + C<sub>rr</sub> m g + 1.04 m Δv</span>; motor speed <span class="m">ω = v̄ G / r</span>, torque <span class="m">τ = F r / G</span>, limited to the motor's envelope; friction brakes take the rest.</li><li><b>Drive unit.</b> Copper, iron and mechanical losses from the chapter 6 loss map at the current winding temperature T<sub>w</sub>; electrical power = τω + losses.</li><li><b>Battery.</b> <span class="m">P<sub>batt</sub> = P<sub>el</sub> + P<sub>aux</sub> + P<sub>pump</sub></span>; <span class="m">I = [V<sub>0</sub> − √(V<sub>0</sub>² − 4 R P)] / 2R</span>; energy counted as ∫ V<sub>0</sub> I dt, which includes the I²R loss.</li><li><b>Thermal network.</b> The three equations above, explicit Euler with 1 s steps (the smallest time constant is about 50 s). Copper loss heats the winding, iron loss the stator, mechanical loss the coolant through the oil.</li><li><b>Controllers.</b> On/off: full flow above T<sub>set</sub> + h/2, minimum flow below T<sub>set</sub> − h/2. PI: <span class="m">Q = Q<sub>min</sub> + K<sub>p</sub> [e + (1/T<sub>i</sub>) ∫ e dt]</span>, e = T<sub>c</sub> − T<sub>set</sub>, limited to 2–20 L/min; the integral is frozen while the output is saturated in the direction of the error.</li><li><b>Pump.</b> <span class="m">P<sub>pump</sub> = 120 W (Q / Q<sub>max</sub>)³</span>.</li><li><b>Virtual sensor.</b> Observer: the winding and stator equations run on the measured T<sub>c</sub>, with G<sub>sc</sub> deliberately 15% too high. Naive estimate: <span class="m">T<sub>w</sub> ≈ T<sub>c</sub> + (P<sub>cu</sub> + P<sub>fe</sub>) / G<sub>sc</sub> + P<sub>cu</sub> / G<sub>ws</sub></span>.</li></ol>
+    <p class="try-h">TRY THIS: PREDICT FIRST, THEN CHECK</p><ul class="try"><li>Compare the three strategies in the table. Why does full flow cost energy without making anything better that matters here?</li><li>Look at the flow chart for the thermostat and for PI. Which uses more average flow, and which uses more pump energy? Explain it with P ∝ Q³.</li><li>Set the ambient to 0 °C. What do both controllers do during the whole drive, and what does full flow cost?</li><li>Raise K<sub>p</sub> to 30 and lower T<sub>i</sub> to 20 s. What happens to the coolant temperature and to the pump? Where would you tune it, in the vehicle or in this model?</li><li>Change the hysteresis to 1 K and count the switchings. What does that mean for the pump's life?</li></ul>
+  </div></details>
+</div>
+<p class="demo-note" id="cm-look"><strong>What to look for.</strong> On the highway at 35 °C, full flow spends 76 Wh of pump energy over the 50 km and holds the coolant at 57 °C, colder than anything needs. Both controllers let it rise to the 65 °C set point and cut pump energy to less than a third, saving about 1.6 Wh/km or 1.2% of the consumption; the warmer winding adds only about 4 Wh of copper loss. PI holds the coolant within about ±1.3 K, against ±2.5 K for the thermostat, and uses about 10% less pump energy although its average flow is higher: the Q³ law at work. At 0 °C both controllers keep the pump at minimum flow for the whole drive, while full flow costs 2.5 Wh/km and keeps the coolant at 23 °C. The naive virtual sensor misses the winding temperature by up to about 80 K during transients; the observer, even with its 15% calibration error, stays within about 3 K.</p>
+<details class="develop"><summary>Check yourself</summary><div>
+<ol>
+  <li><strong>What is the difference between a causal and an acausal model?</strong> A causal model fixes each block's inputs and outputs, like Simulink signals. An acausal model connects components through physical ports carrying an across and a through variable, and the tool writes the conservation equations; Modelica, Amesim, GT-SUITE and Simscape work this way.</li>
+  <li><strong>Backward- or forward-facing: which do you need?</strong> Backward-facing for energy and thermal studies over a known trace: fast and simple. Forward-facing, with a driver model, when actuator limits, controller response or drivability matter.</li>
+  <li><strong>Loss depends on temperature and temperature on loss. How does the model solve that loop?</strong> Temperature is a state with thermal capacitance; the loss is evaluated at the current state and the state is integrated forward in time, so there is no algebraic loop.</li>
+  <li><strong>Why does a PI controller save pump energy compared with a thermostat holding the same temperature?</strong> Pump power scales with Q³. Holding a steady partial flow costs less than alternating between minimum and full flow for the same heat removal.</li>
+  <li><strong>How would you estimate a winding temperature nobody measures?</strong> Run a thermal network in real time from measured coolant temperature and estimated losses, calibrated on a dynamometer with thermocouples in the winding, and correct it with any measurement available. A steady-state formula ignores thermal mass and is wrong by tens of kelvin in transients.</li>
+  <li><strong>How would a model like this be validated?</strong> Component first: loss map on a dynamometer, thermal network against winding thermocouples, radiator and pump against bench curves. Then the assembled model against vehicle logs over a drive cycle (chapter 15), with agreed acceptance bands.</li>
 </ol>
 </div></details>
 </section>
@@ -916,6 +1033,8 @@ BO_ 416 BMS_Current: 8 BMS
   <li>W. M. Kays and A. L. London, <em>Compact Heat Exchangers</em>, 3rd ed., McGraw-Hill, 1984.</li>
   <li>SAE J1263, <em>Road Load Measurement and Dynamometer Simulation Using Coastdown Techniques</em>; SAE J2263, <em>Road Load Measurement Using Onboard Anemometry and Coastdown Techniques</em>.</li>
   <li>SAE J1634, <em>Battery Electric Vehicle Energy Consumption and Range Test Procedure</em>.</li>
+  <li>I. B. Celik, U. Ghia, P. J. Roache, C. J. Freitas, H. Coleman and P. E. Raad, "Procedure for estimation and reporting of uncertainty due to discretization in CFD applications", <em>Journal of Fluids Engineering</em> 130(7), 078001, 2008; ASME V&amp;V 20, <em>Standard for Verification and Validation in Computational Fluid Dynamics and Heat Transfer</em> (chapter 15).</li>
+  <li>G. L. Plett, <em>Battery Management Systems, Volume I: Battery Modeling</em>, Artech House, 2015 (equivalent-circuit cell models, chapter 7).</li>
   <li>US EPA, <a href="https://www.epa.gov/vehicle-and-fuel-emissions-testing/dynamometer-drive-schedules" target="_blank" rel="noopener noreferrer">Dynamometer drive schedules</a> (UDDS and HWFET speed traces used in chapters 3 and 12); fuel economy labeling, 40 CFR Part 600.</li>
   <li>Lucid Motors, <a href="https://lucidmotors.com/technologies" target="_blank" rel="noopener noreferrer">Technologies</a> and <a href="https://lucidmotors.com/tech-talks" target="_blank" rel="noopener noreferrer">Tech Talks</a> video series (battery pack, space concept, Wunderbox, motor, inverter): public manufacturer material, cited in chapters 6 and 10.</li>
 </ol>
