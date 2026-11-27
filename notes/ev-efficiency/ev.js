@@ -545,6 +545,61 @@
       : kpi('Result', 'Winding limit exceeded at every oil temperature', true);
   }
 
+  /* ---------- 11 radiator, fan and pump sizing ---------- */
+  // Coolant 50/50 water-glycol; loop system curve through 40 kPa at 30 L/min; pump wire-to-water 35%.
+  // Radiator core: UA per face area 2.5 kW/(K m²) at 3 m/s face velocity, ∝ v^0.5; air-side stack Δp 150 Pa at 3 m/s, ∝ v^1.8; fan + motor 40%.
+  var RS = { cpc: 3500, rhoc: 1050, cpa: 1007, Lref: 30, dpref: 40000, etaP: 0.35, u: 2500, vref: 3, dpa: 150, na: 1.8, etaF: 0.4, vmax: 15 };
+  function epsCross(N, Cr) { return 1 - Math.exp((1 / Cr) * Math.pow(N, 0.22) * (Math.exp(-Cr * Math.pow(N, 0.78)) - 1)); }
+  function radReject(vf, A, Cc, Tci, Ta, ra) {
+    var Ca = ra * RS.cpa * vf * A, UA = RS.u * A * Math.sqrt(vf / RS.vref), Cmin = Math.min(Cc, Ca), Cmax = Math.max(Cc, Ca);
+    return epsCross(UA / Cmin, Cmin / Cmax) * Cmin * (Tci - Ta);
+  }
+  function radSize(o) { // o: Q [W], Ta, Ts [°C], dTc [K], A [m²], V [km/h]
+    var ra = 101325 / (287.05 * (o.Ta + 273.15)), Cc = o.Q / o.dTc, Vc = Cc / RS.cpc / RS.rhoc, L = Vc * 60000;
+    var r = { L: L, Pp: Vc * RS.dpref * Math.pow(L / RS.Lref, 2) / RS.etaP, Tci: o.Ts + o.dTc, ok: false };
+    if (!(o.Q > 0 && o.dTc > 0 && o.A > 0) || o.Ts <= o.Ta) { r.why = 'supply must be warmer than ambient'; return r; }
+    if (radReject(RS.vmax, o.A, Cc, r.Tci, o.Ta, ra) < o.Q) { r.why = 'needs more than ' + RS.vmax + ' m/s through the core'; return r; }
+    var lo = 1e-4, hi = RS.vmax;
+    for (var i = 0; i < 200; i++) { var mid = 0.5 * (lo + hi); if (radReject(mid, o.A, Cc, r.Tci, o.Ta, ra) < o.Q) lo = mid; else hi = mid; }
+    var vf = 0.5 * (lo + hi), Va = vf * o.A, v = o.V / 3.6;
+    r.ok = true; r.vf = vf; r.Va = Va; r.dTa = o.Q / (ra * RS.cpa * Va); r.UA = RS.u * o.A * Math.sqrt(vf / RS.vref); r.dTm = o.Q / r.UA;
+    r.dps = RS.dpa * Math.pow(vf / RS.vref, RS.na); r.dpr = 0.8 * 0.5 * ra * v * v; r.Pf = Va * Math.max(0, r.dps - r.dpr) / RS.etaF;
+    return r;
+  }
+  var RZI = ['rz-q', 'rz-ta', 'rz-ts', 'rz-dtc', 'rz-a', 'rz-v'];
+  function radDemo() {
+    if (!$('rz-a-chart')) return;
+    var o = { Q: num('rz-q') * 1000, Ta: num('rz-ta'), Ts: num('rz-ts'), dTc: num('rz-dtc'), A: num('rz-a'), V: num('rz-v') };
+    $('rz-av').textContent = f(o.A, 2); $('rz-vv').textContent = f(o.V, 0);
+    var r = radSize(o), fa = [], f0 = [], ymax = 0, k, q;
+    for (k = 0; k <= 60; k++) {
+      var A = 0.2 + 0.01 * k;
+      q = radSize(Object.assign({}, o, { A: A })); if (q.ok) { fa.push([A, q.Pf]); ymax = Math.max(ymax, q.Pf); }
+      if (o.V > 0) { q = radSize(Object.assign({}, o, { A: A, V: 0 })); if (q.ok) f0.push([A, q.Pf]); }
+    }
+    var r0 = radSize(Object.assign({}, o, { V: 0 })), cap = r0.ok ? Math.max(400, 2.5 * r0.Pf) : 2000;
+    var ya = Math.ceil(Math.min(Math.max(ymax, r0.ok ? r0.Pf : 0, 100), cap) * 1.1 / 100) * 100;
+    function inside(p) { return p[1] <= ya; } // leave the off-scale part out instead of drawing it flat at the top
+    chart($('rz-a-chart'), { x: [0.2, 0.8], y: [0, ya], xs: 0.1, xl: 'Radiator face area [m²]', yl: 'Fan electrical power [W]',
+      series: [{ pts: f0.filter(inside), c: css('--s-grey'), w: 2, dash: '5 4' }, { pts: fa.filter(inside), c: css('--s-blue'), w: 2.4 }],
+      vlines: [{ x: o.A, c: css('--s-coral') }], dots: r.ok ? [{ x: o.A, y: Math.min(r.Pf, ya), c: css('--s-blue') }] : [] });
+    var fs = [], ts = [], yb = 100;
+    for (k = 0; k <= 60; k++) {
+      q = radSize(Object.assign({}, o, { V: 2 * k }));
+      if (q.ok) { fs.push([2 * k, q.Pf]); ts.push([2 * k, q.Pf + q.Pp]); yb = Math.max(yb, q.Pf + q.Pp); }
+    }
+    var yv = Math.ceil(Math.min(yb, Math.max(cap, r.ok ? r.Pp * 1.5 : 0)) * 1.1 / 100) * 100;
+    function insideV(p) { return p[1] <= yv; }
+    chart($('rz-v-chart'), { x: [0, 120], y: [0, yv], xs: 20, xl: 'Vehicle speed [km/h]', yl: 'Electrical power [W]',
+      series: [{ pts: fs.filter(insideV), c: css('--s-blue'), w: 2.4 }, { pts: ts.filter(insideV), c: css('--ink'), w: 2 }], vlines: [{ x: o.V, c: css('--s-coral') }] });
+    $('rz-out').innerHTML = kpi('Coolant flow', f(r.L, 1) + ' L/min') + kpi('Pump electrical power', f(r.Pp, 0) + ' W') +
+      (r.ok ? kpi('Air through the core', f(r.Va, 2) + ' m³/s at ' + f(r.vf, 1) + ' m/s') + kpi('Air temperature rise', f(r.dTa, 1) + ' K') +
+        kpi('Radiator UA needed', f(r.UA / 1000, 2) + ' kW/K') + kpi('Mean temperature difference Q / UA', f(r.dTm, 1) + ' K') +
+        kpi('Air-side Δp / ram pressure', f(r.dps, 0) + ' / ' + f(r.dpr, 0) + ' Pa') + kpi('Fan electrical power', f(r.Pf, 0) + ' W', true) +
+        kpi('Fan + pump', f(r.Pf + r.Pp, 0) + ' W' + (o.V > 0 ? ' · ' + f((r.Pf + r.Pp) / o.V, 1) + ' Wh/km' : ''), true)
+        : kpi('Radiator', 'Not feasible: ' + r.why, true));
+  }
+
   /* ---------- 12 mass compounding ---------- */
   function compound(o) {
     var den = 1 - o.d * o.s / o.rho; if (den <= 0) return null;
@@ -1038,6 +1093,7 @@
   on(WDI, windDemo); windDemo();
   on(CH, chargeDemo); chargeDemo();
   on(OI, oilDemo); oilDemo();
+  on(RZI, radDemo); radDemo();
   on(MC, compoundDemo); compoundDemo();
   on(CAI, coolDemo); coolDemo();
   on(IJI, junctionDemo); junctionDemo();
@@ -1057,5 +1113,5 @@
   on(UNI, uncDemo); uncDemo();
   on(CMI, coupledDemo); coupledDemo();
   toc();
-  window.EVNotes = { steady: steady, simulate: simulate, motor: motor, H0: H0, E0: E0, cop: cop, quadfit: quadfit, inverter: inverter, windSteady: windSteady, windCont: windCont, windBurst: windBurst, windRth: windRth, chargeSession: chargeSession, oilTrade: oilTrade, compound: compound, coolAir: coolAir, coolBest: coolBest, junction: junction, chgPoint: chgPoint, chgCurve: chgCurve, coldPlate: coldPlate, torqueSplit: torqueSplit, tsIron: tsIron, pack: pack, cellPulse: cellPulse, vehicleLog: vehicleLog, gci: gci, coupled: coupled, cmTrace: cmTrace };
+  window.EVNotes = { steady: steady, simulate: simulate, motor: motor, H0: H0, E0: E0, cop: cop, quadfit: quadfit, inverter: inverter, windSteady: windSteady, windCont: windCont, windBurst: windBurst, windRth: windRth, chargeSession: chargeSession, oilTrade: oilTrade, radSize: radSize, compound: compound, coolAir: coolAir, coolBest: coolBest, junction: junction, chgPoint: chgPoint, chgCurve: chgCurve, coldPlate: coldPlate, torqueSplit: torqueSplit, tsIron: tsIron, pack: pack, cellPulse: cellPulse, vehicleLog: vehicleLog, gci: gci, coupled: coupled, cmTrace: cmTrace };
 })();
